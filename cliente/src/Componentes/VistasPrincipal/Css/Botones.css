@@ -1,0 +1,37 @@
+.btn-inscribete {
+    background-color: #007bff; /* Color azul Bootstrap primary */
+    border-color: #007bff;
+  }
+  
+  .btn-iniciar-sesion {
+    background-color: #6f42c1; /* Un color púrpura */
+    border-color: #6f42c1;
+    font-style: italic;
+    color:white ;
+  }
+  .btn-iniciar-sesion:hover
+  {
+    background-color: green;
+  }
+  
+
+  .btn-material
+  {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .btn-recuperar
+  {
+    background-color: #6f42c1; /* Un color púrpura */
+    border-color: #6f42c1;
+    font-style: italic;
+    color:white ;
+  }
+
+  .ir-a-login 
+  {
+    text-decoration-line: underline;
+    transition: background-color 0.5s;
+    cursor: pointer;
+  }

@@ -1,0 +1,39 @@
+.size_iconoEmparejamiento{
+    width: 35px;
+}
+
+.color_icono{
+    filter: grayscale(100%);
+}
+
+
+
+.link_style{
+    text-decoration: none;
+    color: black;
+}
+
+.margen_superior{
+    margin-top: 100px;
+}
+
+/* Estilos para el sidebar */
+.sb_styles {
+    width: 250px; /* Ancho fijo del sidebar */
+    height: 100vh; /* Altura igual al alto de la ventana */
+    position: fixed; /* Sidebar fijo en la ventana */
+    top: 0; /* Alineado en la parte superior */
+    left: 0; /* Alineado a la izquierda */
+    background-color: #f0f0f0; /* Color de fondo del sidebar */
+    z-index: 1000; /* Z-index alto para que esté por encima del contenido */
+}
+
+/* Estilos para el contenido principal */
+.content_wrapper {
+    margin: 120px 50px 150px 350px; 
+    padding: 20px; /* Espacio interno del contenido */
+}
+
+.fondo_aprendizaje{
+    background-image: url('../Utils/fondo-aprendizaje.png');
+}

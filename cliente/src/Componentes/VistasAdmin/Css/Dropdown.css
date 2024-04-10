@@ -1,0 +1,24 @@
+/* Estilos personalizados para el Dropdown */
+.container {
+    margin-top: 20px;
+  }
+  
+  /* Ajuste de margen superior para separar del contenido superior */
+  
+  .dropdown {
+    width: 200px; /* Ancho del botón desplegable */
+  }
+  
+  .dropdown-menu {
+    width: 100%; /* Ajusta el ancho del menú desplegable al 100% del contenedor */
+  }
+  
+  .dropdown-item {
+    width: 100%; /* Ajusta el ancho de los elementos del menú desplegable */
+  }
+  
+  /* Estilos adicionales si es necesario para personalizar el aspecto del contenedor de texto */
+  .mt-2 {
+    margin-top: 10px; /* Ajuste de margen superior */
+  }
+  

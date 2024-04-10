@@ -1,0 +1,28 @@
+.modal-materias
+{
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 5 px rgba(0, 0, 0, 0.5);
+}
+
+.modal-materias-header
+{
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-materias-titulo
+{
+    color: #495056;
+}
+
+.modal-materias-body
+{
+    padding: 20px;
+}
+
+.modal-materias-footer
+{
+    background-color: #f8f9fa;
+}
+

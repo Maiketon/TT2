@@ -1,0 +1,80 @@
+
+
+/* Estilos CSS para el barra lateral */
+.sidebar {
+    width: 330px; /* Ancho fijo */
+    min-height: 95vh; /* Altura mínima igual al 100% del viewport */
+    background-color: #f0f0f0;
+    border: 2px solid #000; /* Borde sólido */
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
+    overflow-y: auto; /* Agrega desplazamiento vertical si el contenido es más largo que el sidebar */
+    position: fixed; /* Usa posición fija */
+    left: 1%; /* Desplazamiento de la izquierda */
+    top: 1vh; /* Desplazamiento desde arriba */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombreado */
+}
+
+
+/* Estilos CSS para el botón del logo */
+.logo-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 5px; /* Ajusta el padding para el tamaño del botón */
+    margin-right: 100px; /* Agrega margen derecho para separación horizontal */
+}
+
+.logo-button img {
+    width: 50px; /* Tamaño del logo */
+    height: auto;
+}
+
+/* Estilos CSS para los botones de Bootstrap */
+.btn {
+    border: none; /* Quita el contorno */
+}
+
+/* Estilos CSS para el botón de Cerrar Sesión */
+.cerrar-sesion {
+    padding: 10px 10px; /* Ajusta el padding para el tamaño del botón */
+    font-size: 10px; /* Ajusta el tamaño del texto del botón */
+    background-color: #007bff;
+    color: #ddc6c6;
+    border-radius: 5px;
+    margin-top: 20px; /* Ajusta el margen superior */
+}
+
+.cerrar-sesion:hover {
+    background-color: #0056b3;
+    cursor: pointer;
+}
+
+/* Estilos CSS para el título Administrador */
+.titulo {
+    margin-top: 20px;
+    margin-bottom: 20px; /* Agrega margen inferior */
+    text-align: center; /* Centra el título */
+}
+
+/* Estilos CSS para la lista de botones */
+.botones {
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.elemento {
+    border: none;
+    margin-bottom: 10px; /* Ajusta el margen inferior entre botones */
+    text-align: left; /* Alinea el texto a la izquierda */
+    transition: background-color 0.3s ease; /* Transición suave del color de fondo */
+}
+
+.elemento:hover {
+    background-color: #18a3e4; /* Cambia el color de fondo al pasar el mouse */
+}
+/* Estilos CSS para el contenedor principal */
+.sidebar {
+    border: 2px solid #000; /* Establecemos el borde alrededor del contenedor */
+    
+  }
