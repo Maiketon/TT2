@@ -57,7 +57,7 @@ const FormLogin = ()=>
 
      const handleCloseModalAlumno = () => {
         setModalAlumno(false);
-        navigate("/VistasAlumno/SidebarAlumno"); // Utiliza navigate para redireccionar en React Router v6
+        navigate("/VistasAlumno/PrincipalAlumno"); // Utiliza navigate para redireccionar en React Router v6
       };
 
      

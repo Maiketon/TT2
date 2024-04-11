@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //COMPONENTES D ELA VISTA PRINCIPAL//
 import VistaPrincipal from './Componentes/Principal';
 import PrincipalAdmin from './Componentes/VistasAdmin/PrincipalAdmin';
-import VistaAlumno from './Componentes/VistaAlumno/SidebarAlumno';
+import PrincipalAlumno from './Componentes/VistasAlumno/PrincipalAlumno';
 //import Swal from 'sweetalert2'
 //import withReactContent from 'sweetalert2-react-content'
 
@@ -21,7 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<VistaPrincipal />} /> {/* Ruta para VistaPrincipal */}
           <Route path="/VistasAdmin/PrincipalAdmin" element={<PrincipalAdmin />} />
-          <Route path="/VistaAlumno/SidebarAlumno" element={<VistaAlumno />} />
+          <Route path="/VistasAlumno/PrincipalAlumno" element={<PrincipalAlumno />} />
           {/* Agrega más rutas según sea necesario */}
         </Routes>
       </Router>

@@ -19,7 +19,7 @@
 
 /* Estilos para el sidebar */
 .sb_styles {
-    width: 250px; /* Ancho fijo del sidebar */
+    width: 300px; /* Ancho fijo del sidebar */
     height: 100vh; /* Altura igual al alto de la ventana */
     position: fixed; /* Sidebar fijo en la ventana */
     top: 0; /* Alineado en la parte superior */
@@ -34,6 +34,29 @@
     padding: 20px; /* Espacio interno del contenido */
 }
 
-.fondo_aprendizaje{
-    background-image: url('../Utils/fondo-aprendizaje.png');
+
+@keyframes expand {
+    from {width:0%;}
+    to {}
+  }
+  
+  .progress-bar{
+    animation-name:expand;
+    animation-duration:1s;
+    animation-iteration-count:1;
+    animation-timing-function: ease-in;
+  }
+
+  .color_progress_bar{
+    background-color: #000000;
+  }
+
+.fondo_modulo_alumno {
+    /*background-image: url(../Utils/fondo-aprendizaje.png);
+     background-repeat: no-repeat;*/
+    
+}
+
+.tamano_modulo{
+    height: 100%;
 }
