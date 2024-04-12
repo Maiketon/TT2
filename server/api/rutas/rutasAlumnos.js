@@ -7,7 +7,8 @@ const controlAlumnos = require('../controladores/controlAlumnos');
 router.get('/materias', controlAlumnos.obtenerTodasLasMaterias);
 
 router.post('/registro', controlAlumnos.guardarAlumno);
-router.post('/verificar/:correo', controlAlumnos.verificarAlumno);
+//router.post('/verificar/:correo', controlAlumnos.verificarAlumno);
+router.post('/verificar/:token', controlAlumnos.verificarAlumno);
 
 
 module.exports = router;

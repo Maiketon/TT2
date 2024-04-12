@@ -25,11 +25,11 @@ class modeloAlumnos {
         }
     }
 
-      async actualizarEstatusUsuario(correo) {
+      async actualizarEstatusUsuario(correo,usuarioId) {
           const sql = 'UPDATE informacionusuario SET FK_ESTATUSUSUARIO = 2 WHERE EMAIL = ? AND PK_USUARIO= ?';
           try {
               const promesadb = db.promise();
-              const [resultado] = await promesadb.query(sql, [correo,pkusuario]);
+              const [resultado] = await promesadb.query(sql, [correo,usuarioId]);
               return resultado.affectedRows;
           } catch (err) {
               throw err;

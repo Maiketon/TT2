@@ -70,7 +70,7 @@ const Guardar = async (e) => {
     });
     console.log(response.status);
     console.log(response.ok);
-    if (response.ok==true) {
+    if (response.ok===true) {
 //      const result = await response.json(); Debuggin
       setUsuario(estadoInicial);
       setEstaCargando(false);
@@ -79,8 +79,9 @@ const Guardar = async (e) => {
       throw new Error('Algo salió mal con la solicitud al servidor.');
     }
   } catch (error) {
-    //console.error('Error:', error); 
+    console.error('Error:', error); 
   }
+  setEstaCargando(false);
 };
 
 
