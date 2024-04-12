@@ -342,10 +342,6 @@ const FormLogin = ()=>
             </Row>
             <Row className="d-flex flex-column" style={{ minHeight: '21vh',flex:1}}> <br/></Row> 
         </Container>
-            
-
-      
-
         </>
     );
 

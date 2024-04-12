@@ -24,23 +24,18 @@ exports.guardarAlumno = async (req, res) => {
 
     try {
         const usuarioId = await modeloAlumnos.guardarNuevoAlumno({ nombres, apellidoP, apellidoM, correo, password, carrera, semestre });
-        const verificationLink = `http://frontend.com/verificar/${verificationToken}/${correo}`;
-
+        const verificationLink = `http://localhost:3000/verificar/${verificationToken}/${correo}`;
+        console.log(usuarioId);
         const correoOpciones = {
-            from: "tuemail@example.com",
+            from: "learnmatch2024029@hotmail.com", 
             to: correo,
-            subject: 'Por favor verifica tu cuenta',
-            text: `Hola ${nombres}, por favor verifica tu cuenta haciendo clic en el siguiente enlace: ${verificationLink}`
+            subject: 'Bienvenido a LearnMatch!!!',
+            text: `Hola ${nombres}, por favor verifica tu cuenta haciendo clic en el siguiente enlace: ${verificationLink}, una vez completado tu proceso, por favor procede a iniciar sesión en nuestro sistema`
         };
-
-        transporter.sendMail(correoOpciones, (error, info) => {
-            if (error) {
-                console.error('Error al enviar el email:', error);
-                res.status(500).send('Error al enviar el email de verificación.');
-            } else {
-                res.status(201).send('Usuario registrado correctamente. Por favor verifica tu correo electrónico.');
-            }
-        });
+       let info = await transporter.sendMail(correoOpciones);
+        console.log('Mensaje enviado: %s', info.messageId);
+        res.status(201).send('Usuario registrado correctamente. Por favor verifica tu correo electrónico.');
+    
     } catch (error) {
         console.error('Error al registrar al usuario:', error);
         res.status(500).send('Error al registrar al usuario.');
@@ -48,7 +43,7 @@ exports.guardarAlumno = async (req, res) => {
 };
 
 exports.verificarAlumno = async (req, res) => {
-    const { correo } = req.params;
+    const { correo,pkusuario } = req.params;
 
     try {
         const resultado = await modeloAlumnos.actualizarEstatusUsuario(correo);

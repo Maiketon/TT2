@@ -1,9 +1,11 @@
 import React,{useState} from 'react';
-import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
-
+import { Container, Row, Col, Form, Button, Card, Modal } from 'react-bootstrap';
+import { usarCarga } from "../ContextoCarga";
 
 const FormularioInscribirse = ({ setVista }) =>
 {
+  //SPINNER/
+  const {setEstaCargando} = usarCarga();
   //Estructura que contendra los datos del form Inscribirse//
   const [usuario, setUsuario] = useState({
     carrera: '1',
@@ -15,19 +17,30 @@ const FormularioInscribirse = ({ setVista }) =>
     password: '',
     confirmpassword: ''
 });
+//VALORES QUE TOMARA EL HOOK usuario para limpiar el form//
+const estadoInicial = {
+  carrera: '1',
+  semestre: '1',
+  nombres: '',
+  apellidoP: '',
+  apellidoM: '',
+  correo: '',
+  password: '',
+  confirmpassword: ''
+};
 
-//
+// Funcion evento que permite almacenar usando el metodo de la estructura para guardar datos//
 const GuardarDatosHook = (e) => {
   setUsuario({
       ...usuario,
       [e.target.name]: e.target.value
   });
-  console.log(usuario);
 }
 
-
+//Funcion evento asincrona que se encarga de realizar la minivalidacion del correo y enviar la petición al servidor//
 const Guardar = async (e) => {
   e.preventDefault();
+  setEstaCargando(true);
 
   // Validación de contraseñas
   if (usuario.password !== usuario.confirmpassword) {
@@ -37,6 +50,7 @@ const Guardar = async (e) => {
 
   try {
     // Preparar el cuerpo de la petición, excluyendo la confirmación de contraseña
+    
     const datosUsuario = {
       nombres: usuario.nombres,
       apellidoP: usuario.apellidoP,
@@ -46,8 +60,7 @@ const Guardar = async (e) => {
       semestre: usuario.semestre,
       password: usuario.password
     };
-
-    // Realizar la petición POST al servidor
+    
     const response = await fetch('http://localhost:3001/api/alumnos/registro', {
       method: 'POST',
       headers: {
@@ -55,25 +68,45 @@ const Guardar = async (e) => {
       },
       body: JSON.stringify(datosUsuario)
     });
-
-    // Procesar la respuesta
-    if (response.ok) {
-      const result = await response.json();
-      alert("Usuario registrado con éxito, verifica tu EMAIL");
-      // Aquí podrías redirigir al usuario o limpiar el formulario
+    console.log(response.status);
+    console.log(response.ok);
+    if (response.ok==true) {
+//      const result = await response.json(); Debuggin
+      setUsuario(estadoInicial);
+      setEstaCargando(false);
+      handleShow();
     } else {
       throw new Error('Algo salió mal con la solicitud al servidor.');
     }
   } catch (error) {
-    console.error('Error:', error);
-    alert('Error al registrar el usuario.');
+    //console.error('Error:', error); 
   }
 };
+
+
+//MODAL DE REGISTRO EXITOSO//
+const [showModal, setShowModal] = useState(false);
+const handleShow = () => setShowModal(true);
+const handleClose = () => setShowModal(false);
 
   
     return (
         <>
         <Container className='p-1'>
+
+        <Modal className='modal-registro-satisfactorio' show={showModal} onHide={handleClose}>
+    <Modal.Header closeButton>
+        <Modal.Title>Registro Exitoso</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>Usuario registrado con éxito, verifica tu correo electrónico.</Modal.Body>
+    <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+            Cerrar
+        </Button>
+    </Modal.Footer>
+</Modal>
+
+
           <Row className="justify-content-md-center">
             <Col md={7}>
               <Card>

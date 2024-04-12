@@ -1,12 +1,17 @@
-
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // Usa tu servicio de correo electrónico
+    host: 'smtp-mail.outlook.com', // Servidor SMTP de Outlook
+    port: 587, // Puerto estándar para SMTP sobre TLS
+    secure: false, // True para 465, false para otros puertos
     auth: {
-        user: 'tt2024a029@gmail.com', // Tu dirección de correo electrónico
-        pass: 'Esmegma123' // Tu contraseña de correo electrónico
+        user: 'learnmatch2024029@hotmail.com', // CORREO ELECTRONICO DEL SISTEMA
+        pass: 'Esmegma123' // CONTRASEÑA DEL SISTEMA
+    },
+    tls: {
+        ciphers:'SSLv3' // Asegura compatibilidad si hay problemas de TLS
     }
 });
+
 
 module.exports = transporter;
