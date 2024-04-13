@@ -45,6 +45,7 @@ const Guardar = async (e) => {
   // Validación de contraseñas
   if (usuario.password !== usuario.confirmpassword) {
     alert("Verifica que tus contraseñas coincidan");
+    setEstaCargando(false);
     return;
   }
 

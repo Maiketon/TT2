@@ -1,3 +1,14 @@
+:root {
+  --Darker-Blue:  #04476E;
+  --Medium-Blue: #3B89A9;
+  --Lighter-Blue:  #81C3D7;
+  --Brighter-Green: #76B947;
+  --Soft-Violet: #6A4C93;
+  --danger-color: #dc3545;
+  --light-color: #f8f9fa;
+  --dark-color: #343a40;
+}
+
 .principal-contenedor {
     display: flex;
     flex-direction: column; 

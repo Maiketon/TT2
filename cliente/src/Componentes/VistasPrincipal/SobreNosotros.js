@@ -2,6 +2,8 @@
 import React from 'react';
 import { Container, Row, Col, Card} from 'react-bootstrap';
 
+//Css
+import './Css/SobreNosotros.css';
 
 //Imagenes//
 import FAHD from "./Utils/DesarrolladorFredy.jpg";
@@ -12,7 +14,7 @@ import CarruselPrinicipal from './CarruselPrincipal';
 const SobreNosotros = () => {
   return (
     <>
-    <Container className='p-4'>
+    <Container className='p-4 color-fondo'>
     <Row>
       <Col>
         <div>

@@ -52,26 +52,85 @@ exports.guardarAlumno = async (req, res) => {
     }
 };
 
+// exports.verificarAlumno = async (req, res) => {
+//    // const { correo } = req.params;
+//    const {token} = req.params;
+//    console.log("Token recibido:", token);
+//     try {
+//         const decoded = jsonwebtoken.verify(token,'pruebaclave');
+//         const { usuarioId, correo } = decoded
+//         const resultado = await modeloAlumnos.actualizarEstatusUsuario(correo,usuarioId);
+//         if (resultado > 0) {
+//             res.status(200).send('Usuario verificado correctamente.');
+//         } else {
+//             res.status(404).send('Usuario no encontrado.');
+//         }
+//     } catch (error) {
+//         console.error('Error al verificar el usuario:', error);
+//         if (error instanceof jwt.JsonWebTokenError) {
+//             res.status(401).send('Token inválido o expirado.');
+//         } else {
+//             res.status(500).send('Error durante la verificación del usuario.');
+//         }
+//     }
+// };
+
 exports.verificarAlumno = async (req, res) => {
-   // const { correo } = req.params;
-   const {token} = req.params;
-   console.log("Token recibido:", token);
+    const { token } = req.params;
+    console.log("Token recibido:", token);
     try {
-        const decoded = jsonwebtoken.verify(token,'pruebaclave');
-        const { usuarioId, correo } = decoded
-        const resultado = await modeloAlumnos.actualizarEstatusUsuario(correo,usuarioId);
+        const decoded = jsonwebtoken.verify(token, 'pruebaclave');  // Asegúrate de usar 'jwt' en lugar de 'jsonwebtoken'
+        const { usuarioId, correo } = decoded;
+        const resultado = await modeloAlumnos.actualizarEstatusUsuario(correo, usuarioId);
+        
         if (resultado > 0) {
-            res.status(200).send('Usuario verificado correctamente.');
+            res.send(generateModalHTML("Verificación Completada", "Usuario verificado con éxito. Ya puedes cerrar esta ventana.", true));
         } else {
-            res.status(404).send('Usuario no encontrado.');
+            res.send(generateModalHTML("Usuario No Encontrado", "No pudimos verificar tu cuenta. Usuario no encontrado.", false));
         }
     } catch (error) {
         console.error('Error al verificar el usuario:', error);
         if (error instanceof jwt.JsonWebTokenError) {
-            res.status(401).send('Token inválido o expirado.');
+            res.send(generateModalHTML("Token Inválido", "El token proporcionado es inválido o ha expirado. Por favor, intenta de nuevo o contacta soporte.", false));
         } else {
-            res.status(500).send('Error durante la verificación del usuario.');
+            res.send(generateModalHTML("Error Interno", "Estamos teniendo problemas técnicos. Por favor, contacta soporte.", false));
         }
     }
 };
 
+function generateModalHTML(title, message, isSuccess) {
+    const closeButtonAction = isSuccess ? "window.close();" : "";
+    return `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>${title}</title>
+            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        </head>
+        <body>
+            <div id="myModal" class="modal" tabindex="-1" role="dialog" style="display:block;">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">${title}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="${closeButtonAction}">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>${message}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="${closeButtonAction}">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+        </body>
+        </html>
+    `;
+}
