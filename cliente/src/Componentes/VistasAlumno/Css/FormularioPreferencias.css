@@ -1,0 +1,11 @@
+.formulario_preferencias{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    column-gap: 5rem;
+}
+
+.columna{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

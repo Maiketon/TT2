@@ -11,7 +11,7 @@ const VistaPrincipal = () => {
   const [vista, setVista] = useState('inicio');
 
   return (
-    <Container fluid className="fondo_modulo_alumno"> {/* Agrega la clase a la etiqueta Container */}
+    <Container fluid className="fondo_modulo_alumno tamano_modulo"> {/* Agrega la clase a la etiqueta Container */}
       <Row>
         <Col xs lg="3">
           <Sidebar setVista={setVista} />

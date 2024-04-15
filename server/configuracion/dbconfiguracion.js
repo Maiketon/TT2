@@ -3,8 +3,8 @@ const mysql = require ("mysql2");
 const db = mysql.createConnection(
     {
         host: "201.124.154.156", //DIRECCION IP QUE CAMBIA
-        user: "maik", //SUS NOMBRES DE USUARIO QUE LES ASIGNE
-        password: "maik", //SU PASSWORD
+        user: "ulises", //SUS NOMBRES DE USUARIO QUE LES ASIGNE
+        password: "ulises", //SU PASSWORD
         database: "learnmatch" ,//learnmatch //
         port: 3306
     }

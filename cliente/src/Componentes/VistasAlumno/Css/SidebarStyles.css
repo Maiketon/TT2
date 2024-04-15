@@ -51,12 +51,12 @@
     background-color: #000000;
   }
 
-.fondo_modulo_alumno {
-    /*background-image: url(../Utils/fondo-aprendizaje.png);
-     background-repeat: no-repeat;*/
-    
-}
-
+  .fondo_modulo_alumno {
+    /*background-image: linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.1)), url(../Utils/fondo-aprendizaje.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;*/
+  }
 .tamano_modulo{
     height: 100%;
 }
