@@ -5,6 +5,23 @@ import './Css/BarraNavegacion.css';
 import { Navbar, NavDropdown ,Nav, Container, Button } from 'react-bootstrap';
 const BarraNavegacion = ({ setVista }) => 
 {
+    const pdfFiles = {
+        "UA Cálculo": "calculo_ISC2020.pdf",
+        "UA Analisis Vectorial": "analisisVectorial_ISC2020.pdf",
+        // ...continúa con los nombres de todos tus archivos
+      };
+    const descargarProgramSinteticoUA = (nombreMaterial, event)=> 
+    {
+        event.preventDefault();
+        
+        const link = document.createElement('a');
+        link.href= `${window.location.origin}/ProgramasSinteticosUAs/${nombreMaterial}`;
+        link.setAttribute('download',nombreMaterial);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+
+    }
     return(
         <>
     <Navbar expand="lg" className='navbar'>
@@ -23,10 +40,16 @@ const BarraNavegacion = ({ setVista }) =>
             </Navbar.Brand>
             <Nav className='me-auto texto-navbar'>
             <NavDropdown  title="Material de aprendizaje" id="materialesAprendizaje1" className='mx-2'>
-                <NavDropdown.Item href="#action/3.1">Material de aprendizaje 1</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Material de aprendizaje 2</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Material de aprendizaje 3</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.4">Material de aprendizaje 4</NavDropdown.Item>
+            {
+                Object.entries(pdfFiles).map(([key, nombreMaterial]) => (
+                    <NavDropdown.Item 
+                    key={key} 
+                    onClick={(e) => descargarProgramSinteticoUA(nombreMaterial, e)}
+                    >
+                    {key}
+                    </NavDropdown.Item>
+                ))
+                }
             </NavDropdown>
             <Nav.Link  onClick={() => setVista('sobreNosotros')} className="mx-2 texto-navbar" style={{ cursor: 'pointer' }}>Sobre nosotros</Nav.Link>
             </Nav>
