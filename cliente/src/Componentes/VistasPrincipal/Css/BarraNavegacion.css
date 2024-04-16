@@ -35,12 +35,12 @@
 }
 
 .dropdown-item-text {
-  text-align: left; /* Asegura que el texto esté alineado a la izquierda */
-  padding: 8px 15px; /* Añade un relleno: vertical y horizontal */
-  white-space: nowrap; /* Impide que el texto se ajuste a una nueva línea */
-  overflow: hidden; /* Oculta cualquier contenido que desborde */
-  text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es muy largo */
-  color: #333; /* Cambia el color del texto, si es necesario */
-  font-size: 1rem; /* Ajusta el tamaño de la fuente */
-  /* O cualquier otro estilo que desees aplicar */
+  text-align: left;
+  padding: 8px 15px; 
+  white-space: nowrap;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  color: #333; 
+  font-size: 1rem; 
+  
 }

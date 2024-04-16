@@ -1,7 +1,7 @@
 const db = require('../../configuracion/dbconfiguracion'); //IMPORTAMOS LA CONEXION A LA BASE DE DATOS //
-const tranportadorEmail = require ('../../configuracion/emailConfig'); //Obtenemos el acceso al correo electronico//
 
 class modeloAlumnos {
+  //CATALOGO//
     async obtenerTodasLasMaterias() {
       try {
         const promesadb= db.promise();
@@ -35,7 +35,37 @@ class modeloAlumnos {
               throw err;
           }
       }
+
+      //Recuperar Contraseña //
+      async verificarRegistroCorreo (correo)
+      {
+          const sql= 'SELECT PK_USUARIO, NOMBRE FROM informacionusuario WHERE EMAIL = ?';
+          try {
+            const promesadb = db.promise();
+            const [resultadopk] = await promesadb.query(sql,[correo]);
+            if (resultadopk.length===0)
+            {
+              return {existe:false,pk:0}
+            }
+            else{
+              return {existe:true,pk:resultadopk[0].PK_USUARIO,nombres:resultadopk[0].NOMBRE};  
+            }
+          } catch (err) {
+            throw err;
+          }
+      }
+
+      async escribirNuevaPass (passNueva,pkUsuario)
+      {
+        const sql = 'UPDATE informacionusuario SET PSW = ? WHERE PK_USUARIO= ?';
+        try {
+          const promesadb = db.promise();
+          const [resultado] = await promesadb.query(sql, [passNueva,pkUsuario]);
+          return resultado.affectedRows;
+        } catch (err) {
+          throw err;
+        }
+      }
   }
 
   module.exports = new modeloAlumnos();
-

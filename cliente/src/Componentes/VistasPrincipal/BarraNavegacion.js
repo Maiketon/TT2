@@ -8,15 +8,15 @@ const BarraNavegacion = ({ setVista }) =>
     const pdfFiles = {
         "UA Cálculo": "calculo_ISC2020.pdf",
         "UA Analisis Vectorial": "analisisVectorial_ISC2020.pdf",
-        "UA Matemáticas Discretas" : "matematicasDiscretas_ISC2020",
-        "UA Comunicación Oral y Escrita": "comunicacionOralEscrita_ISC2020",
-        "UA Fundamentos de Programación": "fundamentosProgramacion_ISC2020",
-        "UA Álgebra Lineal": "algebraLineal_ISC2020",
-        "UA Cálculo Aplicado": "calculoAplicado_ISC2020",
-        "UA Mécanica y Electrómagnetismo": "mecanicaElectromagnetismo_ISC2020",
-        "UA Ingeniería, Ética y Sociedad": "ingenieriaEticaSociedad_ISC2020",
-        "UA Fundamentos Económicos": "fundamentosEconomicos_ISC2020",
-        "UA Algoritmos y Estructura de Datos": "algoritmosEstructurasDatos_ISC"
+        "UA Matemáticas Discretas" : "matematicasDiscretas_ISC2020.pdf",
+        "UA Comunicación Oral y Escrita": "comunicacionOralEscrita_ISC2020.pdf",
+        "UA Fundamentos de Programación": "fundamentosProgramacion_ISC2020.pdf",
+        "UA Álgebra Lineal": "algebraLineal_ISC2020.pdf",
+        "UA Cálculo Aplicado": "calculoAplicado_ISC2020.pdf",
+        "UA Mécanica y Electrómagnetismo": "mecanicaElectromagnetismo_ISC2020.pdf",
+        "UA Ingeniería, Ética y Sociedad": "ingenieriaEticaSociedad_ISC2020.pdf",
+        "UA Fundamentos Económicos": "fundamentosEconomicos_ISC2020.pdf",
+        "UA Algoritmos y Estructura de Datos": "algoritmosEstructurasDatos_ISC2020.pdf"
         // ...continúa con los nombres de todos tus archivos
       };
     const descargarProgramSinteticoUA = (nombreMaterial, event)=> 

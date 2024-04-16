@@ -2,6 +2,7 @@ const express = require ("express");
 const cors = require("cors");
 //const dbConexion = require('./configuracion/dbconfiguracion');
 const app = express();
+const bodyParser = require('body-parser');
 
 
 app.use(cors());
@@ -9,7 +10,9 @@ app.use (express.json());
 
 
 const rutasAlumnos = require('./api/rutas/rutasAlumnos');
+app.use(bodyParser.json());
 app.use('/api/alumnos', rutasAlumnos);
+
 
 
 //Manejo de errores MiddleWare que se estara desarrollando//

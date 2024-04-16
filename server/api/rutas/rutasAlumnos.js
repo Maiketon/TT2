@@ -10,5 +10,7 @@ router.post('/registro', controlAlumnos.guardarAlumno);
 //router.post('/verificar/:correo', controlAlumnos.verificarAlumno);
 router.get('/verificar/:token', controlAlumnos.verificarAlumno);
 
+router.post('/recuperacion', controlAlumnos.recuperarContra);
+
 
 module.exports = router;

@@ -2,8 +2,7 @@
 const modeloAlumnos = require('../modelo/alumnosModelo');
 
 //IMPORTACION DE LIBRERIAS PARA CONTROL//
-const crypto = require('crypto'); //IMPORTAMOS LA LIBRERIA DE NO PARA ENCRIPTAR --> PUEDE QUE NO SE USE//
-const jsonwebtoken = require('jsonwebtoken');
+const jsonwebtoken = require('jsonwebtoken'); //LIBRERIA PARA ENCRIPTAR LOS DATOS PARA LA BASE DE DATOS //
 const transporter =require('../../configuracion/emailConfig');
 
 //CATALOGOS//
@@ -18,7 +17,8 @@ exports.obtenerTodasLasMaterias = async (req, res) => {
 };
 
 
-//REGISTRO USUARIO//
+//FORMULARIOINSCRIBIRSE//
+//REGISTRAR USUARIO
 exports.guardarAlumno = async (req, res) => {
     const { nombres, apellidoP, apellidoM, correo, password, carrera, semestre } = req.body;
 //    const verificationToken = crypto.randomBytes(20).toString('hex');
@@ -52,29 +52,7 @@ exports.guardarAlumno = async (req, res) => {
     }
 };
 
-// exports.verificarAlumno = async (req, res) => {
-//    // const { correo } = req.params;
-//    const {token} = req.params;
-//    console.log("Token recibido:", token);
-//     try {
-//         const decoded = jsonwebtoken.verify(token,'pruebaclave');
-//         const { usuarioId, correo } = decoded
-//         const resultado = await modeloAlumnos.actualizarEstatusUsuario(correo,usuarioId);
-//         if (resultado > 0) {
-//             res.status(200).send('Usuario verificado correctamente.');
-//         } else {
-//             res.status(404).send('Usuario no encontrado.');
-//         }
-//     } catch (error) {
-//         console.error('Error al verificar el usuario:', error);
-//         if (error instanceof jwt.JsonWebTokenError) {
-//             res.status(401).send('Token inválido o expirado.');
-//         } else {
-//             res.status(500).send('Error durante la verificación del usuario.');
-//         }
-//     }
-// };
-
+//Actualizar Status Alumno//
 exports.verificarAlumno = async (req, res) => {
     const { token } = req.params;
     console.log("Token recibido:", token);
@@ -93,11 +71,64 @@ exports.verificarAlumno = async (req, res) => {
         if (error instanceof jwt.JsonWebTokenError) {
             res.send(generateModalHTML("Token Inválido", "El token proporcionado es inválido o ha expirado. Por favor, intenta de nuevo o contacta soporte.", false));
         } else {
-            res.send(generateModalHTML("Error Interno", "Estamos teniendo problemas técnicos. Por favor, contacta soporte.", false));
+            res.send(generateModalHTML("Error Interno", "Estamos teniendo problemas técnicos. Por favor, contacta soporte: learnmatch2024029@hotmail.com", false));
         }
     }
 };
 
+// LOGIN //
+//RECUPERAR CONTRASEÑA//
+ exports.recuperarContra = async(req, res)=>
+ {
+/////////////////////////////////////////////////
+    function generarCadenaAleatoria(longitud) {
+        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        let resultado = '';
+        for (let i = 0; i < longitud; i++) {
+            const indiceAleatorio = Math.floor(Math.random() * caracteres.length);
+            resultado += caracteres[indiceAleatorio];
+        }
+        return resultado;
+    }
+///////////////////////////////////////////
+
+    const { correo } = req.body;  // Extracción del correo del cuerpo de la solicitud
+    console.log(correo);  // Imprime el correo para verificar que se recibe correctamente
+
+    try {
+        // Asumiendo que la función espera un objeto con una clave 'correo'
+        const pkUsuario = await modeloAlumnos.verificarRegistroCorreo(correo); 
+        console.log("Usuario existe:", pkUsuario.existe);
+        console.log("PK del usuario:", pkUsuario.pk);
+        console.log("PK del usuario:", pkUsuario.nombres);
+        if (pkUsuario.existe) {
+            console.log("Procesando recuperación de contraseña para:", correo);
+            res.status(200).send({ message: "Procesando recuperación de contraseña." });
+            //Parametros para crear el correo//
+            const passNueva = generarCadenaAleatoria(8);
+            const resultado = await modeloAlumnos.escribirNuevaPass(passNueva,pkUsuario.pk);
+             if (resultado > 0) {
+                const correoOpciones = {
+                    from: "learnmatch2024029@hotmail.com", 
+                    to: correo,
+                    subject: '¡¡Nueva contraseña de LearnMatch!!',
+                    text: `Hola ${pkUsuario.nombres}, por favor ingresa a nuestro sistema con esta nueva clave en el Inicio de sesión ${passNueva}`
+                };
+               let info = await transporter.sendMail(correoOpciones);
+                console.log('Mensaje enviado: %s', info.messageId);
+            res.send(generateModalHTML("Nueva Contraseña", "Hemos enviado a su dirección de correo electrónico su nueva contraseña. Ya puede cerrar esta ventana e iniciar sesión", true));
+        }
+        } else {
+            console.log("No existe un usuario con ese correo:", correo);
+            res.status(404).send({ message: "No existe un usuario con ese correo en el sistema." });
+        }
+    } catch (error) {
+        console.error("Error durante la verificación del correo:", error);
+        res.status(500).send({ message: "Error interno del servidor." });
+    }
+ };
+
+//CONTENIDO HTML QUE REDIRIGE EL BACK AL FRONT//
 function generateModalHTML(title, message, isSuccess) {
     const closeButtonAction = isSuccess ? "window.close();" : "";
     return `

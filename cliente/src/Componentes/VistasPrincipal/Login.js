@@ -173,6 +173,29 @@ const FormLogin = ()=>
           />
         ));
       };
+      
+      const recuperarContra = async(e)=>
+      {
+        e.preventDefault();
+    console.log("Enviando correo a:", correo);  // Asegúrate de que correo está definido y es el correcto
+
+    const response = await fetch('http://localhost:3001/api/alumnos/recuperacion', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ correo })  // Envía el correo como un objeto
+    });
+
+    // if (response.ok) {
+    //     console.log('Solicitud enviada con éxito y respuesta recibida.');
+    //     const data = await response.json();
+    //     console.log('Respuesta del servidor:', data);
+    // } else {
+    //     console.error('Error en la respuesta del servidor', response.status);
+    // }
+    
+      };
    
     return (
         <>
@@ -257,19 +280,22 @@ const FormLogin = ()=>
         </Modal.Header>
         <Modal.Body className="modal-materias-body">Si olvidaste tu contraseña, por favor ingresa tu correo electronico con el que registraste tu cuenta y en breve
             te llegara un correo electronico con una contraseña temporal.
+            <Form onSubmit={recuperarContra}>
             <Form.Group as={Row} className="mb-3" controlId="email">
                                 <Form.Label className="text-md-right text-start form-label-pe-none">Correo electronico:</Form.Label>
                                 <Form.Control type="email" placeholder="Ingresa tu correo electronico" onChange={(e) => setCorreo(e.target.value)} />
             </Form.Group>
-        </Modal.Body>
-        <Modal.Footer modal-materias-footer >
-        <Button variant="primary" className="btn-recuperar" onClick={() => setModalRecuperacion(false)}>
+            <Modal.Footer modal-materias-footer >
+        <Button variant="primary" type="submit" className="btn-recuperar">
             Aceptar
           </Button>
           <Button variant="secondary" onClick={() => setModalRecuperacion(false)}>
             Cancelar
           </Button>
         </Modal.Footer>
+            </Form>
+        </Modal.Body>
+       
       </Modal>
 
 

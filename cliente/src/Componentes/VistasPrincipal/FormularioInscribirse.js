@@ -75,12 +75,13 @@ const Guardar = async (e) => {
 //      const result = await response.json(); Debuggin
       setUsuario(estadoInicial);
       setEstaCargando(false);
-      handleShow();
+      handleShow(); //Modal verificacion correcta//
     } else {
       throw new Error('Algo salió mal con la solicitud al servidor.');
     }
   } catch (error) {
     console.error('Error:', error); 
+    alert("Algo salió mal con la solicitud al servidor.");
   }
   setEstaCargando(false);
 };
