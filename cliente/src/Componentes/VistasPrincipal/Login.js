@@ -45,6 +45,7 @@ const FormLogin = ()=>
     const [modalIncorrecto, setModalIncorrecto] = useState(false);
     const [modalMaterias, setModalMaterias] = useState(false);
     const [modalRecuperar, setModalRecuperacion] = useState(false);
+    const [modalRecuperarSuccess, setModalRC] = useState(false);
 
     const navigate = useNavigate(); // Utiliza useNavigate para redireccionar en React Router v6
     // Variables y funciones para manejar el modal de bienvenida al administrador
@@ -187,13 +188,15 @@ const FormLogin = ()=>
         body: JSON.stringify({ correo })  // Envía el correo como un objeto
     });
 
-    // if (response.ok) {
-    //     console.log('Solicitud enviada con éxito y respuesta recibida.');
-    //     const data = await response.json();
-    //     console.log('Respuesta del servidor:', data);
-    // } else {
-    //     console.error('Error en la respuesta del servidor', response.status);
-    // }
+    if (response.ok) {
+        console.log('Solicitud enviada con éxito y respuesta recibida.');
+        setModalRecuperacion(false);
+        setCorreo();
+        setModalRC(true);
+        
+    } else {
+        console.error('Error en la respuesta del servidor', response.status);
+    }
     
       };
    
@@ -268,6 +271,18 @@ const FormLogin = ()=>
         <Modal.Body >Usuario o clave incorrecta.</Modal.Body>
         <Modal.Footer >
           <Button variant="secondary" onClick={() => setModalIncorrecto(false)}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={modalRecuperarSuccess}  onHide={() => setModalRC(false)}>
+        <Modal.Header >
+          <Modal.Title >Solicitud de nueva contraseña</Modal.Title>
+        </Modal.Header>
+        <Modal.Body >Correo con nueva contraseña enviado al correo electronico registrado.</Modal.Body>
+        <Modal.Footer >
+          <Button variant="secondary" onClick={() => setModalRC(false)}>
             Cerrar
           </Button>
         </Modal.Footer>

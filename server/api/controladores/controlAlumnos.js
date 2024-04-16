@@ -103,7 +103,6 @@ exports.verificarAlumno = async (req, res) => {
         console.log("PK del usuario:", pkUsuario.nombres);
         if (pkUsuario.existe) {
             console.log("Procesando recuperación de contraseña para:", correo);
-            res.status(200).send({ message: "Procesando recuperación de contraseña." });
             //Parametros para crear el correo//
             const passNueva = generarCadenaAleatoria(8);
             const resultado = await modeloAlumnos.escribirNuevaPass(passNueva,pkUsuario.pk);
@@ -116,7 +115,7 @@ exports.verificarAlumno = async (req, res) => {
                 };
                let info = await transporter.sendMail(correoOpciones);
                 console.log('Mensaje enviado: %s', info.messageId);
-            res.send(generateModalHTML("Nueva Contraseña", "Hemos enviado a su dirección de correo electrónico su nueva contraseña. Ya puede cerrar esta ventana e iniciar sesión", true));
+                res.send(201, "Usuario reestablecido correctamente.");
         }
         } else {
             console.log("No existe un usuario con ese correo:", correo);
