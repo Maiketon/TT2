@@ -31,10 +31,55 @@ const estadoInicial = {
 
 // Funcion evento que permite almacenar usando el metodo de la estructura para guardar datos//
 const GuardarDatosHook = (e) => {
-  setUsuario({
-      ...usuario,
-      [e.target.name]: e.target.value
-  });
+  // setUsuario({
+  //     ...usuario,
+  //     [e.target.name]: e.target.value
+  // });
+  const { name, value } = e.target;
+
+    switch (name) {
+        case 'nombres':
+          setUsuario(prev => ({
+            ...prev,
+            [name]: value.replace(/[^a-zA-Z\s]/g, '').toUpperCase().slice(0, 30)
+        }));
+        break;
+        case 'apellidoP':
+        case 'apellidoM':
+            // Transformación específica para campos de texto
+            setUsuario(prev => ({
+                ...prev,
+                [name]: value.replace(/[^a-zA-Z\s]/g, '').toUpperCase().slice(0, 20)
+            }));
+            break;
+        case 'correo':
+          setUsuario(prev => ({
+            ...prev,
+            [name]: value.toLowerCase().slice(0, 55)
+        }));
+        break;
+        case 'carrera':
+        case 'semestre':
+            setUsuario(prev => ({
+                ...prev,
+                [name]: value
+            }));
+            break;
+        case 'password':
+        case 'confirmpassword':
+          setUsuario(prev => ({
+            ...prev,
+            [name]: value.slice(0, 8)
+        }));
+        break;
+        default:
+            // Manejo estándar para todos los otros campos
+            setUsuario(prev => ({
+                ...prev,
+                [name]: value
+            }));
+            break;
+    }
 }
 
 //Funcion evento asincrona que se encarga de realizar la minivalidacion del correo y enviar la petición al servidor//
@@ -130,7 +175,7 @@ const handleClose = () => setShowModal(false);
                       <Form.Label className="text-md-right text-start form-label-pe-none">Semestre actual:</Form.Label>
                        <Form.Select name='semestre' value={usuario.semestre} onChange={GuardarDatosHook} required>
                          <option  value={1}>Primer semestre</option>
-                         <option value={2}>Segundo semestre</option>
+                         <option  value={2}>Segundo semestre</option>
                        </Form.Select>
                     </Form.Group>
 
