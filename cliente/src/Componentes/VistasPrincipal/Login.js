@@ -367,8 +367,8 @@ const FormLogin = ()=>
                             <Form>
 
                             <Form.Group as={Row} className="mb-3" controlId="email">
-                                <Form.Label className="text-md-right text-start form-label-pe-none">Correo electronico:</Form.Label>
-                                <Form.Control name="email" type="email" placeholder="Ingresa tu correo electronico" value={correo} onChange={GuardarDatosHook} />
+                                <Form.Label className="text-md-right text-start form-label-pe-none">Correo electr&oacute;nico:</Form.Label>
+                                <Form.Control name="email" type="email" placeholder="Ingresa tu correo electr&oacute;nico" value={correo} onChange={GuardarDatosHook} />
                             </Form.Group>
 
                             <Form.Group as={Row} className="mb-3" controlId="password">
