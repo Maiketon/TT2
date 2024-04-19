@@ -195,8 +195,8 @@ const handleClose = () => setShowModal(false);
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-1" controlId="correo">
-                      <Form.Label className="text-md-right text-start form-label-pe-none">Correo electronico:</Form.Label>
-                      <Form.Control name='correo' type="email" placeholder="Ingresa tu correo electronico" value={usuario.correo} onChange={GuardarDatosHook} required />
+                      <Form.Label className="text-md-right text-start form-label-pe-none">Correo electr&oacute;nico:</Form.Label>
+                      <Form.Control name='correo' type="email" placeholder="Ingresa tu correo electr&oacute;nico" value={usuario.correo} onChange={GuardarDatosHook} required />
                     </Form.Group>
     
                     <Form.Group as={Row} className="mb-1" controlId="password">
@@ -218,8 +218,7 @@ const handleClose = () => setShowModal(false);
                     <label style={{
                         justifyContent: "center",
                         textAlign: "center"
-                    }}>Si ya tienes una cuenta puedes <strong className='ir-a-login' onClick={() => setVista('login')}>Iniciar Sesion</strong> </label>
-l
+                    }}>Si ya tienes una cuenta puedes <strong className='ir-a-login' onClick={() => setVista('login')}>Iniciar Sesi&oacute;n</strong> </label>
                       <Col>
                     <Button variant="primary" type="submit" className="ms-2">
                       Registrarse

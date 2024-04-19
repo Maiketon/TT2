@@ -18,13 +18,13 @@ const SobreNosotros = () => {
     <Row>
       <Col>
         <div>
-        Mision
+        Misi&oacute;n
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
       </Col>
       <Col>
         <div>
-        Mision
+        Visi&oacute;n
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
       </Col>
@@ -65,7 +65,7 @@ const SobreNosotros = () => {
       <Card style={{ width: '18rem' }}>
       <Card.Img variant="top" src={UJMS} />
       <Card.Body>
-            <Card.Title>Ulises Jesus Santos Mendez</Card.Title>
+            <Card.Title>Ulises Jes&uacute;s Santos M&eacute;ndez</Card.Title>
             <Card.Text>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut laoreet euismod orci, nec
             </Card.Text>

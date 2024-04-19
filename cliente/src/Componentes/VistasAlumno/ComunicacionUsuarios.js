@@ -1,5 +1,7 @@
 import React from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
+import './Css/SalaComunicacion.css';
+
 
 function randomID(len) {
   let result = '';
@@ -53,7 +55,7 @@ const ComunicacionUsuarios = ({ setVista }) => {
     <div
       className="myCallContainer"
       ref={myMeeting}
-      style={{ width: '100vw', height: '100vh' }}
+      style={{height: '100vh' }}
     ></div>
   );
 }

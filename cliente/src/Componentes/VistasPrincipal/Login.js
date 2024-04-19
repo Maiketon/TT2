@@ -334,7 +334,7 @@ const FormLogin = ()=>
                                 <Col>
                                 <Card.Title>Bienvenido a LearnMatch</Card.Title>
                                 <Card.Text>
-                              Para Iniciar Sesion en nuestro sistema, por favor accede con tu correo electrónico y tu contraseña.
+                              Para Iniciar Sesi&oacute;n en nuestro sistema, por favor accede con tu correo electr&oacute;nico y tu contraseña.
                             </Card.Text>
                                 </Col>
                                 
@@ -353,8 +353,8 @@ const FormLogin = ()=>
                             <Form>
 
                             <Form.Group as={Row} className="mb-3" controlId="email">
-                                <Form.Label className="text-md-right text-start form-label-pe-none">Correo electronico:</Form.Label>
-                                <Form.Control type="email" placeholder="Ingresa tu correo electronico" onChange={(e) => setCorreo(e.target.value)} />
+                                <Form.Label className="text-md-right text-start form-label-pe-none">Correo electr&oacute;nico:</Form.Label>
+                                <Form.Control type="email" placeholder="Ingresa tu correo electr&oacute;nico" onChange={(e) => setCorreo(e.target.value)} />
                             </Form.Group>
 
                             <Form.Group as={Row} className="mb-3" controlId="password">
@@ -365,13 +365,13 @@ const FormLogin = ()=>
                             <Container>
                                 <Col>
                                     <Button variant="outline-primary" type="submit" className="ms-2 btn-iniciar-sesion" onClick={handleLogin}>
-                                    Iniciar Sesion
+                                    Iniciar Sesi&oacute;n
                                     </Button>
                                     </Col>
                             </Container>
                             <Container>
                                 <Col>
-                                <p>Si olvidaste tu contraseña. No te preocupes haz clic aqui!!</p>
+                                <p>Si olvidaste tu contraseña. No te preocupes haz clic aqu&iacute;!!</p>
                                     <Button  onClick={handleRecuperacion} variant="outline-primary" type="submit" className="ms-2 btn-iniciar-sesion">
                                     <strong>Recuperar Contraseña </strong>
                                     </Button>

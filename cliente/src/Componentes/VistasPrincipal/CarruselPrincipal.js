@@ -9,14 +9,14 @@ function CarruselPrinicipal() {
       <Carousel.Item>
         <CardConModal 
           title="Trabajo en equipo" 
-          text="Breve descripción sobre trabajo en equipo..." 
+          text="Breve descripci&oacute;n sobre trabajo en equipo..." 
           fullText="Aquí va el texto completo sobre trabajo en equipo que se mostrará en el modal."
         />
       </Carousel.Item>
 
       <Carousel.Item>
       <CardConModal 
-          title="Comunicacion" 
+          title="Comunicaci&oacute;n" 
           text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in rhoncus ex" 
           fullText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in rhoncus ex"
         />
@@ -24,7 +24,7 @@ function CarruselPrinicipal() {
 
       <Carousel.Item>
       <CardConModal 
-          title="Empatia" 
+          title="Empat&iacute;a" 
           text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in rhoncus ex" 
           fullText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in rhoncus ex"
         />

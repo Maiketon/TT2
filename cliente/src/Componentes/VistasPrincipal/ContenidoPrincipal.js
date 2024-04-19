@@ -28,7 +28,7 @@ const ContenidoPrincipal = () =>
       <Row>
           <Col md={3} className="mb-3">
           <CardConModal 
-          title="Empatia" 
+          title="Empat&iacute;a" 
           text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in rhoncus ex" 
           fullText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in rhoncus ex"
         />
@@ -44,7 +44,7 @@ const ContenidoPrincipal = () =>
           </Col>
           <Col md={3} className="mb-3">
           <CardConModal 
-          title="Comunicacion" 
+          title="Comunicaci&oacute;n" 
           text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in rhoncus ex" 
           fullText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in rhoncus ex"
         />

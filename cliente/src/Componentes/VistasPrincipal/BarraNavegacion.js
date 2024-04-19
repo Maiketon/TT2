@@ -6,16 +6,16 @@ import { Navbar, NavDropdown ,Nav, Container, Button } from 'react-bootstrap';
 const BarraNavegacion = ({ setVista }) => 
 {
     const pdfFiles = {
-        "UA Cálculo": "calculo_ISC2020.pdf",
-        "UA Analisis Vectorial": "analisisVectorial_ISC2020.pdf",
-        "UA Matemáticas Discretas" : "matematicasDiscretas_ISC2020.pdf",
-        "UA Comunicación Oral y Escrita": "comunicacionOralEscrita_ISC2020.pdf",
-        "UA Fundamentos de Programación": "fundamentosProgramacion_ISC2020.pdf",
-        "UA Álgebra Lineal": "algebraLineal_ISC2020.pdf",
-        "UA Cálculo Aplicado": "calculoAplicado_ISC2020.pdf",
-        "UA Mécanica y Electrómagnetismo": "mecanicaElectromagnetismo_ISC2020.pdf",
-        "UA Ingeniería, Ética y Sociedad": "ingenieriaEticaSociedad_ISC2020.pdf",
-        "UA Fundamentos Económicos": "fundamentosEconomicos_ISC2020.pdf",
+        "UA C\u00E1lculo": "calculo_ISC2020.pdf",
+        "UA An\u00E1lisis Vectorial": "analisisVectorial_ISC2020.pdf",
+        "UA Matem\u00E1ticas Discretas" : "matematicasDiscretas_ISC2020.pdf",
+        "UA Comunicaci\u00F3n Oral y Escrita": "comunicacionOralEscrita_ISC2020.pdf",
+        "UA Fundamentos de Programaci\u00F3n": "fundamentosProgramacion_ISC2020.pdf",
+        "UA \u00C1lgebra Lineal": "algebraLineal_ISC2020.pdf",
+        "UA C\u00E1lculo Aplicado": "calculoAplicado_ISC2020.pdf",
+        "UA Mec\u00E1nica y Electromagnetismo": "mecanicaElectromagnetismo_ISC2020.pdf",
+        "UA Ingenier\u00EDa, \u00C9tica y Sociedad": "ingenieriaEticaSociedad_ISC2020.pdf",
+        "UA Fundamentos Econ\u00F3micos": "fundamentosEconomicos_ISC2020.pdf",
         "UA Algoritmos y Estructura de Datos": "algoritmosEstructurasDatos_ISC2020.pdf"
         // ...continúa con los nombres de todos tus archivos
       };
