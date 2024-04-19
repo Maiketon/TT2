@@ -38,8 +38,22 @@ const FormLogin = ()=>
 
 
     //VARIABLES QUE ALMACENAN DE MOMENTO EN EL FRONT EL CORREO Y EL PASSWORD PARA HACER Y DEBUGGEAR LAS VISTAS MODALES //
-    const [correo, setCorreo] = useState ();
-    const [password, setPassword] = useState();
+    const [correo, setCorreo] = useState('');
+    const [password, setPassword] = useState('');
+
+    const GuardarDatosHook = (e) => {
+      const { name, value } = e.target;
+      switch (name) {
+          case 'email':
+              setCorreo(value.toLowerCase().slice(0, 55));
+              break;
+          case 'password':
+              setPassword(value.slice(0, 8));
+              break;
+          default:
+              console.log('Nombre de campo desconocido:', name);
+      }
+  };
 
     //Variables y funciones para manejar el estado de las vistas modales //
     const [modalIncorrecto, setModalIncorrecto] = useState(false);
@@ -298,7 +312,7 @@ const FormLogin = ()=>
             <Form onSubmit={recuperarContra}>
             <Form.Group as={Row} className="mb-3" controlId="email">
                                 <Form.Label className="text-md-right text-start form-label-pe-none">Correo electronico:</Form.Label>
-                                <Form.Control type="email" placeholder="Ingresa tu correo electronico" onChange={(e) => setCorreo(e.target.value)} />
+                                <Form.Control name="email" type="email" placeholder="Ingresa tu correo electronico" value={correo} onChange={GuardarDatosHook} />
             </Form.Group>
             <Modal.Footer modal-materias-footer >
         <Button variant="primary" type="submit" className="btn-recuperar">
@@ -353,13 +367,13 @@ const FormLogin = ()=>
                             <Form>
 
                             <Form.Group as={Row} className="mb-3" controlId="email">
-                                <Form.Label className="text-md-right text-start form-label-pe-none">Correo electr&oacute;nico:</Form.Label>
-                                <Form.Control type="email" placeholder="Ingresa tu correo electr&oacute;nico" onChange={(e) => setCorreo(e.target.value)} />
+                                <Form.Label className="text-md-right text-start form-label-pe-none">Correo electronico:</Form.Label>
+                                <Form.Control name="email" type="email" placeholder="Ingresa tu correo electronico" value={correo} onChange={GuardarDatosHook} />
                             </Form.Group>
 
                             <Form.Group as={Row} className="mb-3" controlId="password">
                                 <Form.Label className="text-md-right text-start form-label-pe-none">Contraseña:</Form.Label>
-                                <Form.Control type="password" placeholder="Ingresa tu contraseña." onChange={(e)=>setPassword(e.target.value)} />
+                                <Form.Control name="password" type="password" placeholder="Ingresa tu contraseña." value={password} onChange={GuardarDatosHook} />
                             </Form.Group>
                             </Form> 
                             <Container>
