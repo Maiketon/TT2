@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col } from 'react-bootstrap';
+/*import { Container } from 'react-bootstrap';*/
 import Sidebar from './SidebarAlumno';
 import Comunicacion from './ComunicacionUsuarios';
 import MConfiguracion from './Configuracion';
@@ -11,19 +11,17 @@ const VistaPrincipal = () => {
   const [vista, setVista] = useState('inicio');
 
   return (
-    <Container fluid className="fondo_modulo_alumno tamano_modulo"> {/* Agrega la clase a la etiqueta Container */}
-      <Row>
-        <Col xs lg="3">
+      <div className='divide_secciones'>
+        <section className='columna_sidebar'>
           <Sidebar setVista={setVista} />
-        </Col>
-        <Col>
+        </section>
+        <section className='margen_vistas'>
           {vista === 'inicio' && <MEmparejamiento />}
           {vista === 'comunicacion' && <Comunicacion />} 
           {vista === 'preferencias' && <MPreferenciasAcademicas />} 
           {vista === 'configuracion' && <MConfiguracion />}
-        </Col>
-      </Row>
-    </Container>
+        </section>
+      </div>
   );
 }
 

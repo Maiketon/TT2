@@ -7,39 +7,29 @@ import perfil_generico from './Utils/perfil.png'
 import './Css/SidebarStyles.css';
 
 const SidebarAlumno = ({ setVista }) => {
-    // Estado para controlar el ancho del sidebar
-    const [sidebarWidth] = useState('300px');
-
-    // Efecto secundario para cambiar el ancho del sidebar
-    useEffect(() => {
-        const sidebarElement = document.querySelector('.css-1wvake5');
-        if (sidebarElement) {
-            sidebarElement.style.width = sidebarWidth;
-        }
-    }, [sidebarWidth]); // Se ejecuta cada vez que sidebarWidth cambia
-
     return (
         <Container>
             <div className="sb_styles">
-                <Sidebar className="sb_styles">
-                    <Menu>
-                        <Container>
-                            <img
-                                alt="imagen de perfil"
-                                width="100px"
-                                height="100px"
-                                src={perfil_generico}
-                            />
-                        </Container>
+                <aside className="sb_styles">
+                    <Container>
+                                <img
+                                    className="img_perfil_m"
+                                    alt="imagen de perfil"
+                                    src={perfil_generico}
+                                />
+                    </Container>
+                    <Menu> 
                         <hr />
-                            <MenuItem icon={<i className="bi bi-book-half"></i>} onClick={() => setVista('inicio')}>Emparejamiento</MenuItem>
-                            <MenuItem icon={<i className="bi bi-clipboard2-pulse-fill"></i>} onClick={() => setVista('preferencias')}>Preferencias académicas</MenuItem>
-                            <MenuItem icon={<i className="bi bi-camera-video-fill"></i>} onClick={() => setVista('comunicacion')}>Comunicación con usuarios</MenuItem>
-                            <MenuItem icon={<i className="bi bi-gear-wide"></i>} onClick={() => setVista('configuracion')}>Configuración</MenuItem>
-                    </Menu>
-                    <hr />
+                            <div className="menu_list">
+                                <MenuItem icon={<i className="bi bi-book-half"></i>} onClick={() => setVista('inicio')}><span className="txt_hdn">Emparejamiento</span></MenuItem>
+                                <MenuItem icon={<i className="bi bi-clipboard2-pulse-fill"></i>} onClick={() => setVista('preferencias')}><span className="txt_hdn">Preferencias académicas</span></MenuItem>
+                                <MenuItem icon={<i className="bi bi-camera-video-fill"></i>} onClick={() => setVista('comunicacion')}><span className="txt_hdn">Comunicación con usuarios</span></MenuItem>
+                                <MenuItem icon={<i className="bi bi-gear-wide"></i>} onClick={() => setVista('configuracion')}><span className="txt_hdn">Configuración</span></MenuItem>
+                            </div>
+                        </Menu>
+                        <hr />
                     <Button>Cerrar Sesión</Button>
-                </Sidebar>
+                </aside>
             </div>
         </Container>
     );

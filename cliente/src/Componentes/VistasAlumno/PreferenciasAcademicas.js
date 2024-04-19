@@ -7,7 +7,6 @@ import './Css/FormularioPreferencias.css'
 
 const PreferenciasAcademicas = () => {
     //Logica para los checkbox de la modal de materias
-    // const [checkboxesHabilitadas, setCheckboxesHabilitadas] = useState (new Array(11).fill(true)); //Arreglo utilizado para saber si se debe o no habilitar el checkbox
     const [materias, setMaterias] = useState([]);
     const [seleccionIzquierda, setSeleccionIzquierda] = useState([]);
     const [seleccionDerecha, setSeleccionDerecha] = useState([]);

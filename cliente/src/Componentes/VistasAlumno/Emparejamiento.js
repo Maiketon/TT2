@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Container, Modal } from "react-bootstrap";
 import MatchUser from './Utils/mentorship.png';
 import Swal from "sweetalert2";
+import './Css/EmparejamientoStyles.css';
 
 const Emparejamiento = () => {
     const [showModal, setShowModal] = useState(false);
@@ -38,7 +39,7 @@ const Emparejamiento = () => {
     return (
         <>
             <Container>
-                {!loadingCompleted && <img src={MatchUser} alt="Emparejamiento" />}
+                {<img className="medida_matchimg" src={MatchUser} alt="Emparejamiento" />}
             </Container>
             {!loadingCompleted && <Button onClick={handleStartLoading}>Iniciar emparejamiento</Button>}
             {!loadingCompleted && <Button className="btn btn-danger" onClick={Strikes}>Consulta tus strikes</Button>}
