@@ -65,17 +65,87 @@ const FormLogin = ()=>
     // Variables y funciones para manejar el modal de bienvenida al administrador
     const [modalAdmin, setModalAdmin] = useState(false);
     const [modalAlumno, setModalAlumno] = useState(false);
+    const [modalParaverificar, setModalVerificacion] = useState(false);
+    const [modalVerificado, setModalVerificado] = useState(false);
+    const [datosUsuario, setDatos] = useState({username: '',password: ''})
+
+    const inputChange = ({ target }) => {
+      const { name, value } = target
+
+      setDatos({
+        ...datosUsuario,
+        [name]: value
+      })
+    }
+    const enviarValores = () => {
+      axios.post('http://localhost:3001/api/login/login', datosUsuario)
+        .then(async (response) => {
+          const data = response.data;
+          console.log(data);
+          if (data.error) {
+            alert(data.error);
+          } else {
+            console.log("Else de enviar valores");
+            console.log(data.rol)
+            
+            //sessionStorage.setItem('userId', data.pk);
+            //sessionStorage.setItem('userRole', data.rol);
+    
+            switch (data.rol) {
+              case 1:
+                setModalVerificacion(true);
+                break;
+              case 2:
+                console.log("Entra en el case 2");
+                console.log(data.pk);
+                actualizarEstatusUsuario(data.pk);
+                setModalVerificado(true);
+
+                break;
+              case 3:
+                setModalAlumno(true);
+                break;
+              case 8:
+                handleCloseModalAdmin();
+                break;
+              default:
+                alert('Rol de usuario no reconocido');
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+          alert(error.response.data);
+        });
+    };
+
+    function actualizarEstatusUsuario(pkUsuario) {
+      console.log("Entra en la funcion actualizarEstatusUsuario" + pkUsuario);
+      axios.post('http://localhost:3001/api/login/actualizarVerificacion', { pkUsuario })
+          .then(({ data }) => {
+              if (data.error) {
+                  alert(data.error);
+              } else {
+                  console.log("Entra en else");
+                  // Haz lo que necesites con la respuesta
+              }
+          })
+          .catch(({ response }) => {
+              alert(response.data);
+          });
+  }
+    
     const handleCloseModalAdmin = () => {
        setModalAdmin(false);
        navigate("/VistasAdmin/PrincipalAdmin"); // Utiliza navigate para redireccionar en React Router v6
      };
 
      const handleCloseModalAlumno = () => {
-        setModalAlumno(false);
-        navigate("/VistasAlumno/PrincipalAlumno"); // Utiliza navigate para redireccionar en React Router v6
+      setModalAlumno(false);
+      navigate("/VistasAlumno/PrincipalAlumno"); // Utiliza navigate para redireccionar en React Router v6
       };
 
-     
+   
 
     //Funcion que va manipula la logica del inicio de sesion AQUI IRIA EL BACK HASTA CIERTO PUNTO //
 
@@ -290,6 +360,30 @@ const FormLogin = ()=>
         </Modal.Footer>
       </Modal>
 
+      <Modal show={modalParaverificar} onHide={() => setModalVerificacion(false)}>
+        <Modal.Header >
+          <Modal.Title >Verificacion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body >Falta verificacion</Modal.Body>
+        <Modal.Footer >
+          <Button variant="secondary" onClick={() => setModalVerificacion(false)}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={modalVerificado} onHide={() => setModalVerificado(false)}>
+        <Modal.Header >
+          <Modal.Title >Verificacion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body >Tu usuario esta verificado</Modal.Body>
+        <Modal.Footer >
+          <Button variant="secondary" onClick={() => setModalVerificado(false)}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <Modal show={modalRecuperarSuccess}  onHide={() => setModalRC(false)}>
         <Modal.Header >
           <Modal.Title >Solicitud de nueva contraseña</Modal.Title>
@@ -367,19 +461,20 @@ const FormLogin = ()=>
                             <Form>
 
                             <Form.Group as={Row} className="mb-3" controlId="email">
-                                <Form.Label className="text-md-right text-start form-label-pe-none">Correo electr&oacute;nico:</Form.Label>
-                                <Form.Control name="email" type="email" placeholder="Ingresa tu correo electr&oacute;nico" value={correo} onChange={GuardarDatosHook} />
+                                <Form.Label className="text-md-right text-start form-label-pe-none">Correo electronico:</Form.Label>
+                                <Form.Control type="email" placeholder="Ingresa tu correo electronico" value ={datosUsuario.username} onChange={inputChange} name='username'/>
+                            
                             </Form.Group>
 
                             <Form.Group as={Row} className="mb-3" controlId="password">
                                 <Form.Label className="text-md-right text-start form-label-pe-none">Contraseña:</Form.Label>
-                                <Form.Control name="password" type="password" placeholder="Ingresa tu contraseña." value={password} onChange={GuardarDatosHook} />
+                                <Form.Control type="password" placeholder="Ingresa tu contraseña." value ={datosUsuario.password} onChange={inputChange} name='password' />
                             </Form.Group>
                             </Form> 
                             <Container>
                                 <Col>
-                                    <Button variant="outline-primary" type="submit" className="ms-2 btn-iniciar-sesion" onClick={handleLogin}>
-                                    Iniciar Sesi&oacute;n
+                                    <Button variant="outline-primary" type="submit" className="ms-2 btn-iniciar-sesion" onClick={enviarValores}>
+                                    Iniciar Sesion
                                     </Button>
                                     </Col>
                             </Container>

@@ -13,6 +13,9 @@ const rutasAlumnos = require('./api/rutas/rutasAlumnos');
 app.use(bodyParser.json());
 app.use('/api/alumnos', rutasAlumnos);
 
+const rutasLogin = require('./api/rutas/rutasLogin');
+app.use('/api/login', rutasLogin);
+
 
 
 //Manejo de errores MiddleWare que se estara desarrollando//
