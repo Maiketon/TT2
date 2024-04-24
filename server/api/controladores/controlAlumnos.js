@@ -126,6 +126,43 @@ exports.verificarAlumno = async (req, res) => {
         res.status(500).send({ message: "Error interno del servidor." });
     }
  };
+ exports.guardarPreferenciasAcademicas = async(req, res)=>
+ {
+    const recuperarCargaUtil = {pkUsuario,seleccionesIzquierda,seleccionesDerecha} =req.body;
+    
+    if (seleccionesIzquierda.length !== 3 || seleccionesDerecha.length !== 3) {
+        return res.status(400).json({
+            success: false,
+            message: "Número incorrecto de selecciones."
+        });
+    }
+    try {
+        // Combinar las selecciones en un solo objeto
+        const selecciones = {
+            seleccion1: seleccionesIzquierda[0],//DEFICIENCIA
+            seleccion2: seleccionesIzquierda[1],
+            seleccion3: seleccionesIzquierda[2],
+            seleccion4: seleccionesDerecha[0], //ENSEÑANZA//
+            seleccion5: seleccionesDerecha[1],
+            seleccion6: seleccionesDerecha[2]
+        };
+
+        // Llamar a la función del modelo para actualizar la base de datos
+        const resultado = await modeloAlumnos.guardarPreferenciasAcademicas(pkUsuario, selecciones);
+
+        if (resultado) {
+            res.send(200, "Usuario aprobado correctamente.");
+        } else {
+            throw new Error('No se pudieron actualizar las selecciones');
+        }
+    } catch (error) {
+        console.error('Error al procesar las selecciones:', error);
+        res.status(500).json({
+            success: false,
+            message: "Error interno del servidor."
+        });
+    }
+ };
 
 //CONTENIDO HTML QUE REDIRIGE EL BACK AL FRONT//
 function generateModalHTML(title, message, isSuccess) {

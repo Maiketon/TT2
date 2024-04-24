@@ -1,6 +1,6 @@
 //HOOKS Y COMPONENTES DE BOOTSTRAP//
 import React, { useState, useEffect } from "react";
-import { usarCarga } from "../ContextoCarga";
+import { useCarga } from "../ContextoCarga";
 import {Container, Row, Col, Form, Card, Button, Modal} from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 // IMAGENESSECCION PRINCIPAL//
@@ -20,7 +20,7 @@ const FormLogin = ()=>
 {   
 
     //LOGICA PARA EL SPINNER//
-    const {setEstaCargando} = usarCarga();
+    const {setEstaCargando} = useCarga();
     // useEffect(() => {
     //     setEstaCargando(true);
     //     // Simula la carga de datos
@@ -78,43 +78,57 @@ const FormLogin = ()=>
       })
     }
     const enviarValores = () => {
+      setEstaCargando(true);
       axios.post('http://localhost:3001/api/login/login', datosUsuario)
         .then(async (response) => {
           const data = response.data;
           console.log(data);
           if (data.error) {
             alert(data.error);
+            setEstaCargando(false);
           } else {
             console.log("Else de enviar valores");
             console.log(data.rol)
+            console.log(data.pk);
             
-            //sessionStorage.setItem('userId', data.pk);
-            //sessionStorage.setItem('userRole', data.rol);
+            sessionStorage.setItem('userPk', data.pk);
+            sessionStorage.setItem('userRole', data.rol);
     
             switch (data.rol) {
               case 1:
+                console.log("SOLICIUTD");
                 setModalVerificacion(true);
                 break;
               case 2:
+                console.log("VERIFICADO, CAMBIANDO A SELECCION");
                 console.log("Entra en el case 2");
                 console.log(data.pk);
+                
                 actualizarEstatusUsuario(data.pk);
-                setModalVerificado(true);
+                setModalMaterias(true);
 
                 break;
               case 3:
-                setModalAlumno(true);
+                console.log("SELECCION");
+                setModalMaterias(true);
+                break;
+              case 4:
+                navigate("/VistasAlumno/PrincipalAlumno");
                 break;
               case 8:
+                
                 handleCloseModalAdmin();
                 break;
               default:
+                
                 alert('Rol de usuario no reconocido');
             }
           }
+          setEstaCargando(false);
         })
         .catch((error) => {
           console.log(error.response.data);
+          setEstaCargando(false);
           alert(error.response.data);
         });
     };
@@ -143,57 +157,14 @@ const FormLogin = ()=>
      const handleCloseModalAlumno = () => {
       setModalAlumno(false);
       navigate("/VistasAlumno/PrincipalAlumno"); // Utiliza navigate para redireccionar en React Router v6
-      };
-
-   
-
-    //Funcion que va manipula la logica del inicio de sesion AQUI IRIA EL BACK HASTA CIERTO PUNTO //
-
-    const handleLogin = async (event) => {
-    //     if (correo === "miky_lee24@hotmail.com" && password === "dashita")
-    // {
-    //     handleClick()
-    //     setModalMaterias(true);
-    // }
-    // else
-    // {
-    //     setModalIncorrecto(true);
-    // }
-    event.preventDefault();
-    setEstaCargando(true); // Activa el spinner
-
-    // Espera 2 segundos antes de continuar con la lógica
-    setTimeout(() => {
-        // Ahora que han pasado 2 segundos, continúa con la lógica de login
-        if (correo === "miky_lee24@hotmail.com" && password === "dashita") {
-            handleClick(); // Asumiendo que esta función hace algo relevante antes de continuar
-            setModalMaterias(true);
-        } else if (correo === "admin@gmail.com" && password === "admin")
-        
-        {
-            handleCloseModalAdmin();
-            setModalAdmin(true); // Muestra el modal de bienvenida al administrador
-        } else if (correo === "alumno@gmail.com" && password === "alumno")
-        {
-            handleCloseModalAlumno(); // Asumiendo que esta función hace algo relevante antes de continuar
-            setModalAlumno(true); // Muestra el modal de bienvenida al administrador
-        }   
-        else
-        {
-            setModalIncorrecto(true);
-        }
-        setEstaCargando(false); // Desactiva el spinner independientemente del resultado
-    }, 2000);
-
-    }
+      };  
 
     const handleRecuperacion = () => 
     {
         setModalRecuperacion(true)
     }
 
-    //Logica para los checkbox de la modal de materias
-    // const [checkboxesHabilitadas, setCheckboxesHabilitadas] = useState (new Array(11).fill(true)); //Arreglo utilizado para saber si se debe o no habilitar el checkbox
+    //Logica para los checkbox de la modal de materias//
     const [materias, setMaterias] = useState([]);
     const [seleccionIzquierda, setSeleccionIzquierda] = useState([]);
     const [seleccionDerecha, setSeleccionDerecha] = useState([]);
@@ -205,9 +176,12 @@ const FormLogin = ()=>
         const response = await axios.get('http://localhost:3001/api/alumnos/materias');
         setMaterias(response.data);
         // Inicializar los estados basados en los datos recibidos
-        setSeleccionIzquierda(new Array(response.data.length).fill(false));
-        setSeleccionDerecha(new Array(response.data.length).fill(false));
+        // setSeleccionIzquierda(new Array(response.data.length).fill(false));
+        // setSeleccionDerecha(new Array(response.data.length).fill(false));
+        setSeleccionIzquierda(response.data.map(materia => ({ seleccionado: false, pk: materia.PK_MATERIA })));
+        setSeleccionDerecha(response.data.map(materia => ({ seleccionado: false, pk: materia.PK_MATERIA })));
         setDeshabilitado(new Array(response.data.length).fill(false));
+        // setDeshabilitado(new Array(response.data.length).fill(false));
       } catch (error) {
         console.error('Error al obtener las materias', error);
       }
@@ -217,48 +191,111 @@ const FormLogin = ()=>
   }, []);
     const ActualizarEstado = (indice, columna) => {
         // Actualiza las selecciones y la deshabilitación basada en la columna y el índice
-        if (columna === "izquierda") {
-            const seleccionados = seleccionIzquierda.filter(seleccion => seleccion).length; //VERIFICO CUANTOS CHECKBOX HAN SIDO SELECCIONADOS//
-            if (!seleccionIzquierda[indice] && seleccionados>=3)
-            {
-                return; //Si se pasa no permito que siga seleccionando mas
-            }
+        // if (columna === "izquierda") {
+        //     const seleccionados = seleccionIzquierda.filter(seleccion => seleccion).length; //VERIFICO CUANTOS CHECKBOX HAN SIDO SELECCIONADOS//
+        //     if (!seleccionIzquierda[indice] && seleccionados>=3)
+        //     {
+        //         return; //Si se pasa no permito que siga seleccionando mas
+        //     }
 
-            const nuevaSeleccionIzquierda = [...seleccionIzquierda];
-            nuevaSeleccionIzquierda[indice] = !nuevaSeleccionIzquierda[indice];
-            setSeleccionIzquierda(nuevaSeleccionIzquierda);
+        //     const nuevaSeleccionIzquierda = [...seleccionIzquierda];
+        //     nuevaSeleccionIzquierda[indice] = !nuevaSeleccionIzquierda[indice];
+        //     setSeleccionIzquierda(nuevaSeleccionIzquierda);
 
-            // Cambia la deshabilitación solo si se está marcando el checkbox
-            setDeshabilitado(deshabilitado.map((item, i) => i === indice ? nuevaSeleccionIzquierda[indice] : item));
-        } else {
-            //MISMA LOGICA LA COLUMNA DERECHA //
-            const seleccionados = seleccionDerecha.filter(seleccion => seleccion).length;
-        if (!seleccionDerecha[indice] && seleccionados >= 3) {
-            return;   //Si se pasa no permito que siga seleccionando mas
-        }
-            const nuevaSeleccionDerecha = [...seleccionDerecha];
-            nuevaSeleccionDerecha[indice] = !nuevaSeleccionDerecha[indice];
-            setSeleccionDerecha(nuevaSeleccionDerecha);
+        //     // Cambia la deshabilitación solo si se está marcando el checkbox
+        //     setDeshabilitado(deshabilitado.map((item, i) => i === indice ? nuevaSeleccionIzquierda[indice] : item));
+        // } else {
+        //     //MISMA LOGICA LA COLUMNA DERECHA //
+        //     const seleccionados = seleccionDerecha.filter(seleccion => seleccion).length;
+        // if (!seleccionDerecha[indice] && seleccionados >= 3) {
+        //     return;   //Si se pasa no permito que siga seleccionando mas
+        // }
+        //     const nuevaSeleccionDerecha = [...seleccionDerecha];
+        //     nuevaSeleccionDerecha[indice] = !nuevaSeleccionDerecha[indice];
+        //     setSeleccionDerecha(nuevaSeleccionDerecha);
 
-            // Cambia la deshabilitación solo si se está marcando el checkbox
-            setDeshabilitado(deshabilitado.map((item, i) => i === indice ? nuevaSeleccionDerecha[indice] : item));
-        }
+        //     // Cambia la deshabilitación solo si se está marcando el checkbox
+        //     setDeshabilitado(deshabilitado.map((item, i) => i === indice ? nuevaSeleccionDerecha[indice] : item));
+        // }
+        const seleccionActual = columna === "izquierda" ? seleccionIzquierda : seleccionDerecha;
+  const setSeleccion = columna === "izquierda" ? setSeleccionIzquierda : setSeleccionDerecha;
+
+  // Contar cuántos checkboxes han sido seleccionados
+  const seleccionados = seleccionActual.filter(seleccion => seleccion.seleccionado).length;
+  if (!seleccionActual[indice].seleccionado && seleccionados >= 3) {
+    return; // Si se excede el límite no permito que siga seleccionando más
+  }
+
+  // Actualizar el estado de selección del índice específico
+  const nuevaSeleccion = seleccionActual.map((item, i) =>
+    i === indice ? { ...item, seleccionado: !item.seleccionado } : item
+  );
+
+  // Actualizar el estado correspondiente
+  setSeleccion(nuevaSeleccion);
+
+  // Cambia la deshabilitación solo si se está marcando el checkbox
+  setDeshabilitado(deshabilitado.map((item, i) => i === indice ? nuevaSeleccion[indice].seleccionado : item));
     };
 
     const crearCheckboxes = (seleccion, columna) => {
+        // return materias.map((materia, indice) => (
+        //   <Form.Check
+        //     type="checkbox"
+        //     label={materia.NOMBRE_MATERIA}
+        //     key={`${columna}-${materia.PK_MATERIA}`}
+        //     id={`checkbox-${columna}-${materia.PK_MATERIA}`}
+        //     checked={seleccion[indice]}
+        //     onChange={() => ActualizarEstado(indice, columna)}
+        //     disabled={deshabilitado[indice] && !seleccion[indice]}
+        //   />
+        // ));
         return materias.map((materia, indice) => (
           <Form.Check
             type="checkbox"
             label={materia.NOMBRE_MATERIA}
             key={`${columna}-${materia.PK_MATERIA}`}
             id={`checkbox-${columna}-${materia.PK_MATERIA}`}
-            checked={seleccion[indice]}
+            checked={seleccion[indice].seleccionado}
             onChange={() => ActualizarEstado(indice, columna)}
-            disabled={deshabilitado[indice] && !seleccion[indice]}
+            disabled={deshabilitado[indice] && !seleccion[indice].seleccionado}
           />
         ));
       };
-      
+      const guardarPreferencias = async (e) =>
+      {
+        console.log(seleccionDerecha);
+        console.log(seleccionIzquierda);
+        try {
+          
+        const userPk = sessionStorage.getItem('userPk');
+        console.log(userPk);
+        if (!userPk) {
+          console.error('No se encontró el userPk en sessionStorage');
+        }
+        //Formateo ambos arreglos y el valor del pk del usuario //
+        const cargaUtil = {
+          pkUsuario: userPk,
+          seleccionesIzquierda: seleccionIzquierda.filter(seleccion => seleccion.seleccionado).map(seleccion => seleccion.pk),
+          seleccionesDerecha: seleccionDerecha.filter(seleccion => seleccion.seleccionado).map(seleccion => seleccion.pk),
+        };
+        const response = await axios.post('http://localhost:3001/api/alumnos/enviarPreferencias', cargaUtil);
+        console.log('Respuesta del servidor:', response.data);
+        if(response.status===200)
+        {
+          console.log('Respuesta del servidor:', response.data);
+      navigate("/VistasAlumno/PrincipalAlumno");
+        }
+        else {
+          console.error('Respuesta del servidor no fue exitosa:', response.status);
+          // Manejar respuestas no exitosas aquí, como mostrar un mensaje de error
+        }
+        } catch (error) {
+          console.error('Error enviando datos al servidor o leyendo desde sessionStorage:', error);
+        }
+
+      }
+///////////////////////////////////////////////////////////////////////////      
       const recuperarContra = async(e)=>
       {
         e.preventDefault();
@@ -342,7 +379,7 @@ const FormLogin = ()=>
         </Row>
         </Modal.Body>
         <Modal.Footer className="modal-materias-footer">
-          <Button variant="primary" onClick={() => setModalMaterias(false)}>
+          <Button variant="primary" onClick={guardarPreferencias}>
             Se ve bien.
           </Button>
         </Modal.Footer>

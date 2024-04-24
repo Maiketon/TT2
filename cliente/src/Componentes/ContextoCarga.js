@@ -3,7 +3,7 @@ import { createContext,useContext,useState } from "react";
 
 const contextoEstadoCarga = createContext(); //Se crea la variable que tiene acceso para crear el contexto//
 
-export const usarCarga = () => useContext(contextoEstadoCarga);
+export const useCarga = () => useContext(contextoEstadoCarga);
 
 
 export const CargarProvider= ({children}) =>

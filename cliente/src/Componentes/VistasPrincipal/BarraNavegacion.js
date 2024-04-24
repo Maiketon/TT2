@@ -48,7 +48,7 @@ const BarraNavegacion = ({ setVista }) =>
                 LearnMatch
             </Navbar.Brand>
             <Nav className='me-auto texto-navbar'>
-            <NavDropdown  title="Material de aprendizaje" id="materialesAprendizaje1" className='mx-2'>
+            <NavDropdown  title="Material de apoyo" id="materialesAprendizaje1" className='mx-2'>
             {
                 Object.entries(pdfFiles).map(([key, nombreMaterial]) => (
                     <NavDropdown.Item className='dropdown-item-text'

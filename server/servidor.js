@@ -3,6 +3,7 @@ const cors = require("cors");
 //const dbConexion = require('./configuracion/dbconfiguracion');
 const app = express();
 const bodyParser = require('body-parser');
+const path = require('path');
 
 
 app.use(cors());
@@ -16,7 +17,13 @@ app.use('/api/alumnos', rutasAlumnos);
 const rutasLogin = require('./api/rutas/rutasLogin');
 app.use('/api/login', rutasLogin);
 
+// Servir archivos estáticos de React
+app.use(express.static(path.join(__dirname, '..', 'cliente', 'build')));
 
+// Redirecciona todas las rutas no-API a React
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, '..', 'cliente', 'build', 'index.html'));
+  });
 
 //Manejo de errores MiddleWare que se estara desarrollando//
 app.use((req, res, next) => {

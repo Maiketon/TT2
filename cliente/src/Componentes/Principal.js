@@ -15,11 +15,11 @@ import SobreNosotros from './VistasPrincipal/SobreNosotros';
 import FormularioInscribirse from './VistasPrincipal/FormularioInscribirse';
 import FormLogin from './VistasPrincipal/Login';
 
-import {CargarProvider,usarCarga} from "./ContextoCarga";
+import {CargarProvider,useCarga} from "./ContextoCarga";
 
 const SpinnerGlobal = () => 
 {
-  const {estaCargando} = usarCarga();
+  const {estaCargando} = useCarga();
   if(!estaCargando) return null;
   return (
     <div className="spinner-container d-flex" >

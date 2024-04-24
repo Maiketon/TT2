@@ -1,11 +1,11 @@
 import React,{useState} from 'react';
 import { Container, Row, Col, Form, Button, Card, Modal } from 'react-bootstrap';
-import { usarCarga } from "../ContextoCarga";
+import { useCarga } from "../ContextoCarga";
 
 const FormularioInscribirse = ({ setVista }) =>
 {
   //SPINNER/
-  const {setEstaCargando} = usarCarga();
+  const {setEstaCargando} = useCarga();
   //Estructura que contendra los datos del form Inscribirse//
   const [usuario, setUsuario] = useState({
     carrera: '1',
