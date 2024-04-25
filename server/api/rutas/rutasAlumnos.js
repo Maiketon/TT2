@@ -3,8 +3,9 @@ const router = express.Router();
 const controlAlumnos = require('../controladores/controlAlumnos');
 
 //ENDPOINTS PARA ALUMNOS//
-
+//GETS//
 router.get('/materias', controlAlumnos.obtenerTodasLasMaterias);
+router.get('/obtenerPreferencias', controlAlumnos.obtenerPreferenciasAcademicas);
 
 router.post('/registro', controlAlumnos.guardarAlumno);
 //router.post('/verificar/:correo', controlAlumnos.verificarAlumno);

@@ -164,6 +164,21 @@ exports.verificarAlumno = async (req, res) => {
     }
  };
 
+ exports.obtenerPreferenciasAcademicas = async (req,res)=> 
+ {
+    const pkUsuario = req.query.pkUsuario;
+    console.log("Valor del pk en control:");
+    console.log(pkUsuario);
+    try {
+        const preferencias = await modeloAlumnos.obtenerPreferenciasAcademicas(pkUsuario);
+        console.log(preferencias);
+        res.json({ success: true, data: preferencias });
+    } catch (error) {
+        console.error('Error al obtener las preferencias:', error);
+        res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    }
+ }
+
 //CONTENIDO HTML QUE REDIRIGE EL BACK AL FRONT//
 function generateModalHTML(title, message, isSuccess) {
     const closeButtonAction = isSuccess ? "window.close();" : "";

@@ -99,7 +99,24 @@ class modeloAlumnos {
         throw err; // Propaga cualquier error que ocurra
       }
       }
-
+      
+      async obtenerPreferenciasAcademicas (pkUsuario)
+      {
+        const sql= `
+        SELECT FK_DEFICIENCIA1, FK_DEFICIENCIA2,FK_DEFICIENCIA3, FK_ENSEÑANZA1,FK_ENSEÑANZA2,FK_ENSEÑANZA3
+        FROM informacionusuario
+        WHERE PK_USUARIO = ?`;
+        try
+        {
+          const promesadb = db.promise();
+          const [rows] = await promesadb.query(sql,[pkUsuario]);
+          return rows[0];
+          
+        } catch (error) {
+          console.log("Error al obtener las preferencias academicas del usuario:",error)
+          throw error;
+        }
+      }
       
 
 
