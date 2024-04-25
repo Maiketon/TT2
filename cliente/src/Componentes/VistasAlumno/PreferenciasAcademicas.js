@@ -1,5 +1,5 @@
 import React, {useState, useEffect,useCallback } from "react";
-import { Container,Form, Button} from "react-bootstrap";
+import { Container,Form, Button,Modal} from "react-bootstrap";
 import axios from "axios";
 import EstadoFeliz from "../VistasPrincipal/Utils/Sonrisa.png";
 import EstadoTriste from "../VistasPrincipal/Utils/Triste.png";
@@ -99,6 +99,13 @@ const PreferenciasAcademicas = () => {
           seleccionado: setDerecha.has(String(materia.PK_MATERIA)),
           pk: materia.PK_MATERIA
         })));
+
+        const nuevasDeshabilitado = materias.map(materia => {
+            const pkMateriaString = String(materia.PK_MATERIA);
+            return setIzquierda.has(pkMateriaString) || setDerecha.has(pkMateriaString);
+          });
+        
+          setDeshabilitado(nuevasDeshabilitado);
       }, [materias]);
       
       // En el useEffect de cargar preferencias, puedes pasar directamente la data
@@ -145,6 +152,7 @@ const PreferenciasAcademicas = () => {
         {
           console.log('Respuesta del servidor:', response.data);
           console.log("Respuestas guardadaaas!!!");
+          handleShow();
         }
         else {
           console.error('Respuesta del servidor no fue exitosa:', response.status);
@@ -161,9 +169,25 @@ const PreferenciasAcademicas = () => {
         console.log('Formulario enviado sin recargar la página');
       };
 
+      //Variables Modales//
+
+        const [showModal, setShowModal] = useState(false);
+        const handleShow = () => setShowModal(true);
+        const handleClose = () => setShowModal(false);
 
      return (
         <>
+        <Modal className='modal-registro-satisfactorio' show={showModal} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Preferencias Académicas guardadas</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Las nuevas preferencias académicas han sido guardadas con éxito</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+        </Modal>
     <div>
                 <div className="card text-center margen_superior">
                     <div className="card-header">
