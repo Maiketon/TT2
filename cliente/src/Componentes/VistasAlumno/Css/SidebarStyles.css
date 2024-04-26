@@ -12,6 +12,13 @@
     color: black;
 }
 
+/*.fondo_modulos {
+  background-image: linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.1)), url(../Utils/fondo-aprendizaje.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}*/
+
 .margen_superior{
     margin-top: 100px;
 }
@@ -36,7 +43,21 @@
     grid-template-columns: 300px 1fr;
     column-gap: 5rem;
     height: 100vh;
+    /*background: linear-gradient(45deg,#3710bc,#dfb955,#fcffd1,#c2d4c3);
+    animation: color 12s ease-in-out infinite;*/
 }
+
+/*@keyframes color{
+  0%{
+    background-position: 0 50%;
+  }
+  50%{
+    background-position: 100% 50%;
+  }
+  100%{
+    background-position: 0 50%;
+  }
+}*/
 
 .columna_sidebar{
     display: flex;

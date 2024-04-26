@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useEffect,use} from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import './Css/SalaComunicacion.css';
+//import { set } from '../../../../server/configuracion/emailConfig';
 
 
 function randomID(len) {
@@ -26,7 +27,6 @@ export function getUrlParams(
 const ComunicacionUsuarios = ({ setVista }) => {
   const roomID = getUrlParams().get('roomID') || randomID(5);
   let zp; // Declara zp fuera de myMeeting para tener acceso a él en el useEffect
-
   let myMeeting = async (element) => {
     // generate Kit Token
     const appID = 1585141426;
@@ -51,12 +51,12 @@ const ComunicacionUsuarios = ({ setVista }) => {
     });
   };
 
+
+
   return (
-    <div
-      className="myCallContainer"
-      ref={myMeeting}
-      style={{height: '100vh' }}
-    ></div>
+    <div className="myCallContainer" ref={myMeeting} style={{height: '100vh' }}>
+  
+    </div>
   );
 }
 

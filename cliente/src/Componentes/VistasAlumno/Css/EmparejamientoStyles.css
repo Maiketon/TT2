@@ -11,13 +11,6 @@
     animation-timing-function: ease-in;
   }
 
-  .fondo_modulo_emparejamiento {
-    /*background-image: linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.1)), url(../Utils/fondo-aprendizaje.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;*/
-  }
-
   .color_progress_bar{
     background-color: #000000;
   }

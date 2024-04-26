@@ -122,6 +122,23 @@ class modeloAlumnos {
 
 
       
+      async CambiarPswd (userPk,correo,pswdactual,pswdnuevo){
+        const sql = `
+            UPDATE informacionusuario
+            SET PSW = ?
+            WHERE PK_USUARIO = ?
+            AND EMAIL = ?
+            AND PSW = ?
+        `;
+    
+        try {
+            const promesadb = db.promise();
+            const [resultado] = await promesadb.query(sql,[pswdnuevo,userPk,correo,pswdactual]);
+            return { affectedRows: resultado.affectedRows };
+        } catch (err) {
+            throw err;
+        }
+    }
   }
 
   module.exports = new modeloAlumnos();
