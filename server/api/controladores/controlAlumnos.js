@@ -164,6 +164,37 @@ exports.verificarAlumno = async (req, res) => {
     }
  };
 
+ exports.obtenerPreferenciasAcademicas = async (req,res)=> 
+ {
+    const pkUsuario = req.query.pkUsuario;
+    console.log("Valor del pk en control:");
+    console.log(pkUsuario);
+    try {
+        const preferencias = await modeloAlumnos.obtenerPreferenciasAcademicas(pkUsuario);
+        console.log(preferencias);
+        res.json({ success: true, data: preferencias });
+    } catch (error) {
+        console.error('Error al obtener las preferencias:', error);
+        res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    }
+ }
+
+ exports.cambiarContra = async (req, res) => {
+    const { userPk, correo, pswdactual, pswdnuevo } = req.body;
+    try {
+        const respuesta = await modeloAlumnos.CambiarPswd(userPk, correo, pswdactual, pswdnuevo);
+        if (respuesta.affectedRows > 0) {
+            res.status(200).json({ message: "Contraseña cambiada exitosamente", affectedRows: respuesta });
+        } else {
+            res.status(400).json({ message: "Error al cambiar la contraseña", error: "La contraseña actual es incorrecta o el correo electrónico no coincide." });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Error al cambiar la contraseña", error: error.message });
+    }
+};
+
+
+
 //CONTENIDO HTML QUE REDIRIGE EL BACK AL FRONT//
 function generateModalHTML(title, message, isSuccess) {
     const closeButtonAction = isSuccess ? "window.close();" : "";

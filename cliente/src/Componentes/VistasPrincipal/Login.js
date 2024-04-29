@@ -266,8 +266,7 @@ const FormLogin = ()=>
       };
       const guardarPreferencias = async (e) =>
       {
-        console.log(seleccionDerecha);
-        console.log(seleccionIzquierda);
+
         try {
           
         const userPk = sessionStorage.getItem('userPk');

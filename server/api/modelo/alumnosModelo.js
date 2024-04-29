@@ -99,12 +99,46 @@ class modeloAlumnos {
         throw err; // Propaga cualquier error que ocurra
       }
       }
-
+      
+      async obtenerPreferenciasAcademicas (pkUsuario)
+      {
+        const sql= `
+        SELECT FK_DEFICIENCIA1, FK_DEFICIENCIA2,FK_DEFICIENCIA3, FK_ENSEÑANZA1,FK_ENSEÑANZA2,FK_ENSEÑANZA3
+        FROM informacionusuario
+        WHERE PK_USUARIO = ?`;
+        try
+        {
+          const promesadb = db.promise();
+          const [rows] = await promesadb.query(sql,[pkUsuario]);
+          return rows[0];
+          
+        } catch (error) {
+          console.log("Error al obtener las preferencias academicas del usuario:",error)
+          throw error;
+        }
+      }
       
 
 
 
       
+      async CambiarPswd (userPk,correo,pswdactual,pswdnuevo){
+        const sql = `
+            UPDATE informacionusuario
+            SET PSW = ?
+            WHERE PK_USUARIO = ?
+            AND EMAIL = ?
+            AND PSW = ?
+        `;
+    
+        try {
+            const promesadb = db.promise();
+            const [resultado] = await promesadb.query(sql,[pswdnuevo,userPk,correo,pswdactual]);
+            return { affectedRows: resultado.affectedRows };
+        } catch (err) {
+            throw err;
+        }
+    }
   }
 
   module.exports = new modeloAlumnos();

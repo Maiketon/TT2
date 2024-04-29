@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-/*import { Container } from 'react-bootstrap';*/
+import './Css/SidebarStyles.css'
 import Sidebar from './SidebarAlumno';
 import Comunicacion from './ComunicacionUsuarios';
 import MConfiguracion from './Configuracion';
 import MEmparejamiento from './Emparejamiento';
 import MPreferenciasAcademicas from './PreferenciasAcademicas';
 
+
 const VistaPrincipal = () => {
   const [vista, setVista] = useState('inicio');
-
   return (
       <div className='divide_secciones'>
         <section className='columna_sidebar'>
