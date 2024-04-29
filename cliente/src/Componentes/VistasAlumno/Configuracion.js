@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { OverlayTrigger, Popover } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
 import axios from "axios";
 
 const Configuracion = () => {
+    const navigate = useNavigate();
     const [correo, setCorreo] = useState("");
     const [pswdactual, setPswActual] = useState("");
     const [pswdnuevo, setNewPswd] = useState("");
     const userPk = sessionStorage.getItem("userPk");
-
+    //Cerrar Sesion//
+    const handleLogout = () => {
+        // Aquí podrías agregar cualquier lógica relacionada con cerrar sesión, como limpiar el almacenamiento local o enviar una solicitud al servidor
+        // Después de cerrar sesión, redirige al usuario a la vista principal
+        sessionStorage.clear();
+        navigate("/"); // Utiliza navigate para redireccionar en React Router v6
+      };
     // Función para mostrar el SweetAlert de confirmación al eliminar cuenta
     const alertaEliminarCuenta = () => {
         Swal.fire({
@@ -25,7 +33,21 @@ const Configuracion = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 // Aquí puedes agregar la lógica para eliminar la cuenta
-                Swal.fire("Cuenta eliminada con éxito.", "", "success");
+                axios.post("http://localhost:3001/api/alumnos/borrarCuenta", {
+                    userPk: userPk
+                })
+                .then((response) => {
+                    if (response.status===200) {
+                        Swal.fire("Cuenta eliminada con éxito.", "", "success");
+                        handleLogout();
+                    } else {
+                        Swal.fire("Error al intentar eliminar tu cuenta", "Vuelve más tarde.", "error");
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    Swal.fire("Error al eliminar tu cuenta", "Inténtalo de nuevo más tarde.", "error");
+                });
             }
         });
     };

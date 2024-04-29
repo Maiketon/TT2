@@ -193,6 +193,23 @@ exports.verificarAlumno = async (req, res) => {
     }
 };
 
+exports.eliminarCuenta = async (req, res) => {
+    const { userPk } = req.body;
+    try {
+        const respuesta = await modeloAlumnos.eliminarCuenta(userPk);
+        if (respuesta.affectedRows > 0) {
+            res.status(200).send("Usuario eliminado correctamente.");
+        } else {
+            res.status(400).send("Error al intentar eliminar tu cuenta, intenta más tarde.");
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Error interno del servidor."
+        });
+    }
+}
+
 
 
 //CONTENIDO HTML QUE REDIRIGE EL BACK AL FRONT//

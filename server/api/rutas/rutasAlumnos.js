@@ -22,5 +22,6 @@ router.post('/enviarPreferencias', controlAlumnos.guardarPreferenciasAcademicas)
     // res.send({ message: 'Datos recibidos correctamente!' });
   //});
 router.post('/cambiarPswd', controlAlumnos.cambiarContra);
+router.post('/borrarCuenta', controlAlumnos.eliminarCuenta);
 
 module.exports = router;

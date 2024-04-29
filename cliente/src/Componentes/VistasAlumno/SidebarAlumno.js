@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Menu, MenuItem, Sidebar } from 'react-pro-sidebar';
+import { useNavigate } from 'react-router-dom';
 import { Container, Button } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -7,6 +8,14 @@ import perfil_generico from './Utils/perfil.png'
 import './Css/SidebarStyles.css';
 
 const SidebarAlumno = ({ setVista }) => {
+    const navigate = useNavigate();
+    //Cerrar Sesion//
+    const handleLogout = () => {
+        // Aquí podrías agregar cualquier lógica relacionada con cerrar sesión, como limpiar el almacenamiento local o enviar una solicitud al servidor
+        // Después de cerrar sesión, redirige al usuario a la vista principal
+        sessionStorage.clear();
+        navigate("/"); // Utiliza navigate para redireccionar en React Router v6
+      };
     return (
         <Container>
             <div className="sb_styles">
@@ -28,7 +37,7 @@ const SidebarAlumno = ({ setVista }) => {
                             </div>
                         </Menu>
                         <hr />
-                    <Button>Cerrar Sesión</Button>
+                    <Button onClick={handleLogout}>Cerrar Sesión</Button>
                 </aside>
             </div>
         </Container>

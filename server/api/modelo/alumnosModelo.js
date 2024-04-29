@@ -117,11 +117,7 @@ class modeloAlumnos {
           throw error;
         }
       }
-      
-
-
-
-      
+          
       async CambiarPswd (userPk,correo,pswdactual,pswdnuevo){
         const sql = `
             UPDATE informacionusuario
@@ -138,6 +134,18 @@ class modeloAlumnos {
         } catch (err) {
             throw err;
         }
+    }
+
+    async eliminarCuenta(userPk)
+    {
+      const sql =`UPDATE informacionusuario SET FK_ESTATUSUSUARIO=7 ,FECHA_BORRADO=NOW() WHERE PK_USUARIO= ?`
+      try {
+        const promesadb = db.promise();
+        const [resultado] = await promesadb.query(sql,[userPk]);
+        return { affectedRows: resultado.affectedRows };
+    } catch (err) {
+        throw err;
+    }
     }
   }
 
