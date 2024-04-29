@@ -98,6 +98,7 @@ const FormLogin = ()=>
               case 1:
                 console.log("SOLICIUTD");
                 setModalVerificacion(true);
+                sessionStorage.clear();
                 break;
               case 2:
                 console.log("VERIFICADO, CAMBIANDO A SELECCION");
@@ -106,6 +107,7 @@ const FormLogin = ()=>
                 
                 actualizarEstatusUsuario(data.pk);
                 setModalMaterias(true);
+                
 
                 break;
               case 3:
@@ -117,7 +119,7 @@ const FormLogin = ()=>
                 break;
               case 8:
                 
-                handleCloseModalAdmin();
+                 navigate("/VistasAdmin/PrincipalAdmin");
                 break;
               default:
                 

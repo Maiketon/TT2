@@ -9,6 +9,7 @@ const BarraNavegacion = ({ setVista }) => {
   const handleLogout = () => {
     // Aquí podrías agregar cualquier lógica relacionada con cerrar sesión, como limpiar el almacenamiento local o enviar una solicitud al servidor
     // Después de cerrar sesión, redirige al usuario a la vista principal
+    sessionStorage.clear();
     navigate("/"); // Utiliza navigate para redireccionar en React Router v6
   };
 
