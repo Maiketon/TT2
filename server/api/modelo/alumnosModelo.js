@@ -147,6 +147,39 @@ class modeloAlumnos {
         throw err;
     }
     }
+
+
+    async nuevasMedallas(userPk)
+  {
+    const sql =
+    `INSERT INTO controlmedallas (FK_USUARIOINFO,FK_MEDALLA,PROGRESO,ESTADO)
+     VALUES        (?, 1, 0, 0), (?, 2, 0, 0), (?, 3, 0, 0),
+                   (?, 4, 0, 0), (?, 5, 0, 0), (?, 6, 0, 0)`
+    try {
+      const promesadb= db.promise();
+      const [resultado] = await promesadb.query(sql, [userPk, userPk, userPk, userPk, userPk, userPk]);
+      return { affectedRows: resultado.affectedRows};
+    } catch (error) {
+      throw error;
+    }
   }
+
+
+  async  obtenerEstadoMedallas(userPk) {
+    const sql = `SELECT PK_CONTROLMEDALLAS,FK_MEDALLA, ESTADO FROM controlMedallas WHERE FK_USUARIOINFO = ?`;
+    try {
+        const promesadb = db.promise();
+        const [medallas] = await promesadb.query(sql, [userPk]);
+        return medallas;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+  }
+
+
+  
 
   module.exports = new modeloAlumnos();

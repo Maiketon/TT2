@@ -150,11 +150,14 @@ exports.verificarAlumno = async (req, res) => {
         // Llamar a la función del modelo para actualizar la base de datos
         const resultado = await modeloAlumnos.guardarPreferenciasAcademicas(pkUsuario, selecciones);
 
-        if (resultado) {
-            res.send(200, "Usuario aprobado correctamente.");
+        //Hace registro de las 6 medallas que tiene el usuario//
+        const resultadoMedallas = await modeloAlumnos.nuevasMedallas(pkUsuario);
+
+        if (resultadoMedallas.affectedRows === 6 && resultado) {
+            res.status(200).send("Usuario aprobado correctamente.");
         } else {
-            throw new Error('No se pudieron actualizar las selecciones');
-        }
+            res.status(400).send('No se pudieron actualizar las selecciones o inicializar las medallas');
+        }      
     } catch (error) {
         console.error('Error al procesar las selecciones:', error);
         res.status(500).json({
@@ -179,6 +182,18 @@ exports.verificarAlumno = async (req, res) => {
     }
  }
 
+ 
+ exports.obtenerMedallas = async (req, res) => {
+    const pkUsuario = req.query.pkUsuario;
+    try {
+        const medallasHabilitadas = await modeloAlumnos.obtenerEstadoMedallas(pkUsuario);
+        res.json({ success: true, data: medallasHabilitadas }); // Envía el array de objetos
+    } catch (error) {
+        console.error('Error al obtener las medallas:', error);
+        res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    }
+}
+ 
  exports.cambiarContra = async (req, res) => {
     const { userPk, correo, pswdactual, pswdnuevo } = req.body;
     try {

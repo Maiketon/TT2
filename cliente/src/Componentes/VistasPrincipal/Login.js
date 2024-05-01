@@ -281,11 +281,10 @@ const FormLogin = ()=>
           seleccionesDerecha: seleccionDerecha.filter(seleccion => seleccion.seleccionado).map(seleccion => seleccion.pk),
         };
         const response = await axios.post('http://localhost:3001/api/alumnos/enviarPreferencias', cargaUtil);
-        console.log('Respuesta del servidor:', response.data);
         if(response.status===200)
         {
-          console.log('Respuesta del servidor:', response.data);
-      navigate("/VistasAlumno/PrincipalAlumno");
+          sessionStorage.setItem('userRole',4);
+           navigate("/VistasAlumno/PrincipalAlumno");
         }
         else {
           console.error('Respuesta del servidor no fue exitosa:', response.status);
