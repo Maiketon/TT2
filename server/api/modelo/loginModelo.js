@@ -4,30 +4,44 @@ const tranportadorEmail = require ('../../configuracion/emailConfig'); //Obtenem
 class modeloLogin {
      // Aquí  agregar mas metodos si necesitamos otras operaciones en la tabla de 'materia'
      async login({ username, password }) {
-        const sql1 = 'SELECT PK_USUARIO FROM informacionusuario WHERE EMAIL = ?';
+        const sql1 = 'SELECT PK_USUARIO, FK_ESTATUSUSUARIO FROM informacionusuario WHERE EMAIL = ?';
         const promesadb = db.promise();
     
         try {
-            // Realizar la primera consulta para obtener el PK_USUARIO
+            // Realizar la consulta para obtener todos los registros asociados al correo
             const [resultado1] = await promesadb.query(sql1, [username]);
     
-            // Si se encontró un registro con el correo proporcionado
+            // Si se encontró al menos un registro con el correo proporcionado
             if (resultado1.length > 0) {
-                const pkUsuario = resultado1[0].PK_USUARIO;
+                let cuentaActivaEncontrada = false;
     
-                // Consulta para obtener el rol del usuario
-                const sql2 = 'SELECT FK_ESTATUSUSUARIO, PK_USUARIO FROM informacionusuario WHERE EMAIL = ? AND PSW = ? AND PK_USUARIO = ?';
-                const [resultado2] = await promesadb.query(sql2, [username, password, pkUsuario]);
-                
-                // Si la contraseña coincide con el correo proporcionado
-                if (resultado2.length > 0) {
-                    //const rol = resultado2[0].FK_ESTATUSUSUARIO;
-                    //console.log(rol);
-                    //console.log("No paso al catch");
-                    return resultado2;
-                    //return rol; // Devolver el rol del usuario
+                for (let i = 0; i < resultado1.length; i++) {
+                    const estadoUsuario = resultado1[i].FK_ESTATUSUSUARIO;
+    
+                    if (estadoUsuario !== 7) {
+                        // Si encuentra al menos una cuenta activa, tomarla y salir del bucle
+                        cuentaActivaEncontrada = true;
+                        break;
+                    }
+                }
+    
+                if (cuentaActivaEncontrada) {
+                    // Continuar con la verificación de la contraseña
+                    const pkUsuario = resultado1[0].PK_USUARIO;
+                    const sql2 = 'SELECT FK_ESTATUSUSUARIO, PK_USUARIO FROM informacionusuario WHERE EMAIL = ? AND PSW = ? AND PK_USUARIO = ?';
+                    const [resultado2] = await promesadb.query(sql2, [username, password, pkUsuario]);
+    
+                    // Si la contraseña coincide con el correo proporcionado
+                    if (resultado2.length > 0) {
+                        // Devolver el resultado
+                        return resultado2;
+                    } else {
+                        return "Contraseña incorrecta";
+                    }
                 } else {
-                    return "Contraseña incorrecta";
+                    console.log("No encontro cuentas activas");
+                    // Si no encuentra ninguna cuenta activa, mostrar mensaje de cuenta eliminada
+                    return 7;
                 }
             } else {
                 return "No existe ese correo";

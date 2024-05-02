@@ -10,8 +10,14 @@ exports.login = async (req, res) => {
         if (respuesta === "No existe ese correo") {
             res.status(404).send('El usuario no existe');
         } else if (respuesta === "Contraseña incorrecta") {
-            res.status(401).send('Contraseña incorrecta');
-        } else if (respuesta.length > 0 && respuesta[0].FK_ESTATUSUSUARIO > 0) {
+            const datos = {rol: 10};
+            res.status(200).json(datos);
+        } else if (respuesta === 7) {
+            console.log("entro al 7");
+           const datos = {rol: 7};
+            res.status(200).json(datos);
+        }
+         else if (respuesta.length > 0 && respuesta[0].FK_ESTATUSUSUARIO > 0) {
             // Si la respuesta es un rol de usuario válido, enviar el código 200
             const datos = {
                 rol: respuesta[0].FK_ESTATUSUSUARIO,

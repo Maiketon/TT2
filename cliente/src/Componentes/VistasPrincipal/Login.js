@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useCarga } from "../ContextoCarga";
 import {Container, Row, Col, Form, Card, Button, Modal} from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 // IMAGENESSECCION PRINCIPAL//
 import Avatar1 from "./Utils/Avatar1Login.jpg";
 import Avatar2 from "./Utils/Avatar2Login.jpg";
@@ -117,13 +118,22 @@ const FormLogin = ()=>
               case 4:
                 navigate("/VistasAlumno/PrincipalAlumno");
                 break;
+              case 7:
+                console.log("Entra en el case 7");
+                Swal.fire("Tu usuario esta eliminado", "", "error");
+                break;
               case 8:
                 
                  navigate("/VistasAdmin/PrincipalAdmin");
                 break;
-              default:
+
+                case 10:
                 
-                alert('Rol de usuario no reconocido');
+                Swal.fire("Contraseña incorrecta", "", "error");
+                break;
+              default:
+                Swal.fire("Rol de usuario no reconocido", "", "error");
+                
             }
           }
           setEstaCargando(false);
