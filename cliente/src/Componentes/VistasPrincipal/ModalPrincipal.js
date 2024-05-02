@@ -49,7 +49,7 @@ const CardConModal = ({title, text, fullText }) => {
   return (
     <>
       <Card>
-        <Card.Body>
+        <Card.Body className="d-flex flex-column justify-content-between">
           <Card.Title>{title}</Card.Title>
           <Card.Text>{text}</Card.Text>
           <Button variant="primary" onClick={showModal}>

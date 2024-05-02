@@ -37,3 +37,9 @@
     height: 100vh; /* O la altura que desees para el contenedor */
     color: white;
   }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Esto asegura que el botón se empuje hacia el final */
+  }

@@ -22,13 +22,13 @@ function CarruselPrinicipal() {
         />
       </Carousel.Item>
 
-      <Carousel.Item>
+      {/* <Carousel.Item>
       <CardConModal 
           title="Empat&iacute;a" 
           text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in rhoncus ex" 
           fullText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in rhoncus ex"
         />
-      </Carousel.Item>
+      </Carousel.Item> */}
     </Carousel>
     </>
   );

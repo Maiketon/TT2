@@ -6,6 +6,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import perfil_generico from './Utils/perfil.png'
 import medalla_prueba from './Utils/medallaPrueba.png';
+
+import medalla_Primer from './Utils/Uno.png';
+import medalla_Cinco from './Utils/Cinco.png';
+import medalla_Maestro from './Utils/Maestro.png';
+import medalla_Escucha from './Utils/Escucha.png';
+import medalla_Comunicados from './Utils/Comunicados.png'
+import medalla_Conex from './Utils/Conexion.png';
+
+
 import './Css/SidebarStyles.css';
 import axios from "axios";
 
@@ -70,8 +79,8 @@ const SidebarAlumno = ({ setVista }) => {
                                 <Row>
                             {medallaPrimer ? (
                             <img
-                                src={medalla_prueba}
-                                alt="Medalla de Ejemplo"
+                                src={medalla_Primer}
+                                alt="Medalla de primer emparejamiento"
                                 className={`medalla ${medallaPrimer.ESTADO === 1 ? 'habilitada' : ''}`}
                                 title="Primer emparejamiento completo: Este logro se otorga cuando un usuario completa su primer emparejamiento, ya sea como enseñante o aprendiz."
                             />
@@ -82,7 +91,7 @@ const SidebarAlumno = ({ setVista }) => {
                                 <Row>
                                             {medallaCincoE ? (
                             <img
-                                src={medalla_prueba}
+                                src={medalla_Cinco}
                                 alt="Medalla de Ejemplo"
                                 className={`medalla ${medallaCincoE.ESTADO === 1 ? 'habilitada' : ''}`}
                                 title=" Cinco emparejamientos completos: Otorga este logro a los usuarios que han completado cinco emparejamientos, destacando su compromiso continuo con la plataforma."
@@ -96,8 +105,8 @@ const SidebarAlumno = ({ setVista }) => {
                                 <Row>
                                 {medallaBuenM ? (
                             <img
-                                src={medalla_prueba}
-                                alt="Medalla de Ejemplo"
+                                src={medalla_Maestro}
+                                alt="Medalla de buen mentor"
                                 className={`medalla ${medallaBuenM.ESTADO === 1 ? 'habilitada' : ''}`}
                                 title="Buen mentor: Reconoce a los usuarios que han completado al menos 10 emparejamientos como enseñante y han recibido una calificación de cinco estrellas en cada uno. Este logro destaca la calidad y efectividad de su enseñanza."
                             />
@@ -110,8 +119,8 @@ const SidebarAlumno = ({ setVista }) => {
                                 
                             {medallaEscucha ? (
                             <img
-                                src={medalla_prueba}
-                                alt="Medalla de Ejemplo"
+                                src={medalla_Escucha}
+                                alt="Medalla de buena escucha"
                                 className={`medalla ${medallaEscucha.ESTADO === 1 ? 'habilitada' : ''}`}
                                 title="Buena escucha: Premia a los usuarios que, como aprendices, han completado 10 emparejamientos en sus áreas de oportunidad (donde más necesitan mejorar), recibiendo en cada uno una calificación de cinco estrellas. Este logro enfatiza su compromiso y capacidad para aprender y aplicar nuevas habilidades."
                             />
@@ -124,7 +133,7 @@ const SidebarAlumno = ({ setVista }) => {
                                 <Row>
                                 {medallaComuE ? (
                             <img
-                                src={medalla_prueba}
+                                src={medalla_Comunicados}
                                 alt="Medalla de Ejemplo"
                                 className={`medalla ${medallaComuE.ESTADO === 1 ? 'habilitada' : ''}`}
                                 title="Comunicador estelar: Este logro se puede dar a aquellos usuarios que, en más de 15 emparejamientos, han recibido calificaciones positivas por su habilidad de comunicación, tanto en el rol de enseñante como de aprendiz. Este logro valora la habilidad de mantener una comunicación clara y efectiva, un aspecto crucial en cualquier proceso de enseñanza-aprendizaje."
@@ -136,7 +145,7 @@ const SidebarAlumno = ({ setVista }) => {
                                 <Row>
                             {medallaGranC ? (
                             <img
-                                src={medalla_prueba}
+                                src={medalla_Conex}
                                 alt="Medalla de Ejemplo"
                                 className={`medalla ${medallaGranC.ESTADO === 1 ? 'habilitada' : ''}`}
                                 title="Gran conexión comunitaria: Este logro se da a aquella persona que tiene 100 emparejamientos totales o más. Este logro tiene como objetivo valorar la participación de un alumno en LearnMatch."
