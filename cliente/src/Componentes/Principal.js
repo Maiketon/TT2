@@ -1,9 +1,9 @@
 //LIBRERIAS DE REACT//
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 //import Logo from '../Utils/LearnMatchCerebro.png';
 //FRAMEWORKS DE REACT //
-import { Container, Spinner} from 'react-bootstrap';
+import { Container, Spinner, Button, Modal } from 'react-bootstrap';
 
 //HOJA DE ESTILOS//
 import "./Principal.css";
@@ -36,10 +36,34 @@ const SpinnerGlobal = () =>
 
 const VistaPrincipal = () => {
   const [vista, setVista] = useState('inicio'); // Estado que me permitira que componente mostrar//
+  const [show, setShow] = useState(false);
 
+  //cerrar modal
+  const handleClose = () => setShow(false);
+
+  //mostrarmodal
+  const handleShow = () => setShow(true);
+
+  // Usar useEffect para mostrar la modal automáticamente al cargar la página
+  useEffect(() => {
+      handleShow();
+  }, []);
   return (
     <>
-    
+       <Modal className='xl' show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+            <Modal.Header>
+                <Modal.Title>Términos y Condiciones</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+               CREAR TERMINOS Y CONDICIONES
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="primary" onClick={handleClose}>
+                    Acepto
+                </Button>
+            </Modal.Footer>
+        </Modal>
+
     <CargarProvider>
     <div className="principal-contenedor">
     <BarraNavegacion setVista={setVista}/>
