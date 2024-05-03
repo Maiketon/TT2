@@ -44,3 +44,41 @@
   font-size: 1rem; 
   
 }
+
+
+
+/* Estilos para el submenú */
+.submenu {
+  position: absolute;
+  left: 100%; /* Esto posiciona el submenú justo a la derecha del contenedor padre */
+  top: 0; /* Alinea el submenú con la parte superior del contenedor padre */
+  min-width: 150px; /* Ajusta según necesites */
+}
+
+/* Opcional: Ajustes para mejorar la apariencia */
+.submenu-item {
+  white-space: nowrap; /* Evita que los elementos del submenú se rompan en varias líneas */
+}
+
+.dropdown-menu {
+  position: absolute;
+  transform: none !important; /* Desactiva transformaciones que pudiera aplicar Bootstrap */
+}
+
+/* Ajusta la posición del submenú a la derecha del menú principal */
+.dropdown-menu .dropdown-menu {
+  top: 0;
+  left: 100%; /* Desplazamiento completo a la derecha del menú padre */
+  margin-top: 0; /* Asegura que no haya desplazamiento vertical adicional */
+}
+
+
+/* Ajusta el ancho mínimo del menú desplegable */
+.ua-dropdown-toggle .dropdown-menu {
+  min-width: 282px;  /* Ajusta este valor según sea necesario para acomodar el texto más largo */
+}
+
+/* Opcional: Si quieres asegurarte de que todos los menús desplegables tengan el mismo ancho */
+.nav-dropdown .dropdown-menu {
+  width: 100%;  /* Hace que todos los menús desplegables tengan el mismo ancho */
+}

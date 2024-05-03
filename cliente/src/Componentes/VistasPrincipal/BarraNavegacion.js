@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Logo from './Utils/LearnMatchCaraHumana.png';
 import './Css/Botones.css';
 import './Css/BarraNavegacion.css';
-import { Navbar, NavDropdown ,Nav, Container, Button } from 'react-bootstrap';
+import { Navbar, NavDropdown ,Nav, Container, Button, Modal } from 'react-bootstrap';
 const BarraNavegacion = ({ setVista }) => 
 {
     const pdfFiles = {
@@ -19,6 +19,64 @@ const BarraNavegacion = ({ setVista }) =>
         "UA Algoritmos y Estructura de Datos": "algoritmosEstructurasDatos_ISC2020.pdf"
         // ...continúa con los nombres de todos tus archivos
       };
+      const uaContents = {
+        "UA C\u00E1lculo": {
+            "Programa Sintético": "calculo_ISC2020.pdf",
+            "Videos": "https://www.youtube.com/embed/mCdA4bJAGGk",
+            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+        },
+        "UA An\u00E1lisis Vectorial": {
+            "Programa Sintético": "analisisVectorial_ISC2020.pdf",
+            "Videos": "https://www.youtube.com/embed/mCdA4bJAGGk",
+            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+        },
+        "UA Matem\u00E1ticas Discretas": {
+            "Programa Sintético": "matematicasDiscretas_ISC2020.pdf",
+            "Videos": "https://www.youtube.com/embed/mCdA4bJAGGk",
+            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+        },
+        "UA Comunicaci\u00F3n Oral y Escrita": {
+            "Programa Sintético": "comunicacionOralEscrita_ISC2020.pdf",
+            "Videos": "https://www.youtube.com/embed/mCdA4bJAGGk",
+            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+        },
+        "UA Fundamentos de Programaci\u00F3n": {
+            "Programa Sintético": "fundamentosProgramacion_ISC2020.pdf",
+            "Videos": "https://www.youtube.com/embed/mCdA4bJAGGk",
+            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+        }
+        , "UA \u00C1lgebra Lineal": {
+            "Programa Sintético": "algebraLineal_ISC2020.pdf",
+            "Videos": "https://www.youtube.com/embed/mCdA4bJAGGk",
+            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+        }
+        , "UA C\u00E1lculo Aplicado": {
+            "Programa Sintético": "calculoAplicado_ISC2020.pdf",
+            "Videos": "https://www.youtube.com/embed/mCdA4bJAGGk",
+            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+        }
+        , "UA Mec\u00E1nica y Electromagnetismo": {
+            "Programa Sintético": "mecanicaElectromagnetismo_ISC2020.pdf",
+            "Videos": "https://www.youtube.com/embed/mCdA4bJAGGk",
+            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+        }
+        , "UA Ingenier\u00EDa, \u00C9tica y Sociedad": {
+            "Programa Sintético": "ingenieriaEticaSociedad_ISC2020.pdf",
+            "Videos": "https://www.youtube.com/embed/mCdA4bJAGGk",
+            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+        }
+        , "UA Fundamentos Econ\u00F3micos": {
+            "Programa Sintético": "fundamentosEconomicos_ISC2020.pdf",
+            "Videos": "https://www.youtube.com/embed/mCdA4bJAGGk",
+            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+        }
+        , "UA Algoritmos y Estructura de Datos": {
+            "Programa Sintético": "algoritmosEstructurasDatos_ISC2020.pdf",
+            "Videos": "https://www.youtube.com/embed/mCdA4bJAGGk",
+            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+        }
+        // Continúa hasta UA 11
+    };
     const descargarProgramSinteticoUA = (nombreMaterial, event)=> 
     {
         event.preventDefault();
@@ -31,6 +89,23 @@ const BarraNavegacion = ({ setVista }) =>
         link.parentNode.removeChild(link);
 
     }
+    //Logica para los submenus//
+    //Logica para invocar la modal //
+    const [showModal, setShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState({ type: '', url: '' });
+    const [activeUA, setActiveUA] = useState('');
+
+    const handleOpenModal = (content) => {
+        const url = content.type === 'Videos' ?
+        content.url : `${window.location.origin}/ProgramasSinteticosUAs/${content.url}`;
+    setModalContent({ type: content.type, url: url });
+    setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
     return(
         <>
     <Navbar expand="lg" className='navbar'>
@@ -48,17 +123,25 @@ const BarraNavegacion = ({ setVista }) =>
                 LearnMatch
             </Navbar.Brand>
             <Nav className='me-auto texto-navbar'>
-            <NavDropdown  title="Material de apoyo" id="materialesAprendizaje1" className='mx-2'>
-            {
-                Object.entries(pdfFiles).map(([key, nombreMaterial]) => (
-                    <NavDropdown.Item className='dropdown-item-text'
-                    key={key} 
-                    onClick={(e) => descargarProgramSinteticoUA(nombreMaterial, e)}
-                    >
-                    {key}
-                    </NavDropdown.Item>
-                ))
-                }
+            <NavDropdown  title="Material de aprendizaje" id="materialesAprendizaje1" className='mx-2 ua-dropdown-toggle' >
+            {Object.entries(uaContents).map(([uaName, options]) => (
+                <NavDropdown
+                    title={uaName}
+                    key={uaName}
+                    id={`${uaName.toLowerCase().replace(/\s+/g, '-')}-dropdown`}
+                    onMouseEnter={() => setActiveUA(uaName)}
+                    onMouseLeave={() => setActiveUA('')}
+                    show={activeUA === uaName}
+                    className='ua-dropdown-toggle'
+                >
+                    {Object.entries(options).map(([optionName, url]) => (
+                        <NavDropdown.Item key={optionName} onClick={() => handleOpenModal({ type: optionName, url })}>
+                            {optionName}
+                        </NavDropdown.Item>
+                    ))}
+                </NavDropdown>
+            ))}
+
             </NavDropdown>
             <Nav.Link  onClick={() => setVista('sobreNosotros')} className="mx-2 texto-navbar" style={{ cursor: 'pointer' }}>Sobre nosotros</Nav.Link>
             </Nav>
@@ -68,6 +151,37 @@ const BarraNavegacion = ({ setVista }) =>
             </Nav>
         </Container>
     </Navbar>
+
+                                   
+    <Modal show={showModal} onHide={handleCloseModal} size="xl">
+                <Modal.Header closeButton>
+                    <Modal.Title>Visualización de {modalContent.type}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                {modalContent.type === 'Videos' ? (
+        <iframe
+            src={modalContent.url}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            style={{ width: '100%', height: '500px' }}
+            title="Video Preview"
+        ></iframe>
+    ) : (
+        <iframe
+            src={modalContent.url}
+            style={{ width: '100%', height: '500px' }}
+            title="Document Preview"
+        ></iframe>
+    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModal}>Cerrar</Button>
+                    {modalContent.type !== 'Videos' && (
+                        <Button variant="primary" href={modalContent.url} target="_blank" download>Descargar</Button>
+                    )}
+                </Modal.Footer>
+            </Modal>
     </>
     );
 }
