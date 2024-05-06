@@ -17,6 +17,9 @@ app.use('/api/alumnos', rutasAlumnos);
 const rutasLogin = require('./api/rutas/rutasLogin');
 app.use('/api/login', rutasLogin);
 
+const rutasEmparejamiento =  require('./api/rutas/rutasEmparejamiento');
+app.use('/api/emparejamiento',rutasEmparejamiento);
+
 // Servir archivos estáticos de React
 app.use(express.static(path.join(__dirname, '..', 'cliente', 'build')));
 

@@ -35,6 +35,29 @@
     }
   }
 
+.conocimientos_deficiencias{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    column-gap: 5rem;
+}
+
+.columna{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fondo_def_conoc{
+  background-image: url('../Utils/materiales.jpg');
+}
+
+
+.btn_rechazo{
+  border-radius: 50px;
+  width: 50px;
+  height: 50px;
+  background-color: red;
+}
   @media(min-width:150px) and (max-width:360px){
     .medida_matchimg{
       width: 210px;
@@ -68,5 +91,13 @@
   @media(min-width:835px) and (max-width:1280px){
     .medida_matchimg{
       width: 400px;
+    }
+  }
+
+  @media(max-width:768px){
+    .conocimientos_deficiencias{
+      display: grid;
+      grid-template-columns: repeat(1,1fr);
+      column-gap: 5rem;
     }
   }
