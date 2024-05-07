@@ -1,10 +1,29 @@
+:root {
+  --azul-oceano: #007aa3;
+  --azul-profundo: #00475f;
+  --azul-cielo-hover: #0073a0;
+  --negro-absoluto: #000000;
+  --gris-oscuro: #333333;
+
+  --Lighter-Blue:  #81C3D7;
+  --Brighter-Green: #76B947;
+  --Soft-Violet: #6A4C93;
+  --danger-color: #dc3545;
+  --light-color: #f8f9fa;
+  --dark-color: #343a40;
+}
+
 .btn-inscribete {
-    background-color: #007bff; /* Color azul Bootstrap primary */
+    background-color: var(--negro-absoluto); /* Color azul Bootstrap primary */
     border-color: #007bff;
+  }
+
+  .btn-inscribete:hover {
+    background-color: var(--Soft-Violet); /* Color azul Bootstrap primary */
   }
   
   .btn-iniciar-sesion {
-    background-color: #6f42c1; /* Un color púrpura */
+    background-color: var(--azul-profundo); /* Un color púrpura */
     border-color: #6f42c1;
     font-style: italic;
     color:white ;
@@ -35,3 +54,21 @@
     transition: background-color 0.5s;
     cursor: pointer;
   }
+
+
+  .btn-leer
+  {
+    background: var(--azul-profundo);
+  }
+
+  .btn-leer:hover
+  {
+  background: var(--azul-cielo-hover);
+  }
+
+  
+  .card-modal
+  {
+    border: 1px solid #007aa3;
+  }
+  

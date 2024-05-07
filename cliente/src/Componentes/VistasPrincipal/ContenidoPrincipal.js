@@ -31,7 +31,7 @@ const ContenidoPrincipal = () =>
       </Container>
 
       <Container>
-        <div><h3>Más sobre <span>habiidades blandas</span></h3></div>
+        <div><h3>Más sobre <span>habilidades blandas</span></h3></div>
       </Container>
 
       <Container className="mt-4">

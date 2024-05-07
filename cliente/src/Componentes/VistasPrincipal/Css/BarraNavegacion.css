@@ -1,7 +1,10 @@
 :root {
-     --Darker-Blue:  #04476E;
-  --Medium-Blue: #3B89A9;
-  --Lighter-Blue:  #81C3D7;
+  --azul-oceano: #007aa3;
+  --azul-profundo: #00475f;
+  --azul-cielo-hover: #0073a0;
+  --negro-absoluto: #000000;
+  --gris-oscuro: #333333;
+
   --Brighter-Green: #76B947;
   --Soft-Violet: #6A4C93;
   --danger-color: #dc3545;
@@ -15,23 +18,23 @@
     color: white !important;
   }
   .dropdown-menu {
-    background-color: var(--Medium-Blue) !important; 
+    background-color: var(--azul-profundo) !important; 
     min-width: max-content;
   }
   
   .dropdown-item {
-    background-color: var(--Medium-Blue) !important;
+    background-color: var(--azul-profundo) !important;
     color: white !important; 
   }
   
   .dropdown-item:hover {
-    background-color: var(--Lighter-Blue) !important; 
+    background-color: var(--azul-cielo-hover) !important; 
   }
 
 .navbar 
 {
     color: white !important;
-    background:  linear-gradient(var(--Lighter-Blue),var(--Darker-Blue));
+    background: var(--azul-oceano);
 }
 
 .dropdown-item-text {

@@ -1,6 +1,10 @@
 :root {
-  --Darker-Blue:  #04476E;
-  --Medium-Blue: #3B89A9;
+  --azul-oceano: #007aa3;
+  --azul-profundo: #00475f;
+  --azul-cielo-hover: #0073a0;
+  --negro-absoluto: #000000;
+  --gris-oscuro: #333333;
+
   --Lighter-Blue:  #81C3D7;
   --Brighter-Green: #76B947;
   --Soft-Violet: #6A4C93;
@@ -44,4 +48,13 @@
     justify-content: space-between; /* Esto asegura que el botón se empuje hacia el final */
   }
 
-  
+  .footer
+  {
+    background: var(--azul-oceano);
+    
+  }
+
+  .text-footer
+  {
+    color: white !important; 
+  }

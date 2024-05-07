@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, Card } from 'react-bootstrap';
+import './Css/Botones.css';
 
 // Componente de la modal //
 const MiModal = ({ show, handleClose, title, children }) => {
@@ -48,11 +49,11 @@ const CardConModal = ({title, text, fullText }) => {
   
   return (
     <>
-      <Card>
-        <Card.Body className="d-flex flex-column justify-content-between">
+      <Card >
+        <Card.Body className="d-flex flex-column justify-content-between card-modal">
           <Card.Title>{title}</Card.Title>
           <Card.Text>{text}</Card.Text>
-          <Button variant="primary" onClick={showModal}>
+          <Button className='btn-leer' variant="primary" onClick={showModal}>
             Leer más
           </Button>
         </Card.Body>

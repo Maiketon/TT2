@@ -123,7 +123,7 @@ const BarraNavegacion = ({ setVista }) =>
                 LearnMatch
             </Navbar.Brand>
             <Nav className='me-auto texto-navbar'>
-            <NavDropdown  title="Material de aprendizaje" id="materialesAprendizaje1" className='mx-2 ua-dropdown-toggle' >
+            <NavDropdown  title="Material de apoyo" id="materialesAprendizaje1" className='mx-2 ua-dropdown-toggle' >
             {Object.entries(uaContents).map(([uaName, options]) => (
                 <NavDropdown
                     title={uaName}

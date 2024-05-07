@@ -79,9 +79,9 @@ const VistaPrincipal = () => {
       {vista ==='login' && <FormLogin/>}
     </div>
 
-    <footer className="footer mt-auto py-3 bg-light">
+    <footer className="footer mt-auto py-3">
         <Container>
-          <span className="text-muted">"El maestro debe adoptar el papel de facilitador, no proveedor de contenido" <br/> -Lev Semyonovich Vygotski </span>
+          <span className="text-footer">"El maestro debe adoptar el papel de facilitador, no proveedor de contenido" <br/> -Lev Semyonovich Vygotski </span>
         </Container>
       </footer>
 
