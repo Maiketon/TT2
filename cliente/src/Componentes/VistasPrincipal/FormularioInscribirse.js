@@ -155,7 +155,7 @@ const handleClose = () => setShowModal(false);
 </Modal>
 
 
-          <Row className="justify-content-md-center">
+          <Row className="justify-content-md-center pb-3">
             <Col md={7}>
               <Card>
                 <Card.Body>

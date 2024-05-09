@@ -4,15 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Button,Col,Row } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import perfil_generico from './Utils/perfil.png'
-import medalla_prueba from './Utils/medallaPrueba.png';
 
+
+import perfil_generico from './Utils/perfil.png'
 import medalla_Primer from './Utils/Uno.png';
 import medalla_Cinco from './Utils/Cinco.png';
 import medalla_Maestro from './Utils/Maestro.png';
 import medalla_Escucha from './Utils/Escucha.png';
 import medalla_Comunicados from './Utils/Comunicados.png'
 import medalla_Conex from './Utils/Conexion.png';
+
+import DetalleEmparejamiento from './DetalleEmparejamiento';
+
+
 
 
 import './Css/SidebarStyles.css';
@@ -56,9 +60,14 @@ const SidebarAlumno = ({ setVista }) => {
       const medallaEscucha = medallas.length > 0 ? medallas.find(medalla => medalla.FK_MEDALLA === 4) : null;
       const medallaComuE = medallas.length > 0 ? medallas.find(medalla => medalla.FK_MEDALLA === 5) : null;
       const medallaGranC = medallas.length > 0 ? medallas.find(medalla => medalla.FK_MEDALLA === 6) : null;
-    
 
+      // LOGICA PARA LAS PEQUEÑAS CARDS DE LOS EMPAREJAMIENTOS ACTIVOS DE MENTORIAS O AREAS DE OPORTUNIDAD //
+      const emparejamientos = [
+        { nombreUsuario: "Juan Pérez", iconoPerfil: "/path/to/juan.jpg", caducidad: "2024-12-31", token: "abcd1234", iconoEstado: "/path/to/estado1.jpg" },
+        // Otros emparejamientos
+    ];
     return (
+        <>
         <Container>
             <div className="sb_styles">
                 <aside className="sb_styles">
@@ -172,9 +181,21 @@ const SidebarAlumno = ({ setVista }) => {
                         </Menu>
                         <hr />
                     <Button onClick={handleLogout}>Cerrar Sesión</Button>
+                    <Container>
+            <div className="sb_styles">
+            
+                {emparejamientos.map((emp, index) => (
+                    <DetalleEmparejamiento key={index} datos={emp} />
+                ))}
+            </div>
+        </Container>
+                        
+                    
+                    
                 </aside>
             </div>
         </Container>
+        </>
     );
 }
 

@@ -1,0 +1,36 @@
+.detalle-emparejamiento {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+}
+
+.perfil-y-datos {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.icono-perfil, .icono-estado {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.nombre-usuario {
+  font-weight: bold;
+}
+
+.caducidad {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.input-token {
+  width: 100%;
+}
+
+.btn-finalizar {
+  margin-top: 10px;
+  width: 100%;
+}

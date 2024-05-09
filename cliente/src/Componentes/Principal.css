@@ -50,7 +50,7 @@
 
   .footer
   {
-    background: var(--azul-oceano);
+    background: var(--azul-profundo);
     
   }
 
@@ -58,3 +58,22 @@
   {
     color: white !important; 
   }
+  
+  .custom-modal-content {
+    font-size: 11px;
+
+  }
+  
+  h6
+  {
+    font-size: 13px;
+  }
+
+  .custom-button {
+    padding: 5px 10px; 
+    font-size: 12px; 
+}
+.custom-footer {
+  padding: 5px 10px; 
+  font-size: 14px;
+}

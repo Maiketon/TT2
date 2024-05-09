@@ -48,6 +48,14 @@
     color:white ;
   }
 
+  .btn-recuperar:hover
+  {
+    background-color: red; /* Un color púrpura */
+    border-color: #6f42c1;
+    font-style: italic;
+    color:white ;
+  }
+
   .ir-a-login 
   {
     text-decoration-line: underline;

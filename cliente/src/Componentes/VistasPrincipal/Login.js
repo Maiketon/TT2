@@ -528,7 +528,7 @@ const FormLogin = ()=>
                             <Container>
                                 <Col>
                                 <p>Si olvidaste tu contraseña. No te preocupes haz clic aqu&iacute;!!</p>
-                                    <Button  onClick={handleRecuperacion} variant="outline-primary" type="submit" className="ms-2 btn-iniciar-sesion">
+                                    <Button  onClick={handleRecuperacion} variant="outline-primary" type="submit" className="ms-2 btn-recuperar">
                                     <strong>Recuperar Contraseña </strong>
                                     </Button>
                                     </Col>

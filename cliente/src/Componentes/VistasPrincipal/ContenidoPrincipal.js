@@ -34,7 +34,7 @@ const ContenidoPrincipal = () =>
         <div><h3>Más sobre <span>habilidades blandas</span></h3></div>
       </Container>
 
-      <Container className="mt-4">
+      <Container className="mt-4 pb-3">
       <Row>
           <Col md={3} className="d-flex align-items-stretch">
           <CardConModal className="mb-3 d-flex"
