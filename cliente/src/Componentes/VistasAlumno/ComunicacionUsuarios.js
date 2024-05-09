@@ -29,8 +29,8 @@ const ComunicacionUsuarios = ({ setVista }) => {
   let zp; // Declara zp fuera de myMeeting para tener acceso a él en el useEffect
   let myMeeting = async (element) => {
     // generate Kit Token
-    const appID = 1585141426;
-    const serverSecret = "66c91ce029ac1077313a2689d3a455c4";
+    const appID = 615825585;
+    const serverSecret = "cef6fb2904ea3a9cc07c9f60d5e91367";
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID, randomID(5), randomID(5));
 
     // Create instance object from Kit Token.
