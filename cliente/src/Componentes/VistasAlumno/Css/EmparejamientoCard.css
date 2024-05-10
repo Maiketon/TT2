@@ -34,3 +34,19 @@
   margin-top: 10px;
   width: 100%;
 }
+
+.margen_superior{
+  margin-top: 100px;
+}
+
+.cuser-s1{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  column-gap: 5rem;
+}
+
+.columna{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

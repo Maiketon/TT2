@@ -11,6 +11,7 @@ const Emparejamiento = () => {
     const [showImage, setShowImage] = useState(true);
     const [datosAlumno, setDatosAlumno] = useState([]);
     const userPk = sessionStorage.getItem("userPk");
+    const bandera = sessionStorage.getItem("bandera");
 
     // Función para mostrar la modal
     const handleShowModal = () => setShowModal(true);
@@ -39,13 +40,22 @@ const Emparejamiento = () => {
     };
 
     const handleStartLoading = async () => {
-        handleShowModal();
-        await obtenerDatosAlumno();
-        setTimeout(() => {
-            setLoadingCompleted(true);
-            setShowImage(false); // Ocultar la imagen al finalizar la carga
-            handleCloseModal(); // Cerrar la modal al finalizar la carga
-        }, 3000); // Esperar 3 segundos antes de finalizar la carga
+        if (parseInt(bandera) !== 3) {
+            handleShowModal();
+            await obtenerDatosAlumno();
+            setTimeout(() => {
+                setLoadingCompleted(true);
+                setShowImage(false); // Ocultar la imagen al finalizar la carga
+                handleCloseModal(); // Cerrar la modal al finalizar la carga
+            }, 3000); // Esperar 3 segundos antes de finalizar la carga
+        } else {
+            Swal.fire({
+                title: 'Tienes 4 emparejamientos completos',
+                text: 'No puedes iniciar el emparejamiento porque tienes 4 emparejamientos, por favor ve al módulo de emparejamientos activos. ',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+        }
     };
 
     const obtenerDatosAlumno = async () => {
