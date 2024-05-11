@@ -30,7 +30,7 @@ const BarraNavegacion = ({ setVista }) => {
           <button className="elemento" onClick={() => setVista('registro')}>
             Registros de usuarios
           </button>
-          <button className="elemento" onClick={() => setVista('sobreNosotros')}>
+          <button className="elemento" onClick={() => setVista('estadistica')}>
             Estadisticas y reportes del algoritmo
           </button>
           <button className="elemento" onClick={() => setVista('sanciones')}>

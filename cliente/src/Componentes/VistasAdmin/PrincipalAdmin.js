@@ -7,6 +7,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import RegistroUsuarios from '../VistasAdmin/RegistroUsuarios';
 import Sanciones from '../VistasAdmin/Sanciones';
 import FormularioInscribirse from '../VistasPrincipal/FormularioInscribirse';
+import BarChart from '../VistasAdmin/Estadisticas'
 import BarraNavegacion from './BarraNavegacion';
 import PruebaAdmin from './PruebaAdmin';
 
@@ -27,6 +28,7 @@ const VistaPrincipal = () => {
         <Col {...getContentColumnSize()}>
           {vista === 'inicio' && <PruebaAdmin />}
           {vista === 'registro' && <RegistroUsuarios />} 
+          {vista === 'estadistica' && <BarChart/>} 
           {vista === 'sanciones' && <Sanciones />} 
           {vista === 'inscribirse' && <FormularioInscribirse />}
         </Col>
