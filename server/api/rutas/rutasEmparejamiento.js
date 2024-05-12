@@ -6,5 +6,7 @@ const controlEmparejamiento = require('../controladores/controlEmparejamiento');
 router.get('/obtenerDatosAlumno', controlEmparejamiento.obtenerNombresFortalezasDeficiencias);
 router.get('/obtenerStrikes', controlEmparejamiento.obtenerStrikes);
 router.get('/obtenerRol', controlEmparejamiento.obtenerRolEmparejamiento);
+router.get('/obtenerMentor', controlEmparejamiento.obtenerMentoresActivos);
+router.get('/obtenerAprendiz',controlEmparejamiento.obtenerAprendizActivos);
 //POSTS//
 module.exports = router;
