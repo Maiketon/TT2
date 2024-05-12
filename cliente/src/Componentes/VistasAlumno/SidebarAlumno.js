@@ -14,7 +14,7 @@ import medalla_Escucha from './Utils/Escucha.png';
 import medalla_Comunicados from './Utils/Comunicados.png'
 import medalla_Conex from './Utils/Conexion.png';
 
-import DetalleEmparejamiento from './DetalleEmparejamiento';
+import DetalleEmparejamiento from './DetalleEmparejamiento'; 
 
 
 
