@@ -107,13 +107,17 @@ async function EmparejarUsuarios(datosusuarioPrincipal, listaUsuarios, banderaRo
 
 async function CalcularPuntuacion(usuarioPrincipal, candidato, banderaRol) {
     try {
-        let puntuacion = 0;
+        let puntuacionAprendiz = 0;
+        let puntuacionMentor = 0;
         let maxCoincidenciasAprendiz = 0;
         let maxCoincidenciasMentor = 0;
         let tipoCoincidencia = "";
+        let puntuacion = 0;
+        let puntuacionTotalAprendiz=0;
+        let puntuacionTotalMentor=0;
 
         // Comparar las materias de deficiencia del usuario principal con las materias de enseñanza del candidato (Aprendiz)
-        puntuacion += [candidato.FK_ENSEÑANZA1, candidato.FK_ENSEÑANZA2, candidato.FK_ENSEÑANZA3].filter(
+        puntuacionAprendiz += [candidato.FK_ENSEÑANZA1, candidato.FK_ENSEÑANZA2, candidato.FK_ENSEÑANZA3].filter(
             enseñanzaCandidato => [usuarioPrincipal.MATERIADEF1, usuarioPrincipal.MATERIADEF2, usuarioPrincipal.MATERIADEF3].includes(enseñanzaCandidato)
         ).length;
 
@@ -122,7 +126,7 @@ async function CalcularPuntuacion(usuarioPrincipal, candidato, banderaRol) {
         ).length;
 
         // Comparar las materias de enseñanza del usuario principal con las materias de deficiencia del candidato (Mentor)
-        puntuacion += [candidato.FK_DEFICIENCIA1, candidato.FK_DEFICIENCIA2, candidato.FK_DEFICIENCIA3].filter(
+        puntuacionMentor += [candidato.FK_DEFICIENCIA1, candidato.FK_DEFICIENCIA2, candidato.FK_DEFICIENCIA3].filter(
             deficienciaCandidato => [usuarioPrincipal.MATERIAENS1, usuarioPrincipal.MATERIAENS2, usuarioPrincipal.MATERIAENS3].includes(deficienciaCandidato)
         ).length;
 
@@ -130,35 +134,59 @@ async function CalcularPuntuacion(usuarioPrincipal, candidato, banderaRol) {
             deficienciaCandidato => [usuarioPrincipal.MATERIAENS1, usuarioPrincipal.MATERIAENS2, usuarioPrincipal.MATERIAENS3].includes(deficienciaCandidato)
         ).length;
 
+        puntuacionTotalAprendiz=puntuacionAprendiz + candidato.CALIFICACION_MENTOR;
+        puntuacionTotalMentor=puntuacionMentor + candidato.CALIFICACION_APRENDIZ;
+
         // Si no hay coincidencias en ninguna categoría, la puntuación es 0
         if (maxCoincidenciasAprendiz === 0 && maxCoincidenciasMentor === 0) {
             puntuacion = 0;
         } else {
+            
             // Determinar el tipo de coincidencia
-            if (maxCoincidenciasAprendiz > maxCoincidenciasMentor) {
+            if (candidato.ROL === 2) {
                 tipoCoincidencia = "Aprendiz";
-                puntuacion += parseFloat(candidato.CALIFICACION_APRENDIZ);
-            } else if (maxCoincidenciasMentor > maxCoincidenciasAprendiz) {
+                if (maxCoincidenciasMentor === 0) {
+                    puntuacion = 0;
+                } else {
+                    puntuacion = parseFloat(candidato.CALIFICACION_MENTOR) + puntuacionAprendiz;
+                }
+            } else if (candidato.ROL === 1) {
                 tipoCoincidencia = "Mentor";
-                puntuacion += parseFloat(candidato.CALIFICACION_MENTOR);
+                if (maxCoincidenciasAprendiz === 0) {
+                    puntuacion = 0;
+                } else {
+                    puntuacion = parseFloat(candidato.CALIFICACION_APRENDIZ) + puntuacionMentor;
+                }
+            } else {
+            // Determinar el tipo de coincidencia
+            if (puntuacionTotalAprendiz > puntuacionTotalMentor) {
+                tipoCoincidencia = "Aprendiz";
+                puntuacion = parseFloat(candidato.CALIFICACION_MENTOR) + puntuacionAprendiz;
+            } else if (puntuacionTotalMentor > puntuacionTotalAprendiz) {
+                tipoCoincidencia = "Mentor";
+                puntuacion = parseFloat(candidato.CALIFICACION_APRENDIZ) + puntuacionMentor;
             } else {
                 // Si hay igual número de coincidencias para Aprendiz y Mentor, asignar el tipo basado en la calificación
-                if (parseFloat(candidato.CALIFICACION_APRENDIZ) > parseFloat(candidato.CALIFICACION_MENTOR)) {
+                if (parseFloat(candidato.CALIFICACION_APRENDIZ) > parseFloat(candidato.CALIFICACION_MENTOR) && candidato.ROL != 2) {
                     tipoCoincidencia = "Aprendiz";
-                    puntuacion += parseFloat(candidato.CALIFICACION_APRENDIZ);
+                    puntuacion = parseFloat(candidato.CALIFICACION_MENTOR) + puntuacionAprendiz;
                 } else {
                     tipoCoincidencia = "Mentor";
-                    puntuacion += parseFloat(candidato.CALIFICACION_MENTOR);
+                    puntuacion = parseFloat(candidato.CALIFICACION_APRENDIZ) + puntuacionMentor;
                 }
             }
         }
+     }
 
         // Ajustar puntuación según la banderaRol
         if (banderaRol === 1 && tipoCoincidencia === "Aprendiz") {
             puntuacion = 0;
+
         } else if (banderaRol === 2 && tipoCoincidencia === "Mentor") {
             puntuacion = 0;
         }
+
+        
 
         // Devolver puntuación, el número máximo de coincidencias y el tipo de coincidencia
         return { puntuacion, 
