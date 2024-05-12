@@ -1,59 +1,71 @@
 import React, { useRef, useEffect } from 'react';
-import Chart from 'chart.js/auto';
-import { Bar } from 'react-chartjs-2';
+import { Container, Button,Card, Row, Col} from 'react-bootstrap';
+
+import GraficaBarras from './EjemploGraficaBarras';
+import GraficaR from './EjemploGraficaRadar';
+import GraficaD from './EjemploGraficaDona'; // PARA LAS MATERIAS//
+import GraficaP from './EjemploGraficaPolar'; // ESTA PARA MEDALLAS
+import GraficaPl from './EjemploGraficaPastel';
+import './Css/EstilosGraficas.css';
 
 
+const Estadisticas = () => {
+    
 
-const BarChart = () => {
-    const chartRef = useRef(null);
+  return (
+    <>
+      <Container fluid>
+      <Card className='p-3'>
+      <Card.Header >
+        <Card.Title>Módulo de selección de gráficas del comportamiento del algoritmo de emparejamiento</Card.Title>
+      </Card.Header>
+      <Card.Body>
+        <Container fluid>
+          <Card>
+            <Card.Header>
+              Seleccione la opción para ver la gráfica de comportamiento
+            </Card.Header>
 
-    useEffect(() => {
-      // Limpieza cuando el componente se desmonta
-      return () => {
-        if (chartRef.current) {
-          chartRef.current.destroy();
-        }
-      };
-    }, []);
-  const data = {
-    labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
-    datasets: [
-      {
-        label: 'Ventas en 2024 (en miles)',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)'
-        ],
-        borderWidth: 1
-      }
-    ]
-  };
+            <Card.Body>
+              <Container>
+                   <Row className='p-1'>
+                   <Col>
+                   <Button className='m-1'>Uso de la aplicación</Button>
+                    <Button  className='m-1'>Sanciones de los usuarios</Button>
+                    <Button  className='m-1'>Emparejamientos Totales Realizados</Button>
+                   </Col>
+                   </Row>
 
-  const options = {
-    scales: {
-      x: {
-        type: 'category',
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
-      },
-      y: {
-        beginAtZero: true
-      }
-    }
-  };
-  
+                   <Row className='p-1'>
+                    <Col>
+                   <Button  className='m-1'>Materias seleccionadas por alumnos</Button>
+                   <Button  className='m-1'>Estatus de los emparejamientos</Button>
+                   <Button  className='m-1'>Estatus de medallas de los usuarios</Button>
+                    </Col>
+                   </Row>
+              </Container>
+                <Card.Footer></Card.Footer>
+              <Container className='contendedor-grafica'>
+                <h1>AQUI VAN LAS GRAFICAS</h1>
+                <GraficaBarras/>
+                <GraficaR/>
+                <GraficaD/>
+                <GraficaP/>
+                <GraficaPl/>
 
-  return <Bar ref={chartRef} data={data} options={options} />;
+              </Container>
+            </Card.Body>
+          </Card>
+        </Container>
+      </Card.Body>
+    </Card>
+      </Container>
+    
+    
+    </>
+
+
+  );
 }
 
-export default BarChart;
+export default Estadisticas;

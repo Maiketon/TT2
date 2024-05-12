@@ -157,16 +157,11 @@ const Configuracion = () => {
                                 <Button className="btn btn-dark" onClick={alertaCambiarPassword}>
                                     Cambiar la contraseña
                                 </Button>
+                                <Button className="btn btn-danger" onClick={alertaEliminarCuenta}>
+                                     Eliminar cuenta
+                                </Button>
                             </Form>
                         </Container>
-                    </div>
-                    <hr />
-                    <div className="card-header">Elimina tu cuenta</div>
-                    <div className="card-body">
-                        {/* Botón para eliminar cuenta con función onClick */}
-                        <Button className="btn btn-danger" onClick={alertaEliminarCuenta}>
-                            Eliminar cuenta
-                        </Button>
                     </div>
                 </div>
             </div>

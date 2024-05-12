@@ -97,6 +97,57 @@ class modeloEmparejamiento{
             throw err;
         }
     }
+
+
+    async obtenerMentorActivo(userPk){
+        const sql = `
+        SELECT 
+            CONCAT(inf.NOMBRE, " ", inf.APELLIDO_PATERNO, " ", inf.APELLIDO_MATERNO) AS nombreCompleto,
+            emp.FK_ESTADOEMPAREJAMIENTO AS estado,
+            emp.FK_USUARIO1,
+            emp.ROL_USUARIO1 AS rol
+        FROM
+            emparejamiento emp
+        INNER JOIN informacionusuario inf ON (emp.FK_USUARIO1 = inf.PK_USUARIO)
+        WHERE
+            
+            emp.ROL_USUARIO1 = 1
+            AND emp.FK_USUARIO2 = ?;
+        `;
+
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk]);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async obtenerAprendizActivo(userPk){
+        const sql = `
+        SELECT 
+            CONCAT(inf.NOMBRE, " ", inf.APELLIDO_PATERNO, " ", inf.APELLIDO_MATERNO) AS nombreCompleto,
+            emp.FK_ESTADOEMPAREJAMIENTO AS estado,
+            emp.FK_USUARIO2,
+            emp.ROL_USUARIO2 AS rol
+        FROM
+            emparejamiento emp
+        INNER JOIN informacionusuario inf ON (emp.FK_USUARIO2 = inf.PK_USUARIO)
+        WHERE
+            
+            emp.ROL_USUARIO2 = 2
+            AND emp.FK_USUARIO1 = ?;
+        `;
+
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk]);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
     
 
 

@@ -28,14 +28,22 @@ app.use('/api/algoritmo', rutasAlgoritmo);
 const rutasEmparejamiento =  require('./api/rutas/rutasEmparejamiento');
 app.use('/api/emparejamiento',rutasEmparejamiento);
 
-// Servir archivos estáticos de React
-app.use(express.static(path.join(__dirname, '..', 'cliente', 'build')));
-
-// Redirecciona todas las rutas no-API a React
-app.get('/*', function (req, res) {
+app.use((req, res, next) => {
+    if (req.url.match(/\.(js|css|json)$/)) {
+      res.set('Cache-Control', 'no-store');
+    }
+    next();
+  });
+  
+  // Servir archivos estáticos de React
+  app.use(express.static(path.join(__dirname, '..', 'cliente', 'build')));
+  
+  // Redirecciona todas las rutas no-API a React
+  app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'cliente', 'build', 'index.html'));
   });
 
+  
 //Manejo de errores MiddleWare que se estara desarrollando//
 app.use((req, res, next) => {
     res.status(404).send("La ruta que intentas acceder no existe.");
