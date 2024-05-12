@@ -34,3 +34,27 @@ exports.obtenerRolEmparejamiento = async (req,res) => {
     }
 };
 
+exports.obtenerMentoresActivos = async(req,res) => {
+    const {userPk} = req.query;
+    try {
+        const mentor = await modeloEmparejamiento.obtenerMentorActivo(userPk);
+       
+        res.json(mentor);
+    } catch (err) {
+        console.error('Error realizando la consulta:', err);
+        res.status(500).send('Error en el servidor al obtener el mentor activo');
+    }
+};
+
+exports.obtenerAprendizActivos = async(req,res) => {
+    const {userPk} = req.query;
+    try {
+        const aprendiz = await modeloEmparejamiento.obtenerAprendizActivo(userPk);
+       
+        res.json(aprendiz);
+    } catch (err) {
+        console.error('Error realizando la consulta:', err);
+        res.status(500).send('Error en el servidor al obtener el aprendiz activo');
+    }
+};
+
