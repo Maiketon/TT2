@@ -160,17 +160,6 @@ const FormLogin = ()=>
               alert(response.data);
           });
   }
-    
-    const handleCloseModalAdmin = () => {
-       setModalAdmin(false);
-       navigate("/VistasAdmin/PrincipalAdmin"); // Utiliza navigate para redireccionar en React Router v6
-     };
-
-     const handleCloseModalAlumno = () => {
-      setModalAlumno(false);
-      navigate("/VistasAlumno/PrincipalAlumno"); // Utiliza navigate para redireccionar en React Router v6
-      };  
-
     const handleRecuperacion = () => 
     {
         setModalRecuperacion(true)
@@ -186,14 +175,11 @@ const FormLogin = ()=>
     const fetchMaterias = async () => {
       try {
         const response = await axios.get('http://localhost:3001/api/alumnos/materias');
-        setMaterias(response.data);
-        // Inicializar los estados basados en los datos recibidos
-        // setSeleccionIzquierda(new Array(response.data.length).fill(false));
-        // setSeleccionDerecha(new Array(response.data.length).fill(false));
+        setMaterias(response.data);      
         setSeleccionIzquierda(response.data.map(materia => ({ seleccionado: false, pk: materia.PK_MATERIA })));
         setSeleccionDerecha(response.data.map(materia => ({ seleccionado: false, pk: materia.PK_MATERIA })));
         setDeshabilitado(new Array(response.data.length).fill(false));
-        // setDeshabilitado(new Array(response.data.length).fill(false));
+        
       } catch (error) {
         console.error('Error al obtener las materias', error);
       }
@@ -202,33 +188,7 @@ const FormLogin = ()=>
     fetchMaterias();
   }, []);
     const ActualizarEstado = (indice, columna) => {
-        // Actualiza las selecciones y la deshabilitación basada en la columna y el índice
-        // if (columna === "izquierda") {
-        //     const seleccionados = seleccionIzquierda.filter(seleccion => seleccion).length; //VERIFICO CUANTOS CHECKBOX HAN SIDO SELECCIONADOS//
-        //     if (!seleccionIzquierda[indice] && seleccionados>=3)
-        //     {
-        //         return; //Si se pasa no permito que siga seleccionando mas
-        //     }
-
-        //     const nuevaSeleccionIzquierda = [...seleccionIzquierda];
-        //     nuevaSeleccionIzquierda[indice] = !nuevaSeleccionIzquierda[indice];
-        //     setSeleccionIzquierda(nuevaSeleccionIzquierda);
-
-        //     // Cambia la deshabilitación solo si se está marcando el checkbox
-        //     setDeshabilitado(deshabilitado.map((item, i) => i === indice ? nuevaSeleccionIzquierda[indice] : item));
-        // } else {
-        //     //MISMA LOGICA LA COLUMNA DERECHA //
-        //     const seleccionados = seleccionDerecha.filter(seleccion => seleccion).length;
-        // if (!seleccionDerecha[indice] && seleccionados >= 3) {
-        //     return;   //Si se pasa no permito que siga seleccionando mas
-        // }
-        //     const nuevaSeleccionDerecha = [...seleccionDerecha];
-        //     nuevaSeleccionDerecha[indice] = !nuevaSeleccionDerecha[indice];
-        //     setSeleccionDerecha(nuevaSeleccionDerecha);
-
-        //     // Cambia la deshabilitación solo si se está marcando el checkbox
-        //     setDeshabilitado(deshabilitado.map((item, i) => i === indice ? nuevaSeleccionDerecha[indice] : item));
-        // }
+       
         const seleccionActual = columna === "izquierda" ? seleccionIzquierda : seleccionDerecha;
   const setSeleccion = columna === "izquierda" ? setSeleccionIzquierda : setSeleccionDerecha;
 
@@ -251,17 +211,7 @@ const FormLogin = ()=>
     };
 
     const crearCheckboxes = (seleccion, columna) => {
-        // return materias.map((materia, indice) => (
-        //   <Form.Check
-        //     type="checkbox"
-        //     label={materia.NOMBRE_MATERIA}
-        //     key={`${columna}-${materia.PK_MATERIA}`}
-        //     id={`checkbox-${columna}-${materia.PK_MATERIA}`}
-        //     checked={seleccion[indice]}
-        //     onChange={() => ActualizarEstado(indice, columna)}
-        //     disabled={deshabilitado[indice] && !seleccion[indice]}
-        //   />
-        // ));
+
         return materias.map((materia, indice) => (
           <Form.Check
             type="checkbox"

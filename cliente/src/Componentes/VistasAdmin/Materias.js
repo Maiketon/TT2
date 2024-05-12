@@ -5,6 +5,7 @@ import Avatar1 from "./Utils/Avatar1Login.jpg";
 
 const Materias = () => {
   return (
+    <>
     <Container fluid style={{ border: '1px solid #ccc', borderRadius: '5px' }}>
       <Carousel>
         {/* Slide 1 */}
@@ -129,6 +130,7 @@ const Materias = () => {
         </Carousel.Item>
       </Carousel>
     </Container>
+    </>
   );
 }
 

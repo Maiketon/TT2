@@ -9,14 +9,19 @@ const path = require('path');
 app.use(cors());
 app.use (express.json());
 
+//ACCESO AL ARCHIVO CON TODOS LOS END POINT DEL ADMINISTRADOR
+const rutasAdministrador = require('./api/rutas/rutasAdministrador');
+app.use('/api/administracion', rutasAdministrador);
 
+
+//ACCESO AL ARCHIVO CON TODOS LOS END POINT DEL ALUMNO
 const rutasAlumnos = require('./api/rutas/rutasAlumnos');
 app.use(bodyParser.json());
 app.use('/api/alumnos', rutasAlumnos);
-
+//ACCESO AL ARCHIVO CON TODOS LOS ENDPOINT DEL LOGIN
 const rutasLogin = require('./api/rutas/rutasLogin');
 app.use('/api/login', rutasLogin);
-
+//ACCESO AL ARCHIVO CON TODOS LOS END POINT DEL EMPAREJAMIENTO
 const rutasEmparejamiento =  require('./api/rutas/rutasEmparejamiento');
 app.use('/api/emparejamiento',rutasEmparejamiento);
 

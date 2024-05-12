@@ -14,6 +14,7 @@ const BarraNavegacion = ({ setVista }) => {
   };
 
   return (
+    <>
     <div className="pagina">
       {/* Side bar */}
       <div className="sidebar">
@@ -45,6 +46,7 @@ const BarraNavegacion = ({ setVista }) => {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

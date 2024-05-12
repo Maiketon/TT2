@@ -85,6 +85,8 @@ SELECT * FROM estatus;
 SELECT * FROM  informacionusuario;
 SELECT * FROM medallas;
 SELECT * FROM  controlmedallas;
+SELECT * FROM estadosemparejamientos;
+SELECT * FROM emparejamiento;
 ALTER TABLE informacionusuario AUTO_INCREMENT = 1;
 
 SELECT PK_CONTROLMEDALLAS,FK_MEDALLA, ESTADO FROM controlMedallas WHERE FK_USUARIOINFO = 8;
@@ -154,6 +156,10 @@ FOREIGN KEY (FK_ENSEÑANZA2) REFERENCES materia(PK_MATERIA);
 ALTER TABLE informacionusuario
 ADD CONSTRAINT fk_ment3
 FOREIGN KEY (FK_ENSEÑANZA3) REFERENCES materia(PK_MATERIA);
+
+-- Valores Default --
+ALTER TABLE informacionusuario MODIFY COLUMN RECHAZOS INT DEFAULT 9;
+
 ALTER TABLE informacionusuario
 ADD CONSTRAINT fk_estatus
 FOREIGN KEY (FK_ESTATUSUSUARIO) REFERENCES estatus(PK_ESTATUS);

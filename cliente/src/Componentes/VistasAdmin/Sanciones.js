@@ -5,6 +5,7 @@ import Avatar1 from "./Utils/Avatar1Login.jpg";
 
 const Sanciones = () => {
   return (
+    <>
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
     <Container style={{ width: '50%', maxWidth: '800px', border: '1px solid #ccc', borderRadius: '5px' }}>
       <Carousel>
@@ -99,6 +100,7 @@ const Sanciones = () => {
       </Carousel>
     </Container>
     </div>
+    </>
   );
 }
 
