@@ -21,7 +21,10 @@ app.use('/api/alumnos', rutasAlumnos);
 //ACCESO AL ARCHIVO CON TODOS LOS ENDPOINT DEL LOGIN
 const rutasLogin = require('./api/rutas/rutasLogin');
 app.use('/api/login', rutasLogin);
-//ACCESO AL ARCHIVO CON TODOS LOS END POINT DEL EMPAREJAMIENTO
+
+const rutasAlgoritmo = require('./api/rutas/rutasAlgoritmo');
+app.use('/api/algoritmo', rutasAlgoritmo);
+
 const rutasEmparejamiento =  require('./api/rutas/rutasEmparejamiento');
 app.use('/api/emparejamiento',rutasEmparejamiento);
 

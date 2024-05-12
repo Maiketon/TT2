@@ -1,7 +1,5 @@
 //IMPORTACIONES DEL MODELO//
 const modeloEmparejamiento = require('../modelo/emparejamientoModelo');
-
-
 exports.obtenerNombresFortalezasDeficiencias = async (req,res) => {
     const { userPk } = req.query;
     try {
