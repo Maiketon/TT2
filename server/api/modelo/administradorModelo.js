@@ -38,26 +38,18 @@ class  modeloAdmin
     async datosGraficaUsoAplicacion() {
         try {
             const promesadb = db.promise();
-            
-            // Consulta para obtener la suma de TIEMPO_TOTAL_CHAT
             const [sumatiempozg] = await promesadb.query(
                 'SELECT SUM(TIEMPO_TOTAL_CHAT) AS sumatiempozg FROM comunicacionzg;'
             );
-            
-            // Consulta para obtener el total de emparejamientos
             const [totalemparejamiento] = await promesadb.query(
                 'SELECT COUNT(*) AS totalemparejamiento FROM emparejamiento;'
             );
-            
-            // Consulta para obtener la suma de usuarios con FK_ESTATUS 4 y 5, y también aquellos con 6
             const [totalusuarios] = await promesadb.query(
                 `SELECT
                     SUM(CASE WHEN FK_ESTATUSUSUARIO IN (4, 5) THEN 1 ELSE 0 END) AS totalusuariosAyS,
                     SUM(CASE WHEN FK_ESTATUSUSUARIO = 6 THEN 1 ELSE 0 END) AS totalusuariosV
                  FROM informacionusuario;`
             );
-    
-            // Retornar un objeto con todos los resultados
             return {
                 sumatiempozg: sumatiempozg[0].sumatiempozg,
                 totalemparejamiento: totalemparejamiento[0].totalemparejamiento,
@@ -68,6 +60,40 @@ class  modeloAdmin
             throw error;
         }
     }
+
+    async datosGraficaSanciones() {
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(`
+            SELECT 
+            CASE 
+                WHEN SANCIONES = 3 THEN 'sanciones3'
+                WHEN SANCIONES = 2 THEN 'sanciones2'
+                WHEN SANCIONES = 1 THEN 'sanciones1'
+                ELSE 'sanciones0'
+            END AS CategoriaSanciones,
+            COUNT(*) AS total
+        FROM informacionusuario
+        GROUP BY CategoriaSanciones
+        ORDER BY CategoriaSanciones;
+        
+            `);
+    
+            // Formatea el resultado si es necesario
+            const formattedResult = result.reduce((acc, cur) => {
+                acc[cur.CategoriaSanciones] = cur.total; // Asegúrate de usar el nombre correcto de la columna
+                return acc;
+            }, {});
+    
+            return formattedResult;  // Devuelve un objeto con las categorías de sanciones como claves y los totales como valores
+        } catch (error) {
+            console.error('Error al obtener datos de sanciones:', error);
+            throw error;  // Re-lanzar el error para manejo superior
+        }
+    }
+    
+    
+    
     
 }
 module.exports = new modeloAdmin();

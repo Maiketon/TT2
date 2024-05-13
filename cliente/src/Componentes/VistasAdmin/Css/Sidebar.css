@@ -1,10 +1,23 @@
-
+:root {
+    --azul-oceano: #007aa3;
+    --azul-profundo: #00475f;
+    --azul-cielo-hover: #0073a0;
+    --negro-absoluto: #000000;
+    --gris-oscuro: #333333;
+  
+    --Brighter-Green: #76B947;
+    --Soft-Violet: #6A4C93;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --grey-color: #a9acb0;
+    --dark-color: #343a40;
+    }
 
 /* Estilos CSS para el barra lateral */
 .sidebar {
     width: 330px; /* Ancho fijo */
     min-height: 95vh; /* Altura mínima igual al 100% del viewport */
-    background-color: #f0f0f0;
+    background-color: var(--azul-profundo);
     border: 2px solid #000; /* Borde sólido */
     box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
     overflow-y: auto; /* Agrega desplazamiento vertical si el contenido es más largo que el sidebar */
@@ -54,6 +67,7 @@
     margin-top: 20px;
     margin-bottom: 20px; /* Agrega margen inferior */
     text-align: center; /* Centra el título */
+    color: white;
 }
 
 /* Estilos CSS para la lista de botones */
@@ -61,13 +75,16 @@
     
     display: flex;
     flex-direction: column;
+    background-color: var(--azul-profundo);
 }
 
 .elemento {
     border: none;
+    color: white;
     margin-bottom: 10px; /* Ajusta el margen inferior entre botones */
     text-align: left; /* Alinea el texto a la izquierda */
     transition: background-color 0.3s ease; /* Transición suave del color de fondo */
+    background-color: var(--azul-profundo);
 }
 
 .elemento:hover {

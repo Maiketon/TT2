@@ -9,7 +9,8 @@ router.post('/registroUsuarios', controlAdministracion.obtenerRegistrosUsuarios)
 
 
 
-router.get('/datosGraficaUsoBoton',controlAdministracion.datosGraficaUsoAplicacion)
+router.get('/datosGraficaUsoBoton',controlAdministracion.datosGraficaUsoAplicacion);
+router.get('/datosSanciones',controlAdministracion.datosGraficaSanciones);
 
 
 module.exports = router;

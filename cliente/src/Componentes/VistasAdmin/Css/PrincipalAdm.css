@@ -1,0 +1,18 @@
+:root {
+    --azul-oceano: #007aa3;
+    --azul-profundo: #00475f;
+    --azul-cielo-hover: #0073a0;
+    --negro-absoluto: #000000;
+    --gris-oscuro: #333333;
+  
+    --Brighter-Green: #76B947;
+    --Soft-Violet: #6A4C93;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --grey-color: #a9acb0;
+    --dark-color: #343a40;
+    }
+.principal
+{
+    background-color: var(--azul-profundo);
+}

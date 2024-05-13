@@ -1,12 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
 import { jsPDF } from 'jspdf';
+import { useCarga } from "./ContextoCarga";
 import { Button, Container,Row } from 'react-bootstrap';
 import axios from 'axios';
 
 const BarChart = () => {
   const chartRef = useRef(null);
+  const {setEstaCargando} = useCarga();
 
   const [chartData, setChartData] = useState({
     labels: ['Uso de la aplicacion'],
@@ -26,7 +27,7 @@ const BarChart = () => {
         borderWidth: 1
       },
       {
-        label: 'Usuarios con acceso a emparejamiento y soporte',
+        label: 'Usuarios con acceso a emparejamiento (Aprobados y Sancionados)',
         data: [],
         backgroundColor: 'rgba(255, 206, 86, 0.5)',
         borderColor: 'rgba(255, 206, 86, 1)',
@@ -43,6 +44,7 @@ const BarChart = () => {
   });
 
   useEffect(() => {
+    setEstaCargando(true);
     axios.get('http://localhost:3001/api/administracion/datosGraficaUsoBoton')
       .then(response => {
         const { sumatiempozg, totalemparejamiento, totalusuariosAyS, totalusuarios6 } = response.data;
@@ -55,6 +57,7 @@ const BarChart = () => {
             { ...prevData.datasets[3], data: [totalusuarios6] }
           ]
         }));
+        setEstaCargando(false);
       })
       .catch(error => console.error('Error al obtener los datos del gráfico:', error));
   }, []);
@@ -80,7 +83,7 @@ const BarChart = () => {
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save('download.pdf');
+      pdf.save('graficaUsoApp.pdf');
     }
   };
 

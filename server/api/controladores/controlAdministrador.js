@@ -45,4 +45,17 @@ exports.datosGraficaUsoAplicacion = async (req,res)=>
             console.error('Error al obtener los datos para la grafica del boton usuario');
             res.status(500).send('Error al obtener los datos para el llenado de la grafica',error);
         }
-    }
+    };
+
+    exports.datosGraficaSanciones = async (req, res) => {
+        try {
+            const graficaBotonSanciones = await modeloAdmin.datosGraficaSanciones();
+            console.log(graficaBotonSanciones);
+            res.status(200).json(graficaBotonSanciones);
+        } catch (error) {
+            console.error('Error al obtener los datos para la grafica del boton sanciones', error);
+            // Combina el mensaje de error y detalles del error en una sola respuesta
+            res.status(500).send(`Error al obtener los datos para el llenado de la grafica sanciones: ${error.message}`);
+        }
+    };
+    

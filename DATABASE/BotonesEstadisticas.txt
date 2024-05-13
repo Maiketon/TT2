@@ -1,0 +1,40 @@
+Boton ZegoCloud: Barras YA
+
+Tiempo TOTAL que TODOS los usuarios han usado ZegoCloud. Ya
+Numero total de emparejamientos. ya
+Total de usuarios Aprobados y Sancionados. ya
+Total de usuarios Vetados. ya
+Total de reportes de usuarios.
+
+Boton Sanciones Usuario:Pastel YA
+Usuarios con 0 sanciones
+1
+2
+3
+
+
+Boton Emparejamientos totales realizados :Polar
+Numero total de emparejamientos
+Emparejamientos pendientes
+Emparejamientos Activos
+Emparejamientos Finalizados
+
+Calificaciones de Usuario Calificaciones usuario Barra
+0.0-1 1 
+1.1-2 2
+2.1-3 3
+3.1-4 4
+4.1-5 5
+
+
+
+Boton Materias Alumnos : Radar
+Obtiene el total de usuarios de la base de datos y empeiza a contar para cada caso de cada materia
+Total de usuarios con deficiencia
+Total de usuarios con Fortalezas
+
+
+Medallas Usuarios: Dona
+Obtener el total de usuarios con cada medalla x individual
+requiere total de usuarios
+
