@@ -10,14 +10,62 @@ const Emparejamiento = () => {
     const [loadingCompleted, setLoadingCompleted] = useState(false);
     const [showImage, setShowImage] = useState(true);
     const [datosAlumno, setDatosAlumno] = useState([]);
+    const [deletedCardIndex, setDeletedCardIndex] = useState(null); 
+    const [deleteAcceptPairmentCard, setdeleteAcceptPairment] = useState(null);
     const userPk = sessionStorage.getItem("userPk");
+    const numrechazos = sessionStorage.getItem("numRechazos");
     const bandera = sessionStorage.getItem("bandera");
+    const numemparejamientos = sessionStorage.getItem("totalEmparejamientos");
 
     // Función para mostrar la modal
     const handleShowModal = () => setShowModal(true);
 
     // Función para cerrar la modal manualmente
     const handleCloseModal = () => setShowModal(false);
+
+
+  //FUNCIONES PARA BORRAR LAS CARDS CUANDO SE PRESIONA EL BOTON DE RECHAZAR EMPAREJAMIENTO//////////  
+    const handleDeleteCard = async (index) => {
+        const numRechazos = parseInt(sessionStorage.getItem("numRechazos"));
+        
+        if (numRechazos > 0) {
+            setDeletedCardIndex(index); // Establecer el índice de la tarjeta eliminada
+            await actualizarRechazos();
+        }
+        // No se realiza ninguna acción si numRechazos es igual o menor que 0
+    };
+
+
+    useEffect(() => {
+        // Lógica para eliminar la tarjeta después de la animación
+        if (deletedCardIndex !== null) {
+            setTimeout(() => {
+                setDatosAlumno((prevDatos) => prevDatos.filter((_, index) => index !== deletedCardIndex));
+                setDeletedCardIndex(null);
+            }, 300); // Tiempo de espera que coincide con la duración de la animación
+        }
+    }, [deletedCardIndex]);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    
+    const handleDeleteAcceptCard = async (index) => {
+        setdeleteAcceptPairment(index);
+    };
+
+    useEffect(() => {
+        // Lógica para eliminar la tarjeta después de la animación
+        if (deleteAcceptPairmentCard !== null) {
+            setTimeout(() => {
+                setDatosAlumno((prevDatos) => prevDatos.filter((_, index) => index !== deleteAcceptPairmentCard));
+                setdeleteAcceptPairment(null);
+            }, 300); // Tiempo de espera que coincide con la duración de la animación
+        }
+    }, [deleteAcceptPairmentCard]);
+
+
+
+
+
 
     const obtenerStrikes = async () => {
         try {
@@ -39,10 +87,28 @@ const Emparejamiento = () => {
         });
     };
 
+    useEffect(() => {
+        Rechazos(); // Se ejecuta al cargar el componente
+    }, [userPk]);
+
+    const Rechazos = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerRechazos?userPk=${userPk}`);
+            const rechazos = response.data[0].RECHAZOS;
+            sessionStorage.setItem('numRechazos', JSON.stringify(rechazos));
+        } catch (error) {
+            console.error('Error al obtener la cantidad de rechazos:', error);
+        }
+    };
+
+
+    
+
+
     const handleStartLoading = async () => {
         if (parseInt(bandera) !== 3) {
             handleShowModal();
-            await obtenerDatosAlumno();
+            await obtenerAlumnosEmparejamiento();
             setTimeout(() => {
                 setLoadingCompleted(true);
                 setShowImage(false); // Ocultar la imagen al finalizar la carga
@@ -58,12 +124,45 @@ const Emparejamiento = () => {
         }
     };
 
-    const obtenerDatosAlumno = async () => {
+    const actualizarRechazos = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerDatosAlumno?userPk=${userPk}`);
-            setDatosAlumno(response.data);
+            const numRechazos = parseInt(sessionStorage.getItem("numRechazos"));
+    
+            if (numRechazos === 0) {
+                Swal.fire({
+                    title: 'No puedes hacer más rechazos',
+                    text: 'Has agotado tus rechazos disponibles.',
+                    icon: 'warning',
+                    confirmButtonText: 'Aceptar'
+                });
+            } else {
+                const response = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarRechazos?numrechazos=${numRechazos}&userPk=${userPk}`);
+                const rechazosDisponibles = response.data.rechazosdisponibles;
+    
+                // Actualizar el valor de rechazos disponibles en sessionStorage
+                sessionStorage.setItem('numRechazos', JSON.stringify(rechazosDisponibles));
+            }
         } catch (error) {
-            console.error('Error al obtener el nombre del usuario:', error);
+            console.error('Error al realizar la actualización de rechazos', error);
+        }
+    };
+
+    const obtenerAlumnosEmparejamiento = async () => {
+        try{
+            const response = await axios.post(`http://localhost:3001/api/algoritmo/obtenerUsuarioPrincipal?pkUsuarioPrincipal=${userPk}`);
+            setDatosAlumno(response.data);
+        }catch(error){
+            console.error('Error al obtener los datos de los alumnos emparejados', error);
+        }
+    };
+
+
+    const actualizarEmparejamientosDisponibles = async () => {
+        try{
+            const response = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarEmparejamientosDisponibles?userPk=${userPk}`);
+            const emparejamientos_disponibles=response.data.emparejamientosdisponibles;
+        }catch(error){
+            console.error('Error al actualizar los emparejamientos disponibles', error);
         }
     };
     
@@ -91,10 +190,14 @@ const Emparejamiento = () => {
                 {loadingCompleted && (
                     <div style={{ backgroundColor: 'white' }}>
                         <p>Resultados del emparejamiento</p>
+                        <div class="row">
+                        <div class="col">Rechazos disponibles:  {sessionStorage.getItem('numRechazos')}</div>
+                        <div class="col">Emparejamientos disponibles para aceptar:  {sessionStorage.getItem('totalEmparejamientos')}</div>
+                        </div>
                         {datosAlumno.map((alumno, index) => (
-                            <Card key={index}>
+                            <Card key={index} className={index === deletedCardIndex ? 'fadeOutAnimation' : ''}>
                                 <Card.Body>
-                                    <Card.Title>{alumno.nombreCompleto}</Card.Title>
+                                    <Card.Title>{alumno.candidato.nombreCompleto}</Card.Title>
                                     <div className="card">
                                         <div className="fondo_def_conoc">
                                             <h5 className="card-title">Deficiencias/Conocimientos</h5>
@@ -104,9 +207,9 @@ const Emparejamiento = () => {
                                                         <div className="card text-white bg-danger mb-3">
                                                             <div className="card-header">Deficiencias</div>
                                                             <div className="card-body">
-                                                                {alumno.NOMBRE_DEFICIENCIA1 && <p>{alumno.NOMBRE_DEFICIENCIA1}</p>}
-                                                                {alumno.NOMBRE_DEFICIENCIA2 && <p>{alumno.NOMBRE_DEFICIENCIA2}</p>}
-                                                                {alumno.NOMBRE_DEFICIENCIA3 && <p>{alumno.NOMBRE_DEFICIENCIA3}</p>}
+                                                                {alumno.candidato.NOMBRE_DEFICIENCIA1 && <p>{alumno.candidato.NOMBRE_DEFICIENCIA1}</p>}
+                                                                {alumno.candidato.NOMBRE_DEFICIENCIA2 && <p>{alumno.candidato.NOMBRE_DEFICIENCIA2}</p>}
+                                                                {alumno.candidato.NOMBRE_DEFICIENCIA3 && <p>{alumno.candidato.NOMBRE_DEFICIENCIA3}</p>}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -116,9 +219,9 @@ const Emparejamiento = () => {
                                                         <div className="card text-white bg-success mb-3">
                                                             <div className="card-header">Fortalezas</div>
                                                             <div className="card-body">
-                                                                {alumno.NOMBRE_FORTALEZA1 && <p>{alumno.NOMBRE_FORTALEZA1}</p>}
-                                                                {alumno.NOMBRE_FORTALEZA2 && <p>{alumno.NOMBRE_FORTALEZA2}</p>}
-                                                                {alumno.NOMBRE_FORTALEZA3 && <p>{alumno.NOMBRE_FORTALEZA3}</p>}
+                                                                {alumno.candidato.NOMBRE_ENSEÑANZA1 && <p>{alumno.candidato.NOMBRE_ENSEÑANZA1}</p>}
+                                                                {alumno.candidato.NOMBRE_ENSEÑANZA2 && <p>{alumno.candidato.NOMBRE_ENSEÑANZA2}</p>}
+                                                                {alumno.candidato.NOMBRE_ENSEÑANZA3 && <p>{alumno.candidato.NOMBRE_ENSEÑANZA3}</p>}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -129,14 +232,16 @@ const Emparejamiento = () => {
                                 </Card.Body>
                                 <div className="conocimientos_deficiencias">
                                     <div className="columna">
-                                        <button className="btn_rechazo">X</button>
+                                    <button className="btn_rechazo" onClick={() => { handleDeleteCard(index); actualizarRechazos();  }}>X</button>
+
                                     </div>
                                     <div className="columna">
-                                        <button href="#" className="btn btn-primary">Aceptar emparejamento</button>
+                                        <button href="#" className="btn btn-primary" onClick={() => { handleDeleteAcceptCard(index);  }}>Aceptar emparejamento</button>
                                     </div>
                                 </div>
                             </Card>
                         ))}
+                        
                     </div>
                 )}
             </div>
