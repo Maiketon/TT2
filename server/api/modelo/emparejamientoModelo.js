@@ -66,6 +66,7 @@ class modeloEmparejamiento{
         try {
             const promesadb = db.promise();
             let bandera = 0; // Cambié const por let para poder cambiar el valor de bandera
+            let totalEmparejamientos = 0;
     
             // Realizar la consulta para obtener todos los registros asociados al usuario
             const [resultado1] = await promesadb.query(sql1, [userPk, userPk, userPk, userPk, userPk, userPk]);
@@ -73,26 +74,31 @@ class modeloEmparejamiento{
             // Obtener los totales de enseñantes y aprendices del resultado de la consulta
             const totalEnseñante = parseInt(resultado1[0].total_enseñante);
             const totalAprendiz = parseInt(resultado1[0].total_aprendiz);
+            totalEmparejamientos = totalEnseñante + totalAprendiz;
     
-            // Comprobar si el usuario es APRENDIZ o ENSEÑANTE según los totales obtenidos
+            // Comprobar el rol según los totales obtenidos
             if (totalEnseñante === 2 && totalAprendiz === 2) {
-                
                 console.log("CUATRO EMPAREJAMIENTOS COMPLETOS");
                 bandera = 3;
             } else if (totalEnseñante === 2) {
                 console.log("ENSEÑANTE");
                 bandera = 2;
-            }else if (totalAprendiz === 2 ) {
+            } else if (totalAprendiz === 2) {
                 console.log("APRENDIZ");
                 bandera = 1;
-            }else if ((totalEnseñante === 0 && totalAprendiz === 0) || (totalEnseñante === 0 && totalAprendiz === 1) || (totalEnseñante === 1 && totalAprendiz === 0) || (totalEnseñante === 1 && totalAprendiz === 1)) {
+            } else if (
+                (totalEnseñante === 0 && totalAprendiz === 0) ||
+                (totalEnseñante === 0 && totalAprendiz === 1) ||
+                (totalEnseñante === 1 && totalAprendiz === 0) ||
+                (totalEnseñante === 1 && totalAprendiz === 1)
+            ) {
                 console.log("AUN PUEDE EMPAREJAR");
                 bandera = 0;
-            }else {
+            } else {
                 console.log("VARIABLE NO RECONOCIDA");
-            
             }
-            return bandera;
+    
+            return { bandera, totalEmparejamientos };
         } catch (err) {
             throw err;
         }
@@ -143,6 +149,36 @@ class modeloEmparejamiento{
         try {
             const promesadb = db.promise();
             const [result] = await promesadb.query(sql, [userPk]);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    async ObtenerRechazos(usuarioPrincipalPK){
+        const sql = `
+        SELECT RECHAZOS FROM learnmatch.informacionusuario WHERE PK_USUARIO=?
+        `;
+
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [usuarioPrincipalPK]);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    async actualizarRechazos(numRechazos,usuarioPrincipalPK){
+        const sql = `
+        UPDATE learnmatch.informacionusuario SET RECHAZOS = ? WHERE (PK_USUARIO = ?)
+        `;
+
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [numRechazos,usuarioPrincipalPK]);
             return result;
         } catch (err) {
             throw err;
