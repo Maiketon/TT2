@@ -58,6 +58,31 @@
   height: 50px;
   background-color: red;
 }
+
+/* Animación de desaparición */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.fadeOutAnimation {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+
+
+
+
+
+
+
   @media(min-width:150px) and (max-width:360px){
     .medida_matchimg{
       width: 210px;
