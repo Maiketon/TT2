@@ -20,7 +20,9 @@ const VistaPrincipal = () => {
         console.log(userPk);
         const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerRol?userPk=${userPk}`);
         setRol(response.data);
-        sessionStorage.setItem('bandera', JSON.stringify(response.data));
+        sessionStorage.setItem('bandera', JSON.stringify(response.data.bandera));
+        sessionStorage.setItem('totalEmparejamientos', JSON.stringify(response.data.totalEmparejamientos));
+        
       } catch (error) {
         console.error('Error al obtener el rol:', error);
       }
