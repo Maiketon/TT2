@@ -58,3 +58,47 @@ exports.obtenerAprendizActivos = async(req,res) => {
     }
 };
 
+exports.obtenerRechazos = async(req,res) => {
+    const {userPk} = req.query;
+    try {
+        const getrechazos = await modeloEmparejamiento.ObtenerRechazos(userPk);
+       
+        res.json(getrechazos);
+    } catch (err) {
+        console.error('Error realizando la consulta:', err);
+        res.status(500).send('Error en el servidor al obtener el numero de rechazos');
+    }
+};
+
+
+
+exports.actualizarRechazos = async (req, res) => {
+    const { userPk } = req.query;
+    const { numrechazos } = req.query;
+    let rechazosdisponibles = 0;
+    try {
+        rechazosdisponibles = numrechazos - 1;
+        await modeloEmparejamiento.actualizarRechazos(rechazosdisponibles, userPk);
+        // Enviamos la respuesta al cliente con los rechazos disponibles actualizados
+        res.status(200).json({ rechazosdisponibles });
+    } catch (err) {
+        console.error('Error realizando la consulta:', err);
+        res.status(500).send('Error en el servidor al actualizar el número de rechazos');
+    }
+};
+
+exports.actualizarEmparejamientos = async (req,res) => {
+    const { userPk } = req.query;
+    const { numrechazos } = req.query;
+    let rechazosdisponibles = 0;
+    try {
+        rechazosdisponibles = numrechazos - 1;
+        await modeloEmparejamiento.actualizarRechazos(rechazosdisponibles, userPk);
+        // Enviamos la respuesta al cliente con los rechazos disponibles actualizados
+        res.status(200).json({ rechazosdisponibles });
+    } catch (err) {
+        console.error('Error realizando la consulta:', err);
+        res.status(500).send('Error en el servidor al actualizar el número de rechazos');
+    }
+}
+
