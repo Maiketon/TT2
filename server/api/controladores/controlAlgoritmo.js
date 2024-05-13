@@ -27,7 +27,7 @@ exports.algoritmoPrincipal = async (req, res) => {
 
         // (Aquí deberías llamar a la función correspondiente)
 
-        res.status(200).json(listaUsuarios);
+        res.status(200).json(emparejamientos);
     } catch (error) {
         // Manejar errores
         console.error(error);
