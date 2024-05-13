@@ -54,7 +54,7 @@ class  modeloAdmin
                 sumatiempozg: sumatiempozg[0].sumatiempozg,
                 totalemparejamiento: totalemparejamiento[0].totalemparejamiento,
                 totalusuariosAyS: totalusuarios[0].totalusuariosAyS,
-                totalusuarios6: totalusuarios[0].totalusuarios6
+                totalusuarios6: totalusuarios[0].totalusuariosV
             };
         } catch (error) {
             throw error;
@@ -89,6 +89,28 @@ class  modeloAdmin
         } catch (error) {
             console.error('Error al obtener datos de sanciones:', error);
             throw error;  // Re-lanzar el error para manejo superior
+        }
+    }
+    
+    async datosGraficaEmparejamientos() {
+        try {
+            const promesadb = db.promise();
+            // Asegúrate de que la consulta SQL esté correctamente formulada
+            const [resultado] = await promesadb.query(`
+                SELECT 
+                    COUNT(*) AS registroTotalEmp,
+                    SUM(CASE WHEN FK_ESTADOEMPAREJAMIENTO = 1 THEN 1 ELSE 0 END) AS registrosPendientes,
+                    SUM(CASE WHEN FK_ESTADOEMPAREJAMIENTO = 2 THEN 1 ELSE 0 END) AS registrosFinalizados,
+                    SUM(CASE WHEN FK_ESTADOEMPAREJAMIENTO = 3 THEN 1 ELSE 0 END) AS registrosActivos
+                FROM 
+                    emparejamiento;
+            `);
+    
+            // Si el resultado se espera utilizar en un gráfico, podríamos simplemente retornar el resultado directamente
+            return resultado[0];
+        } catch (error) {
+            console.error('Error al obtener datos de emparejamientos:', error);
+            throw error; // Re-lanzar el error para manejo superior
         }
     }
     

@@ -1,33 +1,54 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { PolarArea } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
+import axios from 'axios';
 
 const PolarAreaChart = () => {
     const chartRef = useRef(null);
-
-    useEffect(() => {
-      return () => {
-        if (chartRef.current) {
-          chartRef.current.destroy();
-        }
-      };
-    }, []);
-
-    const data = {
-        labels: ['Rojo', 'Azul', 'Amarillo', 'Verde', 'Morado'],
+    const [chartData, setChartData] = useState({
+        labels: ['Totales','Pendientes', 'Finalizados', 'Activos'],
         datasets: [{
-            data: [11, 16, 7, 3, 14],
+            data: [], 
             backgroundColor: [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
+              'rgba(234, 211, 86, 0.5)',
                 'rgba(255, 206, 86, 0.5)',
                 'rgba(75, 192, 192, 0.5)',
                 'rgba(153, 102, 255, 0.5)'
             ]
         }]
-    };
+    });
 
-    return <PolarArea ref={chartRef} data={data} />;
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/api/administracion/datosEmparejameintosT');
+                setChartData(prevData => ({
+                    ...prevData,
+                    datasets: [{
+                        ...prevData.datasets[0],
+                        data: [
+                            response.data.registroTotalEmp,
+                            response.data.registrosPendientes,
+                            response.data.registrosFinalizados,
+                            response.data.registrosActivos
+                        ]
+                    }]
+                }));
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+
+        return () => {
+            if (chartRef.current) {
+              chartRef.current.destroy();
+            }
+        };
+    }, []);
+
+    return <PolarArea ref={chartRef} data={chartData} />;
 }
 
 export default PolarAreaChart;

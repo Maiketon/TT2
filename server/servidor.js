@@ -28,12 +28,6 @@ app.use('/api/algoritmo', rutasAlgoritmo);
 const rutasEmparejamiento =  require('./api/rutas/rutasEmparejamiento');
 app.use('/api/emparejamiento',rutasEmparejamiento);
 
-app.use((req, res, next) => {
-    if (req.url.match(/\.(js|css|json)$/)) {
-      res.set('Cache-Control', 'no-store');
-    }
-    next();
-  });
   
   // Servir archivos estáticos de React
   app.use(express.static(path.join(__dirname, '..', 'cliente', 'build')));

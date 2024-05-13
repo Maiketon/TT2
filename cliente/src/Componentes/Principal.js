@@ -36,18 +36,26 @@ const SpinnerGlobal = () =>
 
 const VistaPrincipal = () => {
   const [vista, setVista] = useState('inicio'); // Estado que me permitira que componente mostrar//
+  //const [show, setShow] = useState(false);
+
+  // //cerrar modal
+  // const handleClose = () => setShow(false);
+
+  // //mostrarmodal
   const [show, setShow] = useState(false);
 
-  //cerrar modal
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    localStorage.setItem('terminosCondiciones', 'true');
+  };
 
-  //mostrarmodal
-  const handleShow = () => setShow(true);
-
-  // Usar useEffect para mostrar la modal automáticamente al cargar la página
   useEffect(() => {
-      handleShow();
-  }, []);
+    const terminosCondiciones = localStorage.getItem('terminosCondiciones');
+    if (terminosCondiciones !== 'true') {
+        setShow(true);
+    }
+}, []);
+
   return (
     <>
        <Modal className='xl' show={show} onHide={handleClose} backdrop="static" keyboard={false}>

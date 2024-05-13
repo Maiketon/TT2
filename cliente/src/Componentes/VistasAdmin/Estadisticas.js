@@ -52,7 +52,7 @@ const Estadisticas = () => {
               <Container className='contendedor-grafica'>
                 {vista === 'usoAplicacion' && <GraficaUsoA/>} 
                 {vista === 'sanciones' &&  <GraficaSanciones/>} 
-                {vista === 'emparejamientosT' && <GraficaD/>} 
+                {vista === 'emparejamientosT' && <GraficaP/>} 
                 {vista === 'inscribirse' &&<GraficaP/>}
               </Container>
             </Card.Body>
