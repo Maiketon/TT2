@@ -1,6 +1,8 @@
 .contendedor-grafica {
-    max-width: 900px; 
-    margin: auto; 
-    padding: 20px;  
-  }
-  
+  width: 100%; 
+  max-width: 780px;
+  margin: auto;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}

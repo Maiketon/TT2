@@ -33,3 +33,16 @@ exports.obtenerRegistrosUsuarios = async (req, res) => {
         res.status(500).send('Error en el servidor al obtener los datos de los usuarios');
     }
 };
+
+
+exports.datosGraficaUsoAplicacion = async (req,res)=> 
+    {
+        try {
+            const graficaBotonUsoAp = await modeloAdmin.datosGraficaUsoAplicacion();
+            console.log(graficaBotonUsoAp);
+            res.status(200).json(graficaBotonUsoAp);
+        } catch (error) {
+            console.error('Error al obtener los datos para la grafica del boton usuario');
+            res.status(500).send('Error al obtener los datos para el llenado de la grafica',error);
+        }
+    }
