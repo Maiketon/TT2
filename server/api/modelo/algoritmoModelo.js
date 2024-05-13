@@ -19,6 +19,7 @@ async  ObtenerUsuariosSinEmparejamientos({ pkUsuarioPrincipal }) {
     const promesadb = db.promise();
     const sql = `
         SELECT 
+            CONCAT(NOMBRE, " ", APELLIDO_PATERNO, " ", APELLIDO_MATERNO) AS nombreCompleto,
             PK_USUARIO,
             FK_DEFICIENCIA1,
             FK_DEFICIENCIA2,
@@ -26,6 +27,12 @@ async  ObtenerUsuariosSinEmparejamientos({ pkUsuarioPrincipal }) {
             FK_ENSEÑANZA1,
             FK_ENSEÑANZA2,
             FK_ENSEÑANZA3,
+            m1.NOMBRE_MATERIA AS NOMBRE_DEFICIENCIA1,
+            m2.NOMBRE_MATERIA AS NOMBRE_DEFICIENCIA2,
+            m3.NOMBRE_MATERIA AS NOMBRE_DEFICIENCIA3,
+            m4.NOMBRE_MATERIA AS NOMBRE_ENSEÑANZA1,
+            m5.NOMBRE_MATERIA AS NOMBRE_ENSEÑANZA2,
+            m6.NOMBRE_MATERIA AS NOMBRE_ENSEÑANZA3,
             CALIFICACION,
             CALIFICACION_MENTOR,
             CALIFICACION_APRENDIZ,
@@ -33,6 +40,12 @@ async  ObtenerUsuariosSinEmparejamientos({ pkUsuarioPrincipal }) {
             0 AS ROL
         FROM 
             informacionusuario AS iu
+            LEFT JOIN materia AS m1 ON iu.FK_DEFICIENCIA1 = m1.PK_MATERIA
+            LEFT JOIN materia AS m2 ON iu.FK_DEFICIENCIA2 = m2.PK_MATERIA
+            LEFT JOIN materia AS m3 ON iu.FK_DEFICIENCIA3 = m3.PK_MATERIA
+            LEFT JOIN materia AS m4 ON iu.FK_ENSEÑANZA1 = m4.PK_MATERIA
+            LEFT JOIN materia AS m5 ON iu.FK_ENSEÑANZA2 = m5.PK_MATERIA
+            LEFT JOIN materia AS m6 ON iu.FK_ENSEÑANZA3 = m6.PK_MATERIA
         WHERE 
             (FK_ESTATUSUSUARIO = 3 OR FK_ESTATUSUSUARIO = 4)
             AND PK_USUARIO != ?
@@ -40,7 +53,7 @@ async  ObtenerUsuariosSinEmparejamientos({ pkUsuarioPrincipal }) {
                 SELECT 1 
                 FROM emparejamiento AS e 
                 WHERE e.FK_USUARIO1 = iu.PK_USUARIO OR e.FK_USUARIO2 = iu.PK_USUARIO
-            );
+            )
     `;
     try {
         // Realizar la consulta para obtener todos los registros asociados al correo
@@ -55,6 +68,7 @@ async  ObtenerUsuariosSinEmparejamientos({ pkUsuarioPrincipal }) {
   async ObtenerUsuariosConEmparejamientos({pkUsuarioPrincipal, cantidadActualizada}) {
     const promesadb = db.promise();
     const sql = `SELECT 
+    CONCAT(iu.NOMBRE, " ", iu.APELLIDO_PATERNO, " ", iu.APELLIDO_MATERNO) AS nombreCompleto,
     iu.PK_USUARIO,
     iu.FK_DEFICIENCIA1,
     iu.FK_DEFICIENCIA2,
@@ -62,6 +76,12 @@ async  ObtenerUsuariosSinEmparejamientos({ pkUsuarioPrincipal }) {
     iu.FK_ENSEÑANZA1,
     iu.FK_ENSEÑANZA2,
     iu.FK_ENSEÑANZA3,
+    m1.NOMBRE_MATERIA AS NOMBRE_DEFICIENCIA1,
+    m2.NOMBRE_MATERIA AS NOMBRE_DEFICIENCIA2,
+    m3.NOMBRE_MATERIA AS NOMBRE_DEFICIENCIA3,
+    m4.NOMBRE_MATERIA AS NOMBRE_ENSEÑANZA1,
+    m5.NOMBRE_MATERIA AS NOMBRE_ENSEÑANZA2,
+    m6.NOMBRE_MATERIA AS NOMBRE_ENSEÑANZA3,
     iu.CALIFICACION,
     iu.CALIFICACION_MENTOR,
     iu.CALIFICACION_APRENDIZ,
@@ -77,6 +97,18 @@ FROM
     informacionusuario AS iu
 JOIN 
     emparejamiento AS e ON iu.PK_USUARIO = e.FK_USUARIO1 OR iu.PK_USUARIO = e.FK_USUARIO2
+    LEFT JOIN 
+    materia AS m1 ON iu.FK_DEFICIENCIA1 = m1.PK_MATERIA
+LEFT JOIN 
+    materia AS m2 ON iu.FK_DEFICIENCIA2 = m2.PK_MATERIA
+LEFT JOIN 
+    materia AS m3 ON iu.FK_DEFICIENCIA3 = m3.PK_MATERIA
+LEFT JOIN 
+    materia AS m4 ON iu.FK_ENSEÑANZA1 = m4.PK_MATERIA
+LEFT JOIN 
+    materia AS m5 ON iu.FK_ENSEÑANZA2 = m5.PK_MATERIA
+LEFT JOIN 
+    materia AS m6 ON iu.FK_ENSEÑANZA3 = m6.PK_MATERIA
 WHERE 
     (iu.FK_ESTATUSUSUARIO = 3 OR iu.FK_ESTATUSUSUARIO = 4)
     AND iu.PK_USUARIO != ?
@@ -89,7 +121,7 @@ HAVING
     OR
     (SUM(CASE WHEN (e.FK_USUARIO1 = iu.PK_USUARIO AND e.ROL_USUARIO1 = 2) THEN 1 ELSE 0 END) + 
      SUM(CASE WHEN (e.FK_USUARIO2 = iu.PK_USUARIO AND e.ROL_USUARIO2 = 2) THEN 1 ELSE 0 END)) <> 2
-LIMIT ?;
+LIMIT ?
 `;
     try {
         // Realizar la consulta para obtener todos los registros asociados al correo
