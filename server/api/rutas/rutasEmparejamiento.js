@@ -8,5 +8,8 @@ router.get('/obtenerStrikes', controlEmparejamiento.obtenerStrikes);
 router.get('/obtenerRol', controlEmparejamiento.obtenerRolEmparejamiento);
 router.get('/obtenerMentor', controlEmparejamiento.obtenerMentoresActivos);
 router.get('/obtenerAprendiz',controlEmparejamiento.obtenerAprendizActivos);
+router.get('/obtenerRechazos', controlEmparejamiento.obtenerRechazos);
 //POSTS//
+router.post('/actualizarRechazos', controlEmparejamiento.actualizarRechazos);
+router.post('/actualizarEmparejamientosDisponibles', controlEmparejamiento.actualizarEmparejamientos);
 module.exports = router;
