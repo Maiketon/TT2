@@ -102,3 +102,37 @@ exports.actualizarEmparejamientos = async (req,res) => {
     }
 }
 
+exports.insertarRegistros = async (req,res) => {
+    const {usuarioPrincipalPK,tipoCoincidencia, usuarioCandidatoPK} = req.query;
+    let usuarioCandidatoPKquery = 0;
+    let rolUsuarioPrincipal = 0;
+    let rolUsuarioCandidato = 0;
+    console.log("Este es el tipo de coincidencia");
+    console.log(tipoCoincidencia);
+    console.log("Este es el usuario candidato");
+    console.log(usuarioCandidatoPK);
+    
+    if(tipoCoincidencia === "Mentor"){
+        usuarioCandidatoPKquery = req.query.usuarioCandidatoPK;
+        rolUsuarioPrincipal = 1;
+        rolUsuarioCandidato = 2;
+         }else if(tipoCoincidencia === "Aprendiz"){
+        usuarioCandidatoPKquery = req.query.usuarioCandidatoPK;
+        rolUsuarioPrincipal = 2;
+        rolUsuarioCandidato = 1;
+    }
+    try {
+        console.log("Este es el rol del usuario principal");
+        console.log(rolUsuarioPrincipal);
+        console.log("Este es el rol del usuario candidato");
+        console.log(rolUsuarioCandidato);
+        
+        await modeloEmparejamiento.insertarRegistros(usuarioPrincipalPK,rolUsuarioPrincipal,usuarioCandidatoPK,rolUsuarioCandidato);
+        // Enviamos la respuesta al cliente con los rechazos disponibles actualizados
+        res.status(200).json( "Salio bien" );
+    } catch (err) {
+        console.error('Error realizando la consulta:', err);
+        res.status(500).send('Error en el servidor al actualizar el número de rechazos');
+    }
+}
+

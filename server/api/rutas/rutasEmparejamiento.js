@@ -12,4 +12,5 @@ router.get('/obtenerRechazos', controlEmparejamiento.obtenerRechazos);
 //POSTS//
 router.post('/actualizarRechazos', controlEmparejamiento.actualizarRechazos);
 router.post('/actualizarEmparejamientosDisponibles', controlEmparejamiento.actualizarEmparejamientos);
+router.post('/insertarRegistros', controlEmparejamiento.insertarRegistros);
 module.exports = router;

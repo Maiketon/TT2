@@ -16,6 +16,9 @@ const Emparejamiento = () => {
     const numrechazos = sessionStorage.getItem("numRechazos");
     const bandera = sessionStorage.getItem("bandera");
     const numemparejamientos = sessionStorage.getItem("totalEmparejamientos");
+    const total_aprendiz = parseInt(sessionStorage.getItem("totalAprendiz"));
+    const total_enseñante = parseInt(sessionStorage.getItem("totalEnseñante"));
+    const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
 
     // Función para mostrar la modal
     const handleShowModal = () => setShowModal(true);
@@ -48,9 +51,77 @@ const Emparejamiento = () => {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     
-    const handleDeleteAcceptCard = async (index) => {
-        setdeleteAcceptPairment(index);
-    };
+const handleDeleteAcceptCard = async (index, pkUsuarioCandidato, tipoCoincidencia) => {
+    // Imprimir el usuario seleccionado en la consola
+    console.log('Usuario seleccionado:', { pkUsuarioCandidato, tipoCoincidencia });
+
+    // Llamar a la función para insertar el registro
+    await insertarRegistro(pkUsuarioCandidato, tipoCoincidencia);
+    setDeletedCardIndex(index); 
+};
+
+const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
+    console.log("Esta es bandera ");
+    console.log(bandera);
+    console.log("Este es el tipo de coincidencia");
+    console.log(tipoCoincidencia);
+    let total_aprendizDisponible = 0;
+    let total_enseñanteDisponible = 0;
+    let banderaDisponible = bandera;
+
+    
+    try {
+        
+        const totalEmparejamientos = parseInt(sessionStorage.getItem("totalEmparejamientos"));
+        let totalEmparejamientosActualizados = totalEmparejamientos + 1;
+        if (totalEmparejamientos === 4) {
+            Swal.fire({
+                title: 'No puedes hacer más emparejamientos',
+                text: 'Revisa tus emparejamientos.',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+        } else if(banderaDisponible == 1 && tipoCoincidencia === "Aprendiz") {
+            Swal.fire({
+                title: 'No puedes hacer más emparejamientos del rol de aprendiz',
+                text: 'Revisa tus emparejamientos.',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+        } else if(banderaDisponible == 2 && tipoCoincidencia === "Mentor") {
+            Swal.fire({
+                title: 'No puedes hacer más emparejamientos del rol de mentor',
+                text: 'Revisa tus emparejamientos.',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+        }  
+        else {
+            const response = await axios.post(`http://localhost:3001/api/emparejamiento/insertarRegistros?usuarioPrincipalPK=${userPk}&tipoCoincidencia=${tipoCoincidencia}&usuarioCandidatoPK=${pkUsuarioCandidato}`);
+            sessionStorage.setItem('totalEmparejamientos',totalEmparejamientosActualizados );
+            // Realizar cualquier otra acción necesaria después de insertar el registro
+        }
+        if(tipoCoincidencia === "Aprendiz"){
+            total_aprendizDisponible = total_aprendiz + 1;
+            if(total_aprendizDisponible == 2){
+                banderaDisponible = 1;
+                sessionStorage.setItem('bandera',banderaDisponible );
+            }
+    
+        }else if(tipoCoincidencia === "Mentor"){
+            total_enseñanteDisponible = total_enseñante + 1;
+            console.log("Este es el total de enseñantes disponibles");
+            console.log(total_enseñanteDisponible);
+            if(total_enseñanteDisponible == 2){
+                banderaDisponible = 2;
+                sessionStorage.setItem('bandera',banderaDisponible );
+                
+            }
+        }
+    } catch (error) {
+        console.error('Error al realizar la actualización de rechazos', error);
+    }
+};
 
     useEffect(() => {
         // Lógica para eliminar la tarjeta después de la animación
@@ -149,7 +220,7 @@ const Emparejamiento = () => {
 
     const obtenerAlumnosEmparejamiento = async () => {
         try{
-            const response = await axios.post(`http://localhost:3001/api/algoritmo/obtenerUsuarioPrincipal?pkUsuarioPrincipal=${userPk}`);
+            const response = await axios.post(`http://localhost:3001/api/algoritmo/obtenerUsuarioPrincipal?pkUsuarioPrincipal=${userPk}&banderaRol=${bandera}`);
             setDatosAlumno(response.data);
         }catch(error){
             console.error('Error al obtener los datos de los alumnos emparejados', error);
@@ -198,6 +269,7 @@ const Emparejamiento = () => {
                             <Card key={index} className={index === deletedCardIndex ? 'fadeOutAnimation' : ''}>
                                 <Card.Body>
                                     <Card.Title>{alumno.candidato.nombreCompleto}</Card.Title>
+                                    <Card.Text>{"Tu seras " + alumno.tipoCoincidencia}</Card.Text>
                                     <div className="card">
                                         <div className="fondo_def_conoc">
                                             <h5 className="card-title">Deficiencias/Conocimientos</h5>
@@ -236,7 +308,7 @@ const Emparejamiento = () => {
 
                                     </div>
                                     <div className="columna">
-                                        <button href="#" className="btn btn-primary" onClick={() => { handleDeleteAcceptCard(index);  }}>Aceptar emparejamento</button>
+                                        <button href="#" className="btn btn-primary" onClick={() => { handleDeleteAcceptCard(index,alumno.candidato.PK_USUARIO, alumno.tipoCoincidencia);  }}>Aceptar emparejamento</button>
                                     </div>
                                 </div>
                             </Card>

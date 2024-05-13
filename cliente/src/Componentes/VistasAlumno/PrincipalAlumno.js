@@ -22,6 +22,8 @@ const VistaPrincipal = () => {
         setRol(response.data);
         sessionStorage.setItem('bandera', JSON.stringify(response.data.bandera));
         sessionStorage.setItem('totalEmparejamientos', JSON.stringify(response.data.totalEmparejamientos));
+        sessionStorage.setItem('totalEnseñante', JSON.stringify(response.data.totalEnseñante));
+        sessionStorage.setItem('totalAprendiz', JSON.stringify(response.data.totalAprendiz));
         
       } catch (error) {
         console.error('Error al obtener el rol:', error);

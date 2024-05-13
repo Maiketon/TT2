@@ -97,8 +97,8 @@ class modeloEmparejamiento{
             } else {
                 console.log("VARIABLE NO RECONOCIDA");
             }
-    
-            return { bandera, totalEmparejamientos };
+            console.log("totalEns: ", totalEnseñante, "totalApr: ", totalAprendiz);
+            return { bandera, totalEmparejamientos, totalEnseñante, totalAprendiz };
         } catch (err) {
             throw err;
         }
@@ -185,6 +185,21 @@ class modeloEmparejamiento{
         }
     }
     
+    async insertarRegistros(usuarioPrincipalPK,rolUsuarioPrincipal,usuarioCandidatoPK,rolUsuarioCandidato){
+        const sql = `
+        INSERT INTO learnmatch.emparejamiento 
+        (FK_ESTADOEMPAREJAMIENTO, FK_USUARIO1, ROL_USUARIO1, FK_USUARIO2, ROL_USUARIO2) 
+        VALUES ( 1, ?, ?, ?, ?);
+        `;
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [usuarioPrincipalPK,rolUsuarioPrincipal,usuarioCandidatoPK,rolUsuarioCandidato]);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
 
 
 

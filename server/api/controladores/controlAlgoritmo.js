@@ -6,12 +6,13 @@ exports.algoritmoPrincipal = async (req, res) => {
     try {
         
         // Suponiendo que recibes pkUsuarioPrincipal en los parámetros de consulta
-        const { pkUsuarioPrincipal} = req.query;
-        const banderaRol = 0; 
+        const { pkUsuarioPrincipal, banderaRol} = req.query;
+        console.log("Esta es la bandera de rol");
+        console.log(banderaRol);
 
         // Traer materias de conocimientos y deficiencias del usuario principal
         const datosusuarioPrincipal = await modeloAlgoritmo.obtenerUsuarioPrincipal({ pkUsuarioPrincipal });
-        console.log(datosusuarioPrincipal);
+        //console.log(datosusuarioPrincipal);
 
         //obtener cantidad dinamica
 
@@ -39,18 +40,18 @@ async function obtenerUsuariosDesdeTabla(pkUsuarioPrincipal) {
 
     try {
         const usuariosSinEmparejamientos = await modeloAlgoritmo.ObtenerUsuariosSinEmparejamientos({ pkUsuarioPrincipal });
-        console.log("Esta es la lista de usuarios sin emparejamiento ");
-        console.log(usuariosSinEmparejamientos);
+        //console.log("Esta es la lista de usuarios sin emparejamiento ");
+       // console.log(usuariosSinEmparejamientos);
         let cantidadActualizada = usuariosSinEmparejamientos.length;
-        console.log(cantidadActualizada);
+       // console.log(cantidadActualizada);
         
         if (usuariosSinEmparejamientos.length <= 100) {
             console.log("No se encontraron usuarios o el número es menor o igual que 100");
             cantidadActualizada = 100 - cantidadActualizada;
             // Obtener usuarios con emparejamientos
             const usuariosConEmparejamientos = await modeloAlgoritmo.ObtenerUsuariosConEmparejamientos({ pkUsuarioPrincipal, cantidadActualizada });
-            console.log("Esta es la lista de usuarios con emparejamiento ");
-            console.log(usuariosConEmparejamientos);
+            //console.log("Esta es la lista de usuarios con emparejamiento ");
+            //console.log(usuariosConEmparejamientos);
             // Combinar usuarios con y sin emparejamientos
             const usuariosCombinados = usuariosSinEmparejamientos.concat(usuariosConEmparejamientos);
             return usuariosCombinados;
@@ -77,7 +78,7 @@ async function EmparejarUsuarios(datosusuarioPrincipal, listaUsuarios, banderaRo
             let tipoCoincidencia = resultadoPuntuacion.tipoCoincidencia;
 
             // Verificar si el candidato tiene alguna coincidencia y maxCoincidencias no es igual a 0
-            if (puntuacion > 0 && maxCoincidencias > 0) {
+            if (puntuacion > 0 ) {
                 let emparejamiento = { candidato, puntuacion, maxCoincidencias, tipoCoincidencia };
                 mejoresEmparejamientos.push(emparejamiento);
             }
@@ -177,12 +178,15 @@ async function CalcularPuntuacion(usuarioPrincipal, candidato, banderaRol) {
             }
         }
      }
-
+     
+     console.log("Este es el tipo de coincidencia");
+        console.log(tipoCoincidencia);
         // Ajustar puntuación según la banderaRol
-        if (banderaRol === 1 && tipoCoincidencia === "Aprendiz") {
+        if (banderaRol == 1 && tipoCoincidencia === "Aprendiz") {
             puntuacion = 0;
 
-        } else if (banderaRol === 2 && tipoCoincidencia === "Mentor") {
+        } else if (banderaRol == 2 && tipoCoincidencia === "Mentor") {
+            console.log("Entrou aqui al if de mentor");
             puntuacion = 0;
         }
 

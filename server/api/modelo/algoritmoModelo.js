@@ -116,16 +116,24 @@ WHERE
 GROUP BY 
     iu.PK_USUARIO
 HAVING 
-    (SUM(CASE WHEN (e.FK_USUARIO1 = iu.PK_USUARIO AND e.ROL_USUARIO1 = 1) THEN 1 ELSE 0 END) + 
-     SUM(CASE WHEN (e.FK_USUARIO2 = iu.PK_USUARIO AND e.ROL_USUARIO2 = 1) THEN 1 ELSE 0 END)) <> 2
-    OR
+    ((SUM(CASE WHEN (e.FK_USUARIO1 = iu.PK_USUARIO AND e.ROL_USUARIO1 = 1) THEN 1 ELSE 0 END) + 
+      SUM(CASE WHEN (e.FK_USUARIO2 = iu.PK_USUARIO AND e.ROL_USUARIO2 = 1) THEN 1 ELSE 0 END)) <> 2 
+    OR 
     (SUM(CASE WHEN (e.FK_USUARIO1 = iu.PK_USUARIO AND e.ROL_USUARIO1 = 2) THEN 1 ELSE 0 END) + 
-     SUM(CASE WHEN (e.FK_USUARIO2 = iu.PK_USUARIO AND e.ROL_USUARIO2 = 2) THEN 1 ELSE 0 END)) <> 2
+     SUM(CASE WHEN (e.FK_USUARIO2 = iu.PK_USUARIO AND e.ROL_USUARIO2 = 2) THEN 1 ELSE 0 END)) <> 2)
+    AND
+    NOT EXISTS (
+        SELECT 1
+        FROM emparejamiento AS e2
+        WHERE (e2.FK_USUARIO1 = iu.PK_USUARIO OR e2.FK_USUARIO2 = iu.PK_USUARIO)
+            AND e2.FK_ESTADOEMPAREJAMIENTO IN (1, 3)
+            AND (e2.FK_USUARIO1 = ? OR e2.FK_USUARIO2 = ?)
+    )
 LIMIT ?
 `;
     try {
         // Realizar la consulta para obtener todos los registros asociados al correo
-        const [resultado1] = await promesadb.query(sql, [pkUsuarioPrincipal, cantidadActualizada]);
+        const [resultado1] = await promesadb.query(sql, [pkUsuarioPrincipal, pkUsuarioPrincipal, pkUsuarioPrincipal, cantidadActualizada]);
         return resultado1;
         
     } catch (err) {
