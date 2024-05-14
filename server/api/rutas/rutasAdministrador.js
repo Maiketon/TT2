@@ -12,5 +12,6 @@ router.post('/registroUsuarios', controlAdministracion.obtenerRegistrosUsuarios)
 router.get('/datosGraficaUsoBoton',controlAdministracion.datosGraficaUsoAplicacion);
 router.get('/datosSanciones',controlAdministracion.datosGraficaSanciones);
 router.get('/datosEmparejameintosT',controlAdministracion.datosGraficaEmparejamiento);
+router.get('/datosGraficaMaterias',controlAdministracion.datosGraficaMaterias);
 
 module.exports = router;

@@ -70,4 +70,19 @@ exports.datosGraficaUsoAplicacion = async (req,res)=>
             res.status(500).send(`Error al obtener los datos para el llenado de la grafica Total emparejamiento: ${error.message}`);
         }
     };
+
+
+    exports.datosGraficaMaterias = async (req,res)=>
+        {
+            try 
+            {
+                const graficaBotonMaterias = await modeloAdmin.datosGraficaMaterias();
+                console.log(graficaBotonMaterias);
+                res.status(200).json(graficaBotonMaterias);
+            } catch (error) 
+            {
+                console.error('Error al obtener los datos para la grafica del boton materias');
+                res.status(500).send('Error al obtener los datos para el llenado de la grafica radial de materias',error);
+            }
+        };
     

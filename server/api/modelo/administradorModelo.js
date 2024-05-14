@@ -98,6 +98,7 @@ class  modeloAdmin
             // Asegúrate de que la consulta SQL esté correctamente formulada
             const [resultado] = await promesadb.query(`
                 SELECT 
+                
                     COUNT(*) AS registroTotalEmp,
                     SUM(CASE WHEN FK_ESTADOEMPAREJAMIENTO = 1 THEN 1 ELSE 0 END) AS registrosPendientes,
                     SUM(CASE WHEN FK_ESTADOEMPAREJAMIENTO = 2 THEN 1 ELSE 0 END) AS registrosFinalizados,
@@ -106,13 +107,38 @@ class  modeloAdmin
                     emparejamiento;
             `);
     
-            // Si el resultado se espera utilizar en un gráfico, podríamos simplemente retornar el resultado directamente
+            
             return resultado[0];
         } catch (error) {
             console.error('Error al obtener datos de emparejamientos:', error);
             throw error; // Re-lanzar el error para manejo superior
         }
     }
+    async datosGraficaMaterias() {
+        try {
+            const promesadb = db.promise();
+            const [resultado] = await promesadb.query(`
+                SELECT 
+                    m.PK_MATERIA,
+                    m.NOMBRE_MATERIA,
+                    COALESCE(SUM(CASE WHEN d.FK_DEFICIENCIA1 = m.PK_MATERIA OR d.FK_DEFICIENCIA2 = m.PK_MATERIA OR d.FK_DEFICIENCIA3 = m.PK_MATERIA THEN 1 ELSE 0 END), 0) AS Deficiencias,
+                    COALESCE(SUM(CASE WHEN d.FK_ENSEÑANZA1 = m.PK_MATERIA OR d.FK_ENSEÑANZA2 = m.PK_MATERIA OR d.FK_ENSEÑANZA3 = m.PK_MATERIA THEN 1 ELSE 0 END), 0) AS Fortalezas
+                FROM 
+                    materia m
+                    LEFT JOIN informacionusuario d ON (m.PK_MATERIA IN (d.FK_DEFICIENCIA1, d.FK_DEFICIENCIA2, d.FK_DEFICIENCIA3, d.FK_ENSEÑANZA1, d.FK_ENSEÑANZA2, d.FK_ENSEÑANZA3))
+                GROUP BY 
+                    m.PK_MATERIA,
+                    m.NOMBRE_MATERIA
+                ORDER BY 
+                    m.PK_MATERIA;
+            `);
+            return resultado;
+        } catch (error) {
+            console.error('Error al obtener la suma total de deficiencias y fortalezas de cada materia:', error);
+            throw error;
+        }
+    }
+    
     
     
     
