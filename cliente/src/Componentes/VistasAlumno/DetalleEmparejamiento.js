@@ -8,16 +8,18 @@ const DetalleEmparejamiento = () => {
     const userPk = sessionStorage.getItem("userPk");
     const [Mentor, setMentor] = useState([]);
     const [Aprendiz, setAprendiz] = useState([]);
-    const [PKaValidar, setPkaValidar] = useState([]);
-    const [banderaValidacion, setBanderaValidacion] = useState(null);
-  
+    //const [PKaValidar, setPkaValidar] = useState([]);
+    //const [banderaValidacion, setBanderaValidacion] = useState(null);
+    const [banderaValidacionMentor, setBanderaValidacionMentor] = useState('');
+    const [banderaValidacionAprendiz, setBanderaValidacionAprendiz] = useState('');
+    //const response5 = 0;
 
     useEffect(() => {
         const obtenerEmparejamientoMentor = async () => {
             try {
                 const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerMentor?userPk=${userPk}`);
                 setMentor(response.data);
-                setPkaValidar(response.data);
+                //setPkaValidar(response.data);
             } catch (error) {
                 console.error('Error al obtener los datos del emparejamiento activo del mentor:', error);
             }
@@ -30,7 +32,7 @@ const DetalleEmparejamiento = () => {
             try {
                 const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerAprendiz?userPk=${userPk}`);
                 setAprendiz(response.data);
-                setPkaValidar(response.data);
+                //setPkaValidar(response.data);
             } catch (error) {
                 console.error('Error al obtener los datos del emparejamiento activo del aprendiz:', error);
             }
@@ -40,23 +42,46 @@ const DetalleEmparejamiento = () => {
 
    
     useEffect(() => {
-        const obtenerBanderasValidacion = async () => {
+        const obtenerBanderasValidacionMentor = async () => {
             try {
                 const nuevasBanderas = {};
-                for (const usuario of PKaValidar) {
-                    const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuario;
+                for (const usuariomentor of Mentor) {
+                    const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuariomentor;
                     if (PK_USERPAIRED !== undefined && PK_EMPAREJAMIENTO !== undefined) {
                         const response = await axios.post(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                         nuevasBanderas[PK_EMPAREJAMIENTO] = response.data;
+                        //console.log(response.data);
                     }
                 }
-                setBanderaValidacion(nuevasBanderas);
+                setBanderaValidacionMentor(nuevasBanderas);
+                console.log(banderaValidacionMentor);
             } catch (error) {
                 console.error('Error al obtener las banderas de validación', error);
             }
         };
-        obtenerBanderasValidacion();
-    }, [PKaValidar]);
+        obtenerBanderasValidacionMentor();
+    }, [Mentor]);
+
+
+    useEffect(() => {
+        const obtenerBanderasValidacionAprendiz = async () => {
+            try {
+                const nuevasBanderas = {};
+                for (const usuario of Aprendiz) {
+                    const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuario;
+                    if (PK_USERPAIRED !== undefined && PK_EMPAREJAMIENTO !== undefined) {
+                        const response = await axios.post(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                        nuevasBanderas[PK_EMPAREJAMIENTO] = response.data;
+                        console.log(response);
+                    }
+                }
+                setBanderaValidacionAprendiz(nuevasBanderas);
+            } catch (error) {
+                console.error('Error al obtener las banderas de validación', error);
+            }
+        };
+        obtenerBanderasValidacionAprendiz();
+    }, [Aprendiz]);
     
     
 
@@ -87,11 +112,11 @@ const DetalleEmparejamiento = () => {
                                     <div class="col">{aprendiz.estado}</div>
                                     <div class="col">TOKEN</div>
                                 </div>
-                                {aprendiz.estado === 1 && banderaValidacion === 1?(
+                                {(aprendiz.estado === 1 && banderaValidacionAprendiz === 1) ?(
                                 <div class="row">
                                     <div class="col"><Button>Activar emparejamiento</Button></div>
                                 </div>
-                                ): null}
+                                ):<p>Hola</p>}
                             </div>
                         </div>
                     ))}
@@ -126,7 +151,7 @@ const DetalleEmparejamiento = () => {
                                     <div class="col">{mentor.estado}</div>
                                     <div class="col">TOKEN</div>
                                 </div>
-                                {mentor.estado == 1 && banderaValidacion == 1?(
+                                {(mentor.estado === 1 && banderaValidacionMentor === 1)?(
                                 <div class="row">
                                 <div class="col"><Button>Activar emparejamiento</Button></div>
                                 </div>
