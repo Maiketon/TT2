@@ -13,5 +13,8 @@ router.get('/datosGraficaUsoBoton',controlAdministracion.datosGraficaUsoAplicaci
 router.get('/datosSanciones',controlAdministracion.datosGraficaSanciones);
 router.get('/datosEmparejameintosT',controlAdministracion.datosGraficaEmparejamiento);
 router.get('/datosGraficaMaterias',controlAdministracion.datosGraficaMaterias);
+router.get('/datosGraficaCalf',controlAdministracion.datosGraficaCalificaciones);
+
+
 
 module.exports = router;

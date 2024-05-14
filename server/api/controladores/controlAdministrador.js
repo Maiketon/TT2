@@ -86,3 +86,16 @@ exports.datosGraficaUsoAplicacion = async (req,res)=>
             }
         };
     
+
+        exports.datosGraficaCalificaciones = async (req,res) => 
+            {
+                try {
+                    const graficaBotonCalif = await modeloAdmin.datosGraficaCalificaciones();
+                    console.log(graficaBotonCalif);
+                    res.status(200).json(graficaBotonCalif);
+                } catch (error) 
+                {
+                 console.error('Error al obtener los datos para la grafica del boton de calificaciones')   ;
+                 res.status(500).send('Error al obtener los datos para el llenado de la grafica pastel compuesta', error)
+                }
+            };

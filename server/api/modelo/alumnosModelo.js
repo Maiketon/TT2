@@ -80,6 +80,8 @@ class modeloAlumnos {
           FK_ENSEÑANZA2 = ?, 
           FK_ENSEÑANZA3 = ? ,
           CALIFICACION = 5,
+          CALIFICACION_MENTOR5=5,
+          CALIFICACION_APRENDIZ=5,
           FK_ESTATUSUSUARIO = 4
         WHERE PK_USUARIO = ?
       `;

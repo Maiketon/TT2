@@ -138,9 +138,40 @@ class  modeloAdmin
             throw error;
         }
     }
-    
-    
-    
+
+
+    async datosGraficaCalificaciones()
+    {
+        try {
+            const promesadb=db.promise();
+            const[resultado]= await promesadb.query(`SELECT
+            SUM(CASE WHEN CALIFICACION >= 0.00 AND CALIFICACION <= 1.00 THEN 1 ELSE 0 END) AS UsuariosCalifGeneral_0_1,
+            SUM(CASE WHEN CALIFICACION >= 1.1 AND CALIFICACION <= 2.00 THEN 1 ELSE 0 END) AS UsuariosCalifGeneral_1_2,
+            SUM(CASE WHEN CALIFICACION >= 2.1 AND CALIFICACION <= 3.00 THEN 1 ELSE 0 END) AS UsuariosCalifGeneral_2_3,
+            SUM(CASE WHEN CALIFICACION >= 3.1 AND CALIFICACION <= 4.00 THEN 1 ELSE 0 END) AS UsuariosCalifGeneral_3_4,
+            SUM(CASE WHEN CALIFICACION >= 4.1 AND CALIFICACION <= 5.00 THEN 1 ELSE 0 END) AS UsuariosCalifGeneral_4_5,
+            
+            SUM(CASE WHEN CALIFICACION_MENTOR >= 0.00 AND CALIFICACION_MENTOR <= 1.00 THEN 1 ELSE 0 END) AS UsuariosCalifMentor_0_1,
+            SUM(CASE WHEN CALIFICACION_MENTOR >= 1.1 AND CALIFICACION_MENTOR <= 2.00 THEN 1 ELSE 0 END) AS UsuariosCalifMentor_1_2,
+            SUM(CASE WHEN CALIFICACION_MENTOR >= 2.1 AND CALIFICACION_MENTOR <= 3.00 THEN 1 ELSE 0 END) AS UsuariosCalifMentor_2_3,
+            SUM(CASE WHEN CALIFICACION_MENTOR >= 3.1 AND CALIFICACION_MENTOR <= 4.00 THEN 1 ELSE 0 END) AS UsuariosCalifMentor_3_4,
+            SUM(CASE WHEN CALIFICACION_MENTOR >= 4.1 AND CALIFICACION_MENTOR <= 5.00 THEN 1 ELSE 0 END) AS UsuariosCalifMentor_4_5,
+            
+            SUM(CASE WHEN CALIFICACION_APRENDIZ >= 0.00 AND CALIFICACION_APRENDIZ <= 1.00 THEN 1 ELSE 0 END) AS UsuariosCalifAprendiz_0_1,
+            SUM(CASE WHEN CALIFICACION_APRENDIZ >= 1.1 AND CALIFICACION_APRENDIZ <= 2.00 THEN 1 ELSE 0 END) AS UsuariosCalifAprendiz_1_2,
+            SUM(CASE WHEN CALIFICACION_APRENDIZ >= 2.1 AND CALIFICACION_APRENDIZ <= 3.00 THEN 1 ELSE 0 END) AS UsuariosCalifAprendiz_2_3,
+            SUM(CASE WHEN CALIFICACION_APRENDIZ >= 3.1 AND CALIFICACION_APRENDIZ <= 4.00 THEN 1 ELSE 0 END) AS UsuariosCalifAprendiz_3_4,
+            SUM(CASE WHEN CALIFICACION_APRENDIZ >= 4.1 AND CALIFICACION_APRENDIZ <= 5.00 THEN 1 ELSE 0 END) AS UsuariosCalifAprendiz_4_5  
+          FROM
+            informacionusuario;`);
+            return resultado;
+            
+        } catch (error) {
+            console.error('Error al obtener la suma de calificaciones por rol y general', error);
+            throw error;
+            
+        }
+    }
     
     
 }

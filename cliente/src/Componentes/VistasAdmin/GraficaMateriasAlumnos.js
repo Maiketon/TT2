@@ -1,12 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Radar } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
+import { useCarga } from "./ContextoCarga";
 import { jsPDF } from "jspdf";
 import axios from 'axios';
 import { Button, Container,Row } from 'react-bootstrap';
 
 const RadarChart = () => {
     const chartRef = useRef(null);
+    const {setEstaCargando} = useCarga();
     const [chartData, setChartData] = useState({
         labels: [],
         datasets: [
@@ -38,6 +40,7 @@ const RadarChart = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setEstaCargando(true);
                 const response = await axios.get('http://localhost:3001/api/administracion/datosGraficaMaterias');
                 const materias = response.data.map(item => item.NOMBRE_MATERIA);
                 const deficiencias = response.data.map(item => parseInt(item.Deficiencias));
@@ -51,6 +54,7 @@ const RadarChart = () => {
                         { ...currentData.datasets[1], data: fortalezas }
                     ]
                 }));
+                setEstaCargando(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

@@ -2,10 +2,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { jsPDF } from 'jspdf';
 import axios from 'axios';
+import { useCarga } from "./ContextoCarga";
 import { Container, Row ,Button} from 'react-bootstrap';
 
 const PieChart = () => {
     const chartRef = useRef(null);
+    const {setEstaCargando} =useCarga();
     const [chartData, setChartData] = useState({
         labels: ['0 Sanciones', '1 Sancion', '2 Sanciones', '3 Sanciones'],
         datasets: [{
@@ -28,6 +30,7 @@ const PieChart = () => {
     });
 
     useEffect(() => {
+        setEstaCargando(true);
         axios.get('http://localhost:3001/api/administracion/datosSanciones')
             .then(response => {
                 const data = [
@@ -43,6 +46,7 @@ const PieChart = () => {
                         data: data
                     }]
                 }));
+                setEstaCargando(false);
             })
             .catch(error => console.error('Error al obtener los datos del gráfico:', error));
     }, []);

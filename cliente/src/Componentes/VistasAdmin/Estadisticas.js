@@ -2,8 +2,9 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Container, Button,Card, Row, Col} from 'react-bootstrap';
 
 import GraficaUsoA from './GraficaUsoAplicacion';
-import GraficaR from './EjemploGraficaRadar';
-import GraficaD from './EjemploGraficaDona'; // PARA LAS MATERIAS//
+import GraficaMateriasA from './GraficaMateriasAlumnos';
+import GraficaD from './EjemploGraficaDona'; 
+import GraficaCalif from './GraficaCalificacionesU';
 import GraficaEmparejamientosT from './GraficaEmparejamientosT'; // ESTA PARA MEDALLAS
 import GraficaSanciones from './GraficaSanciones';
 import './Css/EstilosGraficas.css';
@@ -53,7 +54,10 @@ const Estadisticas = () => {
                 {vista === 'usoAplicacion' && <GraficaUsoA/>} 
                 {vista === 'sanciones' &&  <GraficaSanciones/>} 
                 {vista === 'emparejamientosT' && <GraficaEmparejamientosT/>} 
-                {vista === 'materias' &&<GraficaR/>}
+                {vista === 'materias' &&<GraficaMateriasA/>}
+                {vista === 'calificaiones' &&<GraficaCalif/>}
+                {vista === 'logros' &&<GraficaD/>}
+
               </Container>
             </Card.Body>
           </Card>
