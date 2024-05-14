@@ -84,7 +84,7 @@ const MyBarChart = () => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF();
       pdf.addImage(imgData, 'PNG', 10, 10, 190, 95);
-      pdf.save('chart.pdf');
+      pdf.save('calificacionesReporte.pdf');
     }
   };
 

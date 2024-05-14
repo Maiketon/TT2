@@ -14,6 +14,9 @@ router.get('/datosSanciones',controlAdministracion.datosGraficaSanciones);
 router.get('/datosEmparejameintosT',controlAdministracion.datosGraficaEmparejamiento);
 router.get('/datosGraficaMaterias',controlAdministracion.datosGraficaMaterias);
 router.get('/datosGraficaCalf',controlAdministracion.datosGraficaCalificaciones);
+router.get('/datosGraficaLogros',controlAdministracion.datosGraficaLogros);
+
+
 
 
 

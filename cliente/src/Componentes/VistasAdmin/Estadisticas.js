@@ -3,7 +3,7 @@ import { Container, Button,Card, Row, Col} from 'react-bootstrap';
 
 import GraficaUsoA from './GraficaUsoAplicacion';
 import GraficaMateriasA from './GraficaMateriasAlumnos';
-import GraficaD from './EjemploGraficaDona'; 
+import GraficaLogrosA from './GraficaLogrosAlumnos'; 
 import GraficaCalif from './GraficaCalificacionesU';
 import GraficaEmparejamientosT from './GraficaEmparejamientosT'; // ESTA PARA MEDALLAS
 import GraficaSanciones from './GraficaSanciones';
@@ -56,7 +56,7 @@ const Estadisticas = () => {
                 {vista === 'emparejamientosT' && <GraficaEmparejamientosT/>} 
                 {vista === 'materias' &&<GraficaMateriasA/>}
                 {vista === 'calificaiones' &&<GraficaCalif/>}
-                {vista === 'logros' &&<GraficaD/>}
+                {vista === 'logros' &&<GraficaLogrosA/>}
 
               </Container>
             </Card.Body>

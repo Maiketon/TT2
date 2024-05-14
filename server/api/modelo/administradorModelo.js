@@ -172,6 +172,23 @@ class  modeloAdmin
             
         }
     }
+
+    async datosGraficaLogros()
+    {
+        try {
+            const promesadb= db.promise();
+            const [resultado] =await promesadb.query(`SELECT m.NOMBRE_MEDALLA, COUNT(*) AS Cantidad
+            FROM controlmedallas c
+            JOIN medallas m ON m.PK_MEDALLAS = c.FK_MEDALLA
+            WHERE c.ESTADO = 1
+            GROUP BY c.FK_MEDALLA, m.NOMBRE_MEDALLA
+            ORDER BY c.FK_MEDALLA;`);
+            return resultado;
+        } catch (error) {
+            console.error('Error al obtener la suma de las medallas obtenidas por los alumnos', error);
+            throw error;
+        }
+    }
     
     
 }

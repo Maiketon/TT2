@@ -69,7 +69,7 @@ const RadarChart = () => {
             const imgData = chart.toBase64Image();
             const pdf = new jsPDF();
             pdf.addImage(imgData, 'PNG', 15, 40, 180, 160);
-            pdf.save('radar-chart.pdf');
+            pdf.save('preferenciasMateriasAlumno.pdf');
         }
     };
 

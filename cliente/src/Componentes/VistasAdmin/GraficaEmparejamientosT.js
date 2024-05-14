@@ -61,7 +61,7 @@ const PolarAreaChart = () => {
             const imgData = canvas.toDataURL('image/png');
             const pdf = new jsPDF();
             pdf.addImage(imgData, 'PNG', 10, 10, 180, 160);  // Ajusta los márgenes y dimensiones según sea necesario
-            pdf.save('polar-area-chart.pdf');
+            pdf.save('emparejamientosTotalesReporte.pdf');
         }
     };
 

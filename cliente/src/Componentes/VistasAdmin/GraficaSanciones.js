@@ -77,7 +77,7 @@ const PieChart = () => {
         const yPosition = (pdfHeight - scaledHeight) / 2;
     
         pdf.addImage(imgData, 'PNG', xPosition, yPosition, scaledWidth, scaledHeight);
-        pdf.save('graficaSanciones.pdf');
+        pdf.save('reporteSanciones.pdf');
     };
     
 

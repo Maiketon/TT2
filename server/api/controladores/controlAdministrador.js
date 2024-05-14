@@ -87,7 +87,7 @@ exports.datosGraficaUsoAplicacion = async (req,res)=>
         };
     
 
-        exports.datosGraficaCalificaciones = async (req,res) => 
+    exports.datosGraficaCalificaciones = async (req,res) => 
             {
                 try {
                     const graficaBotonCalif = await modeloAdmin.datosGraficaCalificaciones();
@@ -95,7 +95,19 @@ exports.datosGraficaUsoAplicacion = async (req,res)=>
                     res.status(200).json(graficaBotonCalif);
                 } catch (error) 
                 {
-                 console.error('Error al obtener los datos para la grafica del boton de calificaciones')   ;
-                 res.status(500).send('Error al obtener los datos para el llenado de la grafica pastel compuesta', error)
+                 console.error('Error al obtener los datos para la grafica del boton de calificaciones');
+                 res.status(500).send('Error al obtener los datos para el llenado de la grafica pastel compuesta', error);
                 }
             };
+    exports.datosGraficaLogros= async (req,res)=>
+        {
+            try {
+                const graficaBotonLogros = await modeloAdmin.datosGraficaLogros();
+                console.log(graficaBotonLogros);
+                res.status(200).json(graficaBotonLogros);
+            } catch (error) {
+                console.error('Error al obtener los datos para la grafica del boton de Logros/Medallas');
+                 res.status(500).send('Error al obtener los datos para el llenado de la grafica de dona para medallas', error);
+                
+            }
+        };
