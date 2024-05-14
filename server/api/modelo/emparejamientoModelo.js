@@ -238,6 +238,33 @@ class modeloEmparejamiento{
         }
     }
 
+    async obtenerPkaValidar(pkuserPaired,pkemparejamiento){
+        console.log(pkuserPaired);
+        console.log(pkemparejamiento);
+        const sql = `
+        SELECT 
+            CASE 
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM emparejamiento
+                    WHERE FK_ESTADOEMPAREJAMIENTO = 1
+                    AND PK_EMPAREJAMIENTO = ?
+                    AND FK_USUARIO2 = ?
+                ) THEN 1
+                ELSE 0
+            END AS bandera;
+        `;
+
+        try {
+            const promesadb = db.promise();
+            const result = await promesadb.query(sql, [pkemparejamiento,pkuserPaired]);
+            console.log(result);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
 
 
 }

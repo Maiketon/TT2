@@ -136,3 +136,15 @@ exports.insertarRegistros = async (req,res) => {
     }
 }
 
+exports.obtenerPKaValidar = async(req,res) => {
+    const {PK_USERPAIRED,PK_EMPAREJAMIENTO} = req.query;
+    try {
+        const pkvalidar = await modeloEmparejamiento.obtenerPkaValidar(PK_USERPAIRED,PK_EMPAREJAMIENTO);
+        console.log(pkvalidar);
+        res.json(pkvalidar);
+    } catch (err) {
+        console.error('Error realizando la consulta:', err);
+        res.status(500).send('Error en el servidor al obtener el Pk que hará la validación');
+    }
+}
+
