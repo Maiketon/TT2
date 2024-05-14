@@ -110,7 +110,8 @@ class modeloEmparejamiento{
         SELECT 
             CONCAT(inf.NOMBRE, " ", inf.APELLIDO_PATERNO, " ", inf.APELLIDO_MATERNO) AS nombreCompleto,
             emp.FK_ESTADOEMPAREJAMIENTO AS estado,
-            emp.FK_USUARIO1,
+            emp.PK_EMPAREJAMIENTO,
+            emp.FK_USUARIO1 AS PK_USERPAIRED,
             emp.ROL_USUARIO1 AS rol
         FROM
             emparejamiento emp
@@ -118,7 +119,26 @@ class modeloEmparejamiento{
         WHERE
             
             emp.ROL_USUARIO1 = 1
-            AND emp.FK_USUARIO2 = ?;
+		AND
+			emp.ROL_USUARIO2 = 2
+		AND 
+			emp.FK_USUARIO2 = ?
+		UNION
+			(SELECT
+				CONCAT(inf.NOMBRE, " ", inf.APELLIDO_PATERNO, " ", inf.APELLIDO_MATERNO) AS nombreCompleto,
+				emp.FK_ESTADOEMPAREJAMIENTO AS estado,
+				emp.PK_EMPAREJAMIENTO,
+				emp.FK_USUARIO2 AS PK_USERPAIRED,
+				emp.ROL_USUARIO2 AS rol
+			FROM
+				emparejamiento emp
+			INNER JOIN informacionusuario inf ON (emp.FK_USUARIO2 = inf.PK_USUARIO)
+            WHERE
+				emp.ROL_USUARIO2 = 1
+			AND
+				emp.ROL_USUARIO1 = 2
+			AND 
+				emp.FK_USUARIO1 = ?)
         `;
 
         try {
@@ -132,18 +152,34 @@ class modeloEmparejamiento{
 
     async obtenerAprendizActivo(userPk){
         const sql = `
-        SELECT 
-            CONCAT(inf.NOMBRE, " ", inf.APELLIDO_PATERNO, " ", inf.APELLIDO_MATERNO) AS nombreCompleto,
-            emp.FK_ESTADOEMPAREJAMIENTO AS estado,
-            emp.FK_USUARIO2,
-            emp.ROL_USUARIO2 AS rol
-        FROM
-            emparejamiento emp
-        INNER JOIN informacionusuario inf ON (emp.FK_USUARIO2 = inf.PK_USUARIO)
-        WHERE
-            
-            emp.ROL_USUARIO2 = 2
-            AND emp.FK_USUARIO1 = ?;
+            SELECT 
+                CONCAT(inf.NOMBRE, " ", inf.APELLIDO_PATERNO, " ", inf.APELLIDO_MATERNO) AS nombreCompleto,
+                emp.FK_ESTADOEMPAREJAMIENTO AS estado,
+                emp.PK_EMPAREJAMIENTO,
+                emp.FK_USUARIO2 AS PK_USERPAIRED,
+                emp.ROL_USUARIO2 AS rol
+            FROM
+                emparejamiento emp
+            INNER JOIN informacionusuario inf ON (emp.FK_USUARIO2 = inf.PK_USUARIO)
+            WHERE
+                
+                emp.ROL_USUARIO1 = 1
+            AND
+                emp.FK_USUARIO1 = ?
+            UNION
+                (SELECT
+                    CONCAT(inf.NOMBRE, " ", inf.APELLIDO_PATERNO, " ", inf.APELLIDO_MATERNO) AS nombreCompleto,
+                    emp.FK_ESTADOEMPAREJAMIENTO AS estado,
+                    emp.PK_EMPAREJAMIENTO,
+                    emp.FK_USUARIO1 AS PK_USERPAIRED,
+                    emp.ROL_USUARIO1 AS rol
+                FROM
+                    emparejamiento emp
+                INNER JOIN informacionusuario inf ON (emp.FK_USUARIO1 = inf.PK_USUARIO)
+                WHERE
+                    emp.ROL_USUARIO2 = 1
+                AND 
+                    emp.FK_USUARIO2 = ?)
         `;
 
         try {
@@ -154,7 +190,7 @@ class modeloEmparejamiento{
             throw err;
         }
     }
-
+    
 
     async ObtenerRechazos(usuarioPrincipalPK){
         const sql = `

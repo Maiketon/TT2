@@ -54,11 +54,20 @@ const Emparejamiento = () => {
 const handleDeleteAcceptCard = async (index, pkUsuarioCandidato, tipoCoincidencia) => {
     // Imprimir el usuario seleccionado en la consola
     console.log('Usuario seleccionado:', { pkUsuarioCandidato, tipoCoincidencia });
-
+    setDeletedCardIndex(index); 
     // Llamar a la función para insertar el registro
     await insertarRegistro(pkUsuarioCandidato, tipoCoincidencia);
-    setDeletedCardIndex(index); 
 };
+
+useEffect(() => {
+    // Lógica para eliminar la tarjeta después de la animación
+    if (deleteAcceptPairmentCard !== null) {
+        setTimeout(() => {
+            setDatosAlumno((prevDatos) => prevDatos.filter((_, index) => index !== deleteAcceptPairmentCard));
+            setdeleteAcceptPairment(null);
+        }, 300); // Tiempo de espera que coincide con la duración de la animación
+    }
+}, [deleteAcceptPairmentCard]);
 
 const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
     console.log("Esta es bandera ");
@@ -123,21 +132,6 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
     }
 };
 
-    useEffect(() => {
-        // Lógica para eliminar la tarjeta después de la animación
-        if (deleteAcceptPairmentCard !== null) {
-            setTimeout(() => {
-                setDatosAlumno((prevDatos) => prevDatos.filter((_, index) => index !== deleteAcceptPairmentCard));
-                setdeleteAcceptPairment(null);
-            }, 300); // Tiempo de espera que coincide con la duración de la animación
-        }
-    }, [deleteAcceptPairmentCard]);
-
-
-
-
-
-
     const obtenerStrikes = async () => {
         try {
             const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerStrikes?userPk=${userPk}`);
@@ -173,9 +167,7 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
     };
 
 
-    
-
-
+//MANEJADOR DE LA BARRA DE CARGA
     const handleStartLoading = async () => {
         if (parseInt(bandera) !== 3) {
             handleShowModal();
@@ -194,7 +186,7 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
             });
         }
     };
-
+//FUNCION PARA ACTUALIZAR EL NUMERO DE RECHAZOS EN EL CAMPO DE TEXTO
     const actualizarRechazos = async () => {
         try {
             const numRechazos = parseInt(sessionStorage.getItem("numRechazos"));
