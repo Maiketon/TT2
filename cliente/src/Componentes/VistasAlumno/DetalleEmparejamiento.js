@@ -43,7 +43,7 @@ const DetalleEmparejamiento = () => {
             <Card>
                 <Card.Body>
                     <Card.Title>Mis mentorias </Card.Title>
-                    {Mentor.map((mentor, index) => (
+                    {Aprendiz.map((aprendiz, index) => (
                         <div className="card" key={index}>
                             <div >
                                 <div class="row">
@@ -52,12 +52,12 @@ const DetalleEmparejamiento = () => {
                                                     alt="imagen de perfil"
                                                     src={perfil_generico}
                                                 />  </div>
-                                    <div class="col">{mentor.nombreCompleto}</div>
+                                    <div class="col">{aprendiz.nombreCompleto}</div>
                                     <div class="col">Fecha</div>
                                 </div>
                                 <div class="row">
                                     <div class="col"><button className="btn_rechazo">X</button></div>
-                                    <div class="col">{mentor.estado}</div>
+                                    <div class="col">{aprendiz.estado}</div>
                                     <div class="col">TOKEN</div>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@ const DetalleEmparejamiento = () => {
             <Card>
                 <Card.Body>
                     <Card.Title>Mis A.O </Card.Title>
-                    {Aprendiz.map((aprendiz, index) => (
+                    {Mentor.map((mentor, index) => (
                         <div className="card" key={index}>
                             <div >
                                 <div class="row">
@@ -79,12 +79,12 @@ const DetalleEmparejamiento = () => {
                                                     alt="imagen de perfil"
                                                     src={perfil_generico}
                                                 />  </div>
-                                    <div class="col">{aprendiz.nombreCompleto}</div>
+                                    <div class="col">{mentor.nombreCompleto}</div>
                                     <div class="col">Fecha</div>
                                 </div>
                                 <div class="row">
                                     <div class="col"><button className="btn_rechazo">X</button></div>
-                                    <div class="col">{aprendiz.estado}</div>
+                                    <div class="col">{mentor.estado}</div>
                                     <div class="col">TOKEN</div>
                                 </div>
                             </div>

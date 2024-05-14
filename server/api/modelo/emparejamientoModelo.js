@@ -1,4 +1,5 @@
 const db = require('../../configuracion/dbconfiguracion'); //IMPORTAMOS LA CONEXION A LA BASE DE DATOS //
+const { use } = require('../../configuracion/emailConfig');
 
 class modeloEmparejamiento{
     async obtenerNombresFortalezasDeficiencias(userPk){
@@ -143,7 +144,7 @@ class modeloEmparejamiento{
 
         try {
             const promesadb = db.promise();
-            const [result] = await promesadb.query(sql, [userPk]);
+            const [result] = await promesadb.query(sql, [userPk,userPk]);
             return result;
         } catch (err) {
             throw err;
@@ -184,7 +185,7 @@ class modeloEmparejamiento{
 
         try {
             const promesadb = db.promise();
-            const [result] = await promesadb.query(sql, [userPk]);
+            const [result] = await promesadb.query(sql, [userPk,userPk]);
             return result;
         } catch (err) {
             throw err;
