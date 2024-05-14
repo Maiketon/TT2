@@ -9,7 +9,8 @@ const DetalleEmparejamiento = () => {
     const [Mentor, setMentor] = useState([]);
     const [Aprendiz, setAprendiz] = useState([]);
     const [PKaValidar, setPkaValidar] = useState([]);
-    let banderaValidacion;
+    const [banderaValidacion, setBanderaValidacion] = useState(null);
+  
 
     useEffect(() => {
         const obtenerEmparejamientoMentor = async () => {
@@ -39,22 +40,22 @@ const DetalleEmparejamiento = () => {
 
    
     useEffect(() => {
-        const obtenerPkUsuarioaValidar = async () => {
+        const obtenerBanderasValidacion = async () => {
             try {
-                // Obtener PK_USERPAIRED y PK_EMPAREJAMIENTO de la primera posición de PKaValidar
-                const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = PKaValidar.length > 0 ? PKaValidar[0] : {};
-                // Verificar que PK_USERPAIRED y PK_EMPAREJAMIENTO no sean undefined antes de hacer la petición
-                if (PK_USERPAIRED !== undefined && PK_EMPAREJAMIENTO !== undefined) {
-                    const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
-                    const banderaValidacion = response.data.bandera; // Acceder directamente a la propiedad bandera en response.data
-                    console.log(banderaValidacion);
-                    // Lógica para manejar la respuesta del backend
+                const nuevasBanderas = {};
+                for (const usuario of PKaValidar) {
+                    const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuario;
+                    if (PK_USERPAIRED !== undefined && PK_EMPAREJAMIENTO !== undefined) {
+                        const response = await axios.post(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                        nuevasBanderas[PK_EMPAREJAMIENTO] = response.data;
+                    }
                 }
+                setBanderaValidacion(nuevasBanderas);
             } catch (error) {
-                console.error('Error al obtener la bandera de validacion', error);
+                console.error('Error al obtener las banderas de validación', error);
             }
         };
-        obtenerPkUsuarioaValidar();
+        obtenerBanderasValidacion();
     }, [PKaValidar]);
     
     

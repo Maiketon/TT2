@@ -9,9 +9,10 @@ router.get('/obtenerRol', controlEmparejamiento.obtenerRolEmparejamiento);
 router.get('/obtenerMentor', controlEmparejamiento.obtenerMentoresActivos);
 router.get('/obtenerAprendiz',controlEmparejamiento.obtenerAprendizActivos);
 router.get('/obtenerRechazos', controlEmparejamiento.obtenerRechazos);
-router.get('/obtenerPkaValidar',controlEmparejamiento.obtenerPKaValidar);
+
 //POSTS//
 router.post('/actualizarRechazos', controlEmparejamiento.actualizarRechazos);
 router.post('/actualizarEmparejamientosDisponibles', controlEmparejamiento.actualizarEmparejamientos);
 router.post('/insertarRegistros', controlEmparejamiento.insertarRegistros);
+router.post('/obtenerPkaValidar',controlEmparejamiento.obtenerPKaValidar);
 module.exports = router;

@@ -47,7 +47,7 @@ async  ObtenerUsuariosSinEmparejamientos({ pkUsuarioPrincipal }) {
             LEFT JOIN materia AS m5 ON iu.FK_ENSEÑANZA2 = m5.PK_MATERIA
             LEFT JOIN materia AS m6 ON iu.FK_ENSEÑANZA3 = m6.PK_MATERIA
         WHERE 
-            (FK_ESTATUSUSUARIO = 3 OR FK_ESTATUSUSUARIO = 4)
+            (FK_ESTATUSUSUARIO = 4)
             AND PK_USUARIO != ?
             AND NOT EXISTS (
                 SELECT 1 
@@ -110,7 +110,7 @@ LEFT JOIN
 LEFT JOIN 
     materia AS m6 ON iu.FK_ENSEÑANZA3 = m6.PK_MATERIA
 WHERE 
-    (iu.FK_ESTATUSUSUARIO = 3 OR iu.FK_ESTATUSUSUARIO = 4)
+    (iu.FK_ESTATUSUSUARIO = 4)
     AND iu.PK_USUARIO != ?
     AND e.FK_ESTADOEMPAREJAMIENTO IN (1, 3)
 GROUP BY 

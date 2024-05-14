@@ -140,6 +140,7 @@ exports.obtenerPKaValidar = async(req,res) => {
     const {PK_USERPAIRED,PK_EMPAREJAMIENTO} = req.query;
     try {
         const pkvalidar = await modeloEmparejamiento.obtenerPkaValidar(PK_USERPAIRED,PK_EMPAREJAMIENTO);
+        console.log("Esta es la bandera");
         console.log(pkvalidar);
         res.json(pkvalidar);
     } catch (err) {

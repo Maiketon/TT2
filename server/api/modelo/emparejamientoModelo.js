@@ -239,8 +239,7 @@ class modeloEmparejamiento{
     }
 
     async obtenerPkaValidar(pkuserPaired,pkemparejamiento){
-        console.log(pkuserPaired);
-        console.log(pkemparejamiento);
+  
         const sql = `
         SELECT 
             CASE 
@@ -258,8 +257,9 @@ class modeloEmparejamiento{
         try {
             const promesadb = db.promise();
             const result = await promesadb.query(sql, [pkemparejamiento,pkuserPaired]);
-            console.log(result);
-            return result;
+            const bandera = result[0][0].bandera;
+            
+            return bandera;
         } catch (err) {
             throw err;
         }
