@@ -154,7 +154,7 @@ class modeloEmparejamiento{
             throw err;
         }
     }
-
+    
 
     async ObtenerRechazos(usuarioPrincipalPK){
         const sql = `
