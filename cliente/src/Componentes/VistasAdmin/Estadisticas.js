@@ -4,7 +4,7 @@ import { Container, Button,Card, Row, Col} from 'react-bootstrap';
 import GraficaUsoA from './GraficaUsoAplicacion';
 import GraficaR from './EjemploGraficaRadar';
 import GraficaD from './EjemploGraficaDona'; // PARA LAS MATERIAS//
-import GraficaP from './EjemploGraficaPolar'; // ESTA PARA MEDALLAS
+import GraficaEmparejamientosT from './GraficaEmparejamientosT'; // ESTA PARA MEDALLAS
 import GraficaSanciones from './GraficaSanciones';
 import './Css/EstilosGraficas.css';
 
@@ -52,8 +52,8 @@ const Estadisticas = () => {
               <Container className='contendedor-grafica'>
                 {vista === 'usoAplicacion' && <GraficaUsoA/>} 
                 {vista === 'sanciones' &&  <GraficaSanciones/>} 
-                {vista === 'emparejamientosT' && <GraficaP/>} 
-                {vista === 'inscribirse' &&<GraficaP/>}
+                {vista === 'emparejamientosT' && <GraficaEmparejamientosT/>} 
+                {vista === 'materias' &&<GraficaR/>}
               </Container>
             </Card.Body>
           </Card>
