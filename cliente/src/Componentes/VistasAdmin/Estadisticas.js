@@ -44,7 +44,7 @@ const Estadisticas = () => {
                    <Row className='p-1'>
                     <Col>
                    <Button onClick={()=>setGrafica('materias')} className='m-1'>Materias seleccionadas por alumnos</Button>
-                   <Button onClick={()=>setGrafica('calificaiones')}className='m-1'>Estatus de los emparejamientos</Button>
+                   <Button onClick={()=>setGrafica('calificaiones')}className='m-1'>Calificaciones de los Alumnos</Button>
                    <Button onClick={()=>setGrafica('logros')} className='m-1'>Estatus de medallas de los usuarios</Button>
                     </Col>
                    </Row>

@@ -7,8 +7,13 @@ router.get('/obtenerMedallas', controlAdministracion.obtenerMedallasAlumnos);
 
 router.post('/registroUsuarios', controlAdministracion.obtenerRegistrosUsuarios);
 
+//MODULO DE REGISTROS USUARIO //
+router.post('/buscarFiltrado',controlAdministracion.obtenerUsuariosFiltrados);
 
 
+
+
+//MODULO DE REPORTES
 router.get('/datosGraficaUsoBoton',controlAdministracion.datosGraficaUsoAplicacion);
 router.get('/datosSanciones',controlAdministracion.datosGraficaSanciones);
 router.get('/datosEmparejameintosT',controlAdministracion.datosGraficaEmparejamiento);

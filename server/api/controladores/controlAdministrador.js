@@ -111,3 +111,10 @@ exports.datosGraficaUsoAplicacion = async (req,res)=>
                 
             }
         };
+
+
+
+        exports.obtenerUsuariosFiltrados = async (req,res) =>
+            {
+                    console.log(req.body);
+            };

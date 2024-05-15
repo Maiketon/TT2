@@ -85,15 +85,21 @@ use learnmatch;
 SELECT * FROM materia;
 SELECT * FROM area;
 SELECT * FROM estatus;
-SELECT * FROM  informacionusuario;
 SELECT * FROM medallas;
 SELECT * FROM  controlmedallas;
+SELECT * FROM  informacionusuario;
 SELECT * FROM estadosemparejamientos;
 SELECT * FROM emparejamiento;
+SELECT * FROM comunicacionzg;
+SELECT * FROM reportesusuarios;
 ALTER TABLE informacionusuario AUTO_INCREMENT = 1;
-
+SELECT COUNT(*) FROM informacionusuario;
+SELECT COUNT(*) FROM emparejamiento;
 SELECT PK_CONTROLMEDALLAS,FK_MEDALLA, ESTADO FROM controlMedallas WHERE FK_USUARIOINFO = 8;
-
+SELECT
+                    SUM(CASE WHEN FK_ESTATUSUSUARIO IN (4, 5) THEN 1 ELSE 0 END) AS totalusuariosAyS,
+                    SUM(CASE WHEN FK_ESTATUSUSUARIO = 6 THEN 1 ELSE 0 END) AS totalusuariosV
+                 FROM informacionusuario;
 -- CATALOGO MEDALLAS---
 INSERT INTO medallas (PK_MEDALLAS,NOMBRE_MEDALLA) VALUES
 ('PRIMER EMPAREJAMIENTO'), 

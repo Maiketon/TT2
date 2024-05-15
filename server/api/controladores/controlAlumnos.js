@@ -28,8 +28,7 @@ exports.guardarAlumno = async (req, res) => {
         //const verificationLink = `http://localhost:3000/verificar/${verificationToken}/${correo}`;
         const verificacionToken = jsonwebtoken.sign(
             {usuarioId, correo},
-            'pruebaclave',
-            {expiresIn:'24h'}
+            'pruebaclave'
         );
         const verificationLink = `http://localhost:3001/api/alumnos/verificar/${verificacionToken}`;
         console.log(usuarioId);
