@@ -15,7 +15,7 @@ class modeloAlumnos {
     // Aquí  agregar mas metodos si necesitamos otras operaciones en la tabla de 'materia'
       async guardarNuevoAlumno({ carrera, semestre, nombres, apellidoP, apellidoM, correo, password }) {
         const sql = 
-      'INSERT INTO informacionusuario (FK_ESTATUSUSUARIO, FECHA_CREACION, NOMBRE, APELLIDO_PATERNO, APELLIDO_MATERNO, EMAIL, PSW, CARRERA, SEMETRE) VALUES (1, NOW(), ?, ?, ?, ?, ?, ?, ?)';
+      'INSERT INTO informacionusuario (FK_ESTATUSUSUARIO, FECHA_CREACION, NOMBRE, APELLIDO_PATERNO, APELLIDO_MATERNO, EMAIL, PSW, CARRERA, SEMESTRE) VALUES (1, NOW(), ?, ?, ?, ?, ?, ?, ?)';
         try {
             const promesadb = db.promise();
             const [resultado] = await promesadb.query(sql, [nombres, apellidoP, apellidoM, correo, password, carrera, semestre]);

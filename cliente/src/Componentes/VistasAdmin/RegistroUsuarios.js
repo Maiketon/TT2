@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Css/Dropdown.css';
+import './Css/PrincipalAdm.css';
 import axios from 'axios';
 
 const RegistroUsuarios = () => {
@@ -50,18 +51,18 @@ const RegistroUsuarios = () => {
    // Estados para cada campo del formulario
   const [pkUsuario, setPkUsuario] = useState('');
   const [carrera, setCarrera] = useState('1');
-  const [semestre, setSemestre] = useState('0');
-  const [calificacion, setCalificacion] = useState('0');
-  const [medallaEs, setMedallaEs] = useState('0');
+  const [semestre, setSemestre] = useState('-1');
+  const [calificacion, setCalificacion] = useState('-1');
+  const [medallaEs, setMedallaEs] = useState('-1');
 
   const CambioEstatus = (event) => {
     const newEstatus = event.target.value;
     setSelectedEstatus(newEstatus);
     
     if (['0', '1', '2', '3'].includes(newEstatus)) {
-      setSemestre('0');
-      setCalificacion('0');
-      setMedallaEs('0');
+      setSemestre('-1');
+      setCalificacion('-1');
+      setMedallaEs('-1');
     }
   };
 
@@ -69,9 +70,9 @@ const RegistroUsuarios = () => {
     setSelectedEstatus('0');
     setPkUsuario('');
     setCarrera('1');
-    setSemestre('0');
-    setCalificacion('0');
-    setMedallaEs('0');
+    setSemestre('-1');
+    setCalificacion('-1');
+    setMedallaEs('-1');
   };
 
   const buscar = async () => {
@@ -98,12 +99,12 @@ const RegistroUsuarios = () => {
     <>
       <Container fluid>
         <Container className="mt-4">
-          <h2>Filtrar Usuarios</h2>
+          <h2 className='titulo'>Filtrar Usuarios</h2>
           <Form>
             <Row>
               <Col>
-                <Form.Group as={Row} className="mb-1 p-1" controlId="estatusAlumno">
-                  <Form.Label className="text-md-right text-start form-label-pe-none">Estatus usuario</Form.Label>
+                <Form.Group controlId="estatusAlumno">
+                  <Form.Label className="text-md-right text-start form-label-pe-none titulo">Estatus usuario</Form.Label>
                   <Form.Select name='estatusAlumno' value={selectedEstatus} onChange={CambioEstatus}>
                     <option value="0">GLOBAL</option>
                     {estatus.map((statusItem) => (
@@ -116,15 +117,15 @@ const RegistroUsuarios = () => {
               </Col>
 
               <Col>
-                <Form.Group as={Row} className="mb-1" controlId="pkusuario">
-                  <Form.Label className="text-md-right text-start form-label-pe-none">Nombre:</Form.Label>
+                <Form.Group controlId="pkusuario">
+                  <Form.Label className="text-md-right text-start form-label-pe-none titulo">Nombre:</Form.Label>
                   <Form.Control name='pkusuario' type="text" placeholder="Ingrese el ID del alumno" value={pkUsuario} onChange={e => setPkUsuario(e.target.value)} />
                 </Form.Group>
               </Col>
 
               <Col>
-                <Form.Group as={Row} className="mb-1 p-1" controlId="carrera">
-                  <Form.Label className="text-md-right text-start form-label-pe-none">Carrera</Form.Label>
+                <Form.Group  controlId="carrera">
+                  <Form.Label className="text-md-right text-start form-label-pe-none titulo">Carrera</Form.Label>
                   <Form.Select name='carrera' value={carrera} onChange={e => setCarrera(e.target.value)}>
                     <option value={1}>ISC</option>
                   </Form.Select>
@@ -134,8 +135,8 @@ const RegistroUsuarios = () => {
 
             <Row>
               <Col>
-                <Form.Group as={Row} className="mb-1 p-1" controlId="semestre">
-                  <Form.Label className="text-md-right text-start form-label-pe-none">Semestre</Form.Label>
+                <Form.Group controlId="semestre">
+                  <Form.Label className="text-md-right text-start form-label-pe-none titulo">Semestre</Form.Label>
                   <Form.Select name='semestre' value={semestre} onChange={e => setSemestre(e.target.value)} disabled={disabledStatuses.semestre}>
                     <option value={0}>TODOS LOS SEMESTRES</option>
                     <option value={1}>PRIMER SEMESTRE</option>
@@ -145,8 +146,8 @@ const RegistroUsuarios = () => {
               </Col>
 
               <Col>
-                <Form.Group as={Row} className="mb-1" controlId="calificacion">
-                  <Form.Label className="text-md-right text-start form-label-pe-none">Calificación</Form.Label>
+                <Form.Group  controlId="calificacion">
+                  <Form.Label className="text-md-right text-start form-label-pe-none titulo">Calificación</Form.Label>
                   <Form.Select name='calificacion' value={calificacion} onChange={e => setCalificacion(e.target.value)} disabled={disabledStatuses.calificacion}>
                     <option value={0}>TODAS LAS CALIFICACIONES</option>
                     <option value={5}>5</option>
@@ -159,10 +160,10 @@ const RegistroUsuarios = () => {
               </Col>
 
               <Col>
-                <Form.Group as={Row} className="mb-1" controlId="medallas">
-                  <Form.Label className="text-md-right text-start form-label-pe-none">Medallas</Form.Label>
+                <Form.Group controlId="medallas">
+                  <Form.Label className="text-md-right text-start form-label-pe-none titulo">Medallas</Form.Label>
                   <Form.Select name='medallas'value={medallaEs} onChange={e => setMedallaEs(e.target.value)} disabled={disabledStatuses.medallas}>
-                    <option value={0}>TODAS ACTIVAS E INACTIVAS</option>
+                    <option value={0}>SIN ESPCIFICAR</option>
                     {medallas.map((medallaItem) => (
                       <option key={medallaItem.PK_MEDALLAS} value={medallaItem.PK_MEDALLAS}>
                         {medallaItem.NOMBRE_MEDALLA}

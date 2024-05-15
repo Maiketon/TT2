@@ -114,7 +114,22 @@ exports.datosGraficaUsoAplicacion = async (req,res)=>
 
 
 
-        exports.obtenerUsuariosFiltrados = async (req,res) =>
-            {
-                    console.log(req.body);
-            };
+        exports.obtenerUsuariosFiltrados = async (req, res) => {
+            try {
+                console.log(req.body);
+                const { estatus, pkusuario, carrera, semestre, calf, medallaEs } = req.body;
+                const resultado = await modeloAdmin.obtenerUsuariosFiltrados({ estatus, pkusuario, carrera, semestre, calf, medallaEs });
+                res.json({
+                    success: true,
+                    data: resultado
+                });
+                console.log(resultado);
+            } catch (error) {
+                console.error('Error en el controlador al obtener usuarios filtrados', error);
+                res.status(500).json({
+                    success: false,
+                    message: 'Error interno del servidor'
+                });
+            }
+        };
+        

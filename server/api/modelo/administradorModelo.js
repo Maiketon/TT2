@@ -5,7 +5,7 @@ class  modeloAdmin
     async obtenerEstatusUsuarios() {
         try {
           const promesadb= db.promise();
-          const [estatusAlumno] = await promesadb.query('SELECT * FROM estatus WHERE PK_ESTATUS <> 8 AND PK_ESTATUS <> 3');
+          const [estatusAlumno] = await promesadb.query('SELECT * FROM estatus WHERE PK_ESTATUS <> 8');
           return estatusAlumno;
         } catch (err) {
           throw err;
@@ -172,23 +172,79 @@ class  modeloAdmin
             
         }
     }
-
-    async datosGraficaLogros()
-    {
+    async obtenerUsuariosFiltrados({ estatus, pkusuario, carrera, semestre, calf, medallaEs }) {
         try {
-            const promesadb= db.promise();
-            const [resultado] =await promesadb.query(`SELECT m.NOMBRE_MEDALLA, COUNT(*) AS Cantidad
-            FROM controlmedallas c
-            JOIN medallas m ON m.PK_MEDALLAS = c.FK_MEDALLA
-            WHERE c.ESTADO = 1
-            GROUP BY c.FK_MEDALLA, m.NOMBRE_MEDALLA
-            ORDER BY c.FK_MEDALLA;`);
+            const promesadb = db.promise();
+            let query = `
+                SELECT 
+                    informacionusuario.*,
+                    GROUP_CONCAT(DISTINCT medallas.NOMBRE_MEDALLA SEPARATOR ', ') AS NOMBRES_MEDALLAS
+                FROM informacionusuario
+                LEFT JOIN controlmedallas ON informacionusuario.PK_USUARIO = controlmedallas.FK_USUARIOINFO
+                LEFT JOIN medallas ON controlmedallas.FK_MEDALLA = medallas.PK_MEDALLAS
+                WHERE 1=1
+            `;
+    
+            const params = [];
+    
+            // Filtrar por estatus específico
+            if (estatus && estatus !== '0') {
+                query += ' AND informacionusuario.FK_ESTATUSUSUARIO = ?';
+                params.push(estatus);
+            }
+    
+            // Aplicar filtro por PK de usuario si está presente
+            if (pkusuario && pkusuario !== '-1') {
+                query += ' AND informacionusuario.PK_USUARIO = ?';
+                params.push(pkusuario);
+            }
+    
+            // Filtrar siempre por carrera
+            if (carrera && carrera !== '-1') {
+                query += ' AND informacionusuario.CARRERA = ?';
+                params.push(carrera);
+            }
+    
+            // Filtrar por semestre si no es '-1'
+            if (semestre && semestre !== '-1') {
+                query += ' AND informacionusuario.SEMESTRE = ?';
+                params.push(semestre);
+            }
+    
+            // Filtrar por rango de calificación
+            if (calf && calf !== '-1') {
+                const ranges = {
+                    '1': [0.00, 1.00],
+                    '2': [1.01, 2.00],
+                    '3': [2.01, 3.00],
+                    '4': [3.01, 4.00],
+                    '5': [4.01, 5.00]
+                };
+                if (ranges[calf]) {
+                    query += ' AND informacionusuario.CALIFICACION BETWEEN ? AND ?';
+                    params.push(...ranges[calf]);
+                }
+            }
+    
+            // Filtrar por medalla específica con estado activo si medallaEs no es '0' o '-1'
+            if (medallaEs && medallaEs > 0) {
+                query += ' AND controlmedallas.FK_MEDALLA = ? AND controlmedallas.ESTADO = 1';
+                params.push(medallaEs);
+            }
+    
+            query += ' GROUP BY informacionusuario.PK_USUARIO';
+    
+            const [resultado] = await promesadb.query(query, params);
             return resultado;
         } catch (error) {
-            console.error('Error al obtener la suma de las medallas obtenidas por los alumnos', error);
+            console.error('Error al obtener usuarios filtrados', error);
             throw error;
         }
     }
+    
+    
+    
+    
     
     
 }
