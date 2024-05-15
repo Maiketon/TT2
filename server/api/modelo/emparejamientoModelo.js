@@ -99,6 +99,7 @@ class modeloEmparejamiento{
                 console.log("VARIABLE NO RECONOCIDA");
             }
             console.log("totalEns: ", totalEnseñante, "totalApr: ", totalAprendiz);
+            console.log("bandera: ", bandera);
             return { bandera, totalEmparejamientos, totalEnseñante, totalAprendiz };
         } catch (err) {
             throw err;
@@ -248,7 +249,7 @@ class modeloEmparejamiento{
                     FROM emparejamiento
                     WHERE FK_ESTADOEMPAREJAMIENTO = 1
                     AND PK_EMPAREJAMIENTO = ?
-                    AND FK_USUARIO2 = ?
+                    AND FK_USUARIO1 = ?
                 ) THEN 1
                 ELSE 0
             END AS bandera;
@@ -257,13 +258,14 @@ class modeloEmparejamiento{
         try {
             const promesadb = db.promise();
             const result = await promesadb.query(sql, [pkemparejamiento,pkuserPaired]);
-            const bandera = result[0][0].bandera;
-            
+            const bandera = result[0][0].bandera;     
             return bandera;
         } catch (err) {
             throw err;
         }
     }
+
+
 
 
 

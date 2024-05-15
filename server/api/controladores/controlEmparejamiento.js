@@ -136,12 +136,57 @@ exports.insertarRegistros = async (req,res) => {
     }
 }
 
+exports.verificarColision = async (req,res) => {
+    const {pkUsuarioCandidato,tipoCoincidencia} = req.query;
+    console.log("Entre a el controlador de verificar colision")
+    let posibleEmparejamiento = 0;
+    if(tipoCoincidencia === "Mentor"){
+        //2 para aprendiz
+        posibleEmparejamiento = 2;
+    }else if(tipoCoincidencia === "Aprendiz"){
+        //1 para mentor
+        posibleEmparejamiento = 1;
+    }
+    try {
+        const colision = await modeloEmparejamiento.obtenerRolEmparejamiento(pkUsuarioCandidato);
+        console.log(colision.bandera);
+        if(colision.bandera == 2 && posibleEmparejamiento == 1){
+            console.log("Colision");
+            res.json(1);
+        }else
+        if(colision.bandera == 1 && posibleEmparejamiento == 2){
+            console.log("Colision");
+            res.json(1);
+        }if(colision.bandera == 3){
+            console.log("Colision");
+            res.json(1);
+        }
+        else{
+            console.log("No hay colision");
+            res.json(0);
+        }
+             
+    } catch (err) {
+        console.error('Error realizando la consulta:', err);
+        res.status(500).send('Error en el servidor al verificar colision');
+    }
+}
+
 exports.obtenerPKaValidar = async(req,res) => {
     const {PK_USERPAIRED,PK_EMPAREJAMIENTO} = req.query;
-    try {
-        const pkvalidar = await modeloEmparejamiento.obtenerPkaValidar(PK_USERPAIRED,PK_EMPAREJAMIENTO);
-        console.log("Esta es la bandera");
+    try {  
+        console.log("Esta recibiendo el PK_USERPAIRED y PK_EMPAREJAMIENTO");
+        console.log(PK_USERPAIRED);
+        console.log(PK_EMPAREJAMIENTO);
+        // Realizar la consulta para obtener el resultado y el PK_EMPAREJAMIENTO
+        const resultadoConsulta = await modeloEmparejamiento.obtenerPkaValidar(PK_USERPAIRED, PK_EMPAREJAMIENTO);
+        const pkvalidar = {
+            resultado: resultadoConsulta,
+            PK_EMPAREJAMIENTO: PK_EMPAREJAMIENTO
+        };
+        console.log("Esta es la bandera y PK_EMPAREJAMIENTO:");
         console.log(pkvalidar);
+        // Enviar el resultado junto con el PK_EMPAREJAMIENTO en formato JSON
         res.json(pkvalidar);
     } catch (err) {
         console.error('Error realizando la consulta:', err);

@@ -20,6 +20,7 @@ const Emparejamiento = () => {
     const total_enseñante = parseInt(sessionStorage.getItem("totalEnseñante"));
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
 
+
     // Función para mostrar la modal
     const handleShowModal = () => setShowModal(true);
 
@@ -77,6 +78,8 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
     let total_aprendizDisponible = 0;
     let total_enseñanteDisponible = 0;
     let banderaDisponible = bandera;
+    let banderaColisiones = 0;
+    
 
     
     try {
@@ -104,7 +107,25 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
                 icon: 'warning',
                 confirmButtonText: 'Aceptar'
             });
-        }  
+        }else
+        {
+           banderaColisiones = await verificarColision(pkUsuarioCandidato, tipoCoincidencia);
+           console.log("Esta es la bandera de colisiones");
+        console.log(banderaColisiones);
+        }
+
+        
+
+
+        if (banderaColisiones == 1) {
+            Swal.fire({
+                title: 'No puedes hacer más emparejamientos porque hay una colision',
+                text: 'Revisa tus emparejamientos.',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+        }
+
         else {
             const response = await axios.post(`http://localhost:3001/api/emparejamiento/insertarRegistros?usuarioPrincipalPK=${userPk}&tipoCoincidencia=${tipoCoincidencia}&usuarioCandidatoPK=${pkUsuarioCandidato}`);
             sessionStorage.setItem('totalEmparejamientos',totalEmparejamientosActualizados );
@@ -127,6 +148,24 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
                 
             }
         }
+    } catch (error) {
+        console.error('Error al realizar la actualización de rechazos', error);
+    }
+};
+
+const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
+    try {let banderaColisiones = 0;
+            console.log("entre en verificarColision");
+            const response = await axios.post(`http://localhost:3001/api/emparejamiento/verificarColision?pkUsuarioCandidato=${pkUsuarioCandidato}&tipoCoincidencia=${tipoCoincidencia}`);
+            
+            console.log("Esta es la respuesta de la colision");
+            console.log(response.data);
+            if(response.data === 1){
+               return banderaColisiones = 1; 
+            }else{
+                return banderaColisiones = 0;
+            }
+        
     } catch (error) {
         console.error('Error al realizar la actualización de rechazos', error);
     }

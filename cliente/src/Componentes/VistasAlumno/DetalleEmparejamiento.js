@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, InputGroup, FormControl, Card } from 'react-bootstrap';
-import './Css/EmparejamientoCard.css';
+import { Button, Card } from 'react-bootstrap';
 import perfil_generico from './Utils/perfil.png';
 import axios from "axios";
 
@@ -8,18 +7,18 @@ const DetalleEmparejamiento = () => {
     const userPk = sessionStorage.getItem("userPk");
     const [Mentor, setMentor] = useState([]);
     const [Aprendiz, setAprendiz] = useState([]);
-    //const [PKaValidar, setPkaValidar] = useState([]);
-    //const [banderaValidacion, setBanderaValidacion] = useState(null);
-    const [banderaValidacionMentor, setBanderaValidacionMentor] = useState('');
-    const [banderaValidacionAprendiz, setBanderaValidacionAprendiz] = useState('');
-    //const response5 = 0;
+    const [PKaValidarMentor, setPkaValidarMentor] = useState([]);
+    const [PKaValidarAprendiz, setPkaValidarAprendiz] = useState([]);
+    const [banderaValidacionMentor, setBanderaValidacionMentor] = useState(null);
+    const [banderaValidacionAprendiz, setBanderaValidacionAprendiz] = useState(null);
+  
 
     useEffect(() => {
         const obtenerEmparejamientoMentor = async () => {
             try {
                 const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerMentor?userPk=${userPk}`);
                 setMentor(response.data);
-                //setPkaValidar(response.data);
+                setPkaValidarMentor(response.data);
             } catch (error) {
                 console.error('Error al obtener los datos del emparejamiento activo del mentor:', error);
             }
@@ -32,7 +31,7 @@ const DetalleEmparejamiento = () => {
             try {
                 const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerAprendiz?userPk=${userPk}`);
                 setAprendiz(response.data);
-                //setPkaValidar(response.data);
+                setPkaValidarAprendiz(response.data);
             } catch (error) {
                 console.error('Error al obtener los datos del emparejamiento activo del aprendiz:', error);
             }
@@ -40,54 +39,43 @@ const DetalleEmparejamiento = () => {
         obtenerEmparejamientoAprendiz();
     }, [userPk]);
 
-   
     useEffect(() => {
         const obtenerBanderasValidacionMentor = async () => {
             try {
-                const nuevasBanderas = {};
-                for (const usuariomentor of Mentor) {
-                    const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuariomentor;
-                    if (PK_USERPAIRED !== undefined && PK_EMPAREJAMIENTO !== undefined) {
-                        const response = await axios.post(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
-                        nuevasBanderas[PK_EMPAREJAMIENTO] = response.data;
-                        //console.log(response.data);
-                    }
+                const nuevasBanderas = [];
+                for (const usuario of PKaValidarMentor) {
+                    const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuario;
+                    const response = await axios.post(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                    nuevasBanderas.push(response.data);
                 }
                 setBanderaValidacionMentor(nuevasBanderas);
-                console.log(banderaValidacionMentor);
             } catch (error) {
-                console.error('Error al obtener las banderas de validación', error);
+                console.error('Error al obtener las banderas de validación para mentores', error);
             }
         };
         obtenerBanderasValidacionMentor();
-    }, [Mentor]);
-
+    }, [PKaValidarMentor]);
 
     useEffect(() => {
         const obtenerBanderasValidacionAprendiz = async () => {
             try {
-                const nuevasBanderas = {};
-                for (const usuario of Aprendiz) {
+                const nuevasBanderas = [];
+                for (const usuario of PKaValidarAprendiz) {
                     const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuario;
-                    if (PK_USERPAIRED !== undefined && PK_EMPAREJAMIENTO !== undefined) {
-                        const response = await axios.post(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
-                        nuevasBanderas[PK_EMPAREJAMIENTO] = response.data;
-                        console.log(response);
-                    }
+                    const response = await axios.post(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                    nuevasBanderas.push(response.data);
                 }
                 setBanderaValidacionAprendiz(nuevasBanderas);
             } catch (error) {
-                console.error('Error al obtener las banderas de validación', error);
+                console.error('Error al obtener las banderas de validación para aprendices', error);
             }
         };
         obtenerBanderasValidacionAprendiz();
-    }, [Aprendiz]);
-    
-    
+    }, [PKaValidarAprendiz]);
 
 
-
-
+    console.log(banderaValidacionMentor);
+    console.log(banderaValidacionAprendiz);
     return (
         <div className='margen_superior'>
             <Card>
@@ -95,28 +83,28 @@ const DetalleEmparejamiento = () => {
                     <Card.Title>Mis mentorias </Card.Title>
                     {Aprendiz.map((aprendiz, index) => (
                         <div className="card" key={index}>
-                            <div >
-                                <div class="row">
-                                    <div class="col">
+                            <div>
+                                <div className="row">
+                                    <div className="col">
                                         <img
                                             className="img_perfil_m"
                                             alt="imagen de perfil"
                                             src={perfil_generico}
                                         />
                                     </div>
-                                    <div class="col">{aprendiz.nombreCompleto}</div>
-                                    <div class="col">Fecha</div>
+                                    <div className="col">{aprendiz.nombreCompleto}</div>
+                                    <div className="col">Fecha</div>
                                 </div>
-                                <div class="row">
-                                    <div class="col"><button className="btn_rechazo">X</button></div>
-                                    <div class="col">{aprendiz.estado}</div>
-                                    <div class="col">TOKEN</div>
+                                <div className="row">
+                                    <div className="col"><button className="btn_rechazo">X</button></div>
+                                    <div className="col">{aprendiz.estado}</div>
+                                    <div className="col">TOKEN</div>
                                 </div>
-                                {(aprendiz.estado === 1 && banderaValidacionAprendiz === 1) ?(
-                                <div class="row">
-                                    <div class="col"><Button>Activar emparejamiento</Button></div>
-                                </div>
-                                ):<p>Hola</p>}
+                                {banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
+                                    <div className="row">
+                                        <div className="col"><Button>Activar emparejamiento</Button></div>
+                                    </div>
+                                ) : null}
                             </div>
                         </div>
                     ))}
@@ -129,33 +117,28 @@ const DetalleEmparejamiento = () => {
                     <Card.Title>Mis A.O </Card.Title>
                     {Mentor.map((mentor, index) => (
                         <div className="card" key={index}>
-                            <div >
-                                <div class="row">
-                                    <div class="col">
+                            <div>
+                                <div className="row">
+                                    <div className="col">
                                         <img
                                             className="img_perfil_m"
                                             alt="imagen de perfil"
                                             src={perfil_generico}
                                         />
                                     </div>
-                                    <div class="col">{mentor.nombreCompleto}</div>
-                                    <div class="col">Fecha</div>
+                                    <div className="col">{mentor.nombreCompleto}</div>
+                                    <div className="col">Fecha</div>
                                 </div>
-                                <div class="row">
-                                    <div class="col"><button className="btn_rechazo">X</button></div>
-                                    {/*<div class="col">
-                                        {mentor.estado === 1 && userPk === mentor.PK_USERPAIRED && (
-                                            <Button variant="success">Validar Emparejamiento</Button>
-                                        )}
-                                    </div>*/}
-                                    <div class="col">{mentor.estado}</div>
-                                    <div class="col">TOKEN</div>
+                                <div className="row">
+                                    <div className="col"><button className="btn_rechazo">X</button></div>
+                                    <div className="col">{mentor.estado}</div>
+                                    <div className="col">TOKEN</div>
                                 </div>
-                                {(mentor.estado === 1 && banderaValidacionMentor === 1)?(
-                                <div class="row">
-                                <div class="col"><Button>Activar emparejamiento</Button></div>
-                                </div>
-                                ): null}
+                                {banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
+                                    <div className="row">
+                                        <div className="col"><Button>Activar emparejamiento</Button></div>
+                                    </div>
+                                ) : null}
                             </div>
                         </div>
                     ))}
