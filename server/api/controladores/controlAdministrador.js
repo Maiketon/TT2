@@ -11,6 +11,18 @@ exports.obtenerEstatusAlumno = async (req, res) => {
     }
 };
 
+exports.obtenerNombreMaterias = async (req,res) => 
+    {
+        try {
+            const nombreMaterias = await modeloAdmin.obtenerPkNombreMaterias();
+            console.log(nombreMaterias);
+            res.status(200).json(nombreMaterias);
+        } catch (error) {
+            console.error('Error al obtener el catalogo de materias');
+            res.status(500).send('Error al obtener las materias en componente dinamico infouser', error);
+        }
+    };
+
 exports.obtenerMedallasAlumnos = async (req,res) => 
 {
     try {

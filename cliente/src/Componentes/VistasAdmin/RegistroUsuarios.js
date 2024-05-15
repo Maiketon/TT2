@@ -4,11 +4,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Css/Dropdown.css';
 import './Css/PrincipalAdm.css';
 import axios from 'axios';
+import UsuarioComponent from './UsuarioInformacion';
 
 const RegistroUsuarios = () => {
   const [estatus, setEstatus] = useState([]);
   const [medallas, setMedallas] = useState([]);
   const [selectedEstatus, setSelectedEstatus] = useState('0'); // Estado para controlar el estatus seleccionado
+
+  const [usuarios, setUsuarios] = useState([]);
+
 
   useEffect(() => {
     const fetchEstatus = async () => {
@@ -85,9 +89,9 @@ const RegistroUsuarios = () => {
       calf: calificacion,
       medallaEs,
     };
-  
     try {
       const response = await axios.post('http://localhost:3001/api/administracion/buscarFiltrado', informacionBuscar);
+      setUsuarios(Array.isArray(response.data.data) ? response.data.data : []);
       console.log(response.data);
     } catch (error) {
       console.error('Error al realizar la búsqueda', error);
@@ -187,7 +191,7 @@ const RegistroUsuarios = () => {
             </Container>
 
             <Container>
-              <h1>AQUÍ VA EL COMPONENTE DINÁMICO QUE SE PINTARÁ VARIAS VECES SEGÚN EL RESULTADO DE LA BÚSQUEDA</h1>
+              <UsuarioComponent usuarios={usuarios} />
             </Container>
 
           </Form>

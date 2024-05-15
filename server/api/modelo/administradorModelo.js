@@ -12,6 +12,17 @@ class  modeloAdmin
         }
       }
 
+      async obtenerPkNombreMaterias ()
+      {
+        try {
+            const promesadb = db.promise();
+            const [pknombreMaterias] = await promesadb.query('SELECT PK_MATERIA, NOMBRE_MATERIA FROM materia;');
+            return pknombreMaterias;
+        } catch (error) {
+            throw error;
+        }
+      }
+
 
     async obtenerMedallasAlumnos () 
     {
@@ -178,10 +189,12 @@ class  modeloAdmin
             let query = `
                 SELECT 
                     informacionusuario.*,
-                    GROUP_CONCAT(DISTINCT medallas.NOMBRE_MEDALLA SEPARATOR ', ') AS NOMBRES_MEDALLAS
+                    GROUP_CONCAT(DISTINCT CONCAT(medallas.NOMBRE_MEDALLA, ': ', controlmedallas.ESTADO) SEPARATOR ', ') AS NOMBRES_MEDALLAS_ESTADOS,
+                    COALESCE(COUNT(distinct reportes.PK_REPORTE), 0) AS NUMERO_REPORTES
                 FROM informacionusuario
                 LEFT JOIN controlmedallas ON informacionusuario.PK_USUARIO = controlmedallas.FK_USUARIOINFO
                 LEFT JOIN medallas ON controlmedallas.FK_MEDALLA = medallas.PK_MEDALLAS
+                LEFT JOIN reportesusuarios reportes ON informacionusuario.PK_USUARIO = reportes.FK_USUARIO
                 WHERE 1=1
             `;
     
@@ -228,7 +241,14 @@ class  modeloAdmin
     
             // Filtrar por medalla específica con estado activo si medallaEs no es '0' o '-1'
             if (medallaEs && medallaEs > 0) {
-                query += ' AND controlmedallas.FK_MEDALLA = ? AND controlmedallas.ESTADO = 1';
+                query += `
+                    AND EXISTS (
+                        SELECT 1 FROM controlmedallas cm
+                        WHERE cm.FK_USUARIOINFO = informacionusuario.PK_USUARIO
+                        AND cm.FK_MEDALLA = ?
+                        AND cm.ESTADO = 1
+                    )
+                `;
                 params.push(medallaEs);
             }
     
@@ -241,8 +261,6 @@ class  modeloAdmin
             throw error;
         }
     }
-    
-    
     
     
     
