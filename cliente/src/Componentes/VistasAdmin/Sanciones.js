@@ -2,16 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import Sancion from './SancionComponent';
 import axios from 'axios';
+import {useCarga} from "./ContextoCarga";
+
+
 
 const Sanciones = () => {
     const [usuariosReportados, setUsuariosReportados] = useState([]);
+    const {setEstaCargando} = useCarga();
 
     useEffect(() => {
         const cargarUsuariosReportados = async () => {
             try {
+                setEstaCargando(true);
                 const response = await axios.get('http://localhost:3001/api/administracion/reportesAlum');
                 setUsuariosReportados(response.data);
                 console.log('Usuarios cargados:', response.data);  // Verificar el contenido del array
+                setEstaCargando(true);
             } catch (error) {
                 console.error('Error al cargar usuarios reportados', error);
             }

@@ -66,7 +66,7 @@ const sancionar = async () => {
 const vetarAlumno = async () => {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: "Estás a punto de eliminar a este usuario del sistema.",
+        text: "Estás a punto de vetar a este usuario del sistema permanentemente.",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -156,7 +156,7 @@ const getStarCount = (calificacion) => {
                 <Col>
                     <Button variant="primary" style={{ marginRight: '10px', padding: '10px' }} onClick={sancionar}>Sancionar</Button>
                     <Button variant="warning" style={{ padding: '10px' } } onClick={omitirReporte}>Omitir</Button>
-                    <Button variant="danger" style={{ padding: '10px' }} onClick={vetarAlumno}>Eliminar Usuario</Button>
+                    <Button variant="danger" style={{ padding: '10px' }} onClick={vetarAlumno}>Vetar Usuario</Button>
                 </Col>
             </Row>
 

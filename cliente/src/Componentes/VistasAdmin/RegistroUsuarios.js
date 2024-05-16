@@ -5,8 +5,10 @@ import './Css/Dropdown.css';
 import './Css/PrincipalAdm.css';
 import axios from 'axios';
 import UsuarioComponent from './UsuarioInformacion';
-
+import {useCarga} from "./ContextoCarga";
 const RegistroUsuarios = () => {
+  const {setEstaCargando} = useCarga();
+
   const [estatus, setEstatus] = useState([]);
   const [medallas, setMedallas] = useState([]);
   const [selectedEstatus, setSelectedEstatus] = useState('0'); // Estado para controlar el estatus seleccionado
@@ -90,9 +92,11 @@ const RegistroUsuarios = () => {
       medallaEs,
     };
     try {
+      setEstaCargando(true);
       const response = await axios.post('http://localhost:3001/api/administracion/buscarFiltrado', informacionBuscar);
       setUsuarios(Array.isArray(response.data.data) ? response.data.data : []);
       console.log(response.data);
+      setEstaCargando(false);
     } catch (error) {
       console.error('Error al realizar la búsqueda', error);
     }
