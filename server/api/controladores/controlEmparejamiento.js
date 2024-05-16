@@ -219,6 +219,8 @@ exports.saberEstado = async (req,res) => {
                 res.json(3);
             } else if (estadoEmparejamiento === 1) {
                 res.json(1);
+            } else if (estadoEmparejamiento === 5) {
+                res.json(5);
             }
         } 
         // Enviamos la respuesta al cliente con los rechazos disponibles actualizados
