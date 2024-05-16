@@ -202,6 +202,37 @@ class  modeloAdmin
         }
     }
 
+    
+    async obtenerUsuariosReportes ()
+    {
+            try {
+                const promesadb= db.promise();
+                 const [resultado] =await promesadb.query (`
+                        SELECT 
+                r.PK_REPORTE,
+                r.FK_USUARIO_REPORTA,
+                r.DESCRIPCION,
+                r.VALIDO,
+                u.PK_USUARIO,
+                u.NOMBRE,
+                u.APELLIDO_PATERNO,
+                u.APELLIDO_MATERNO,
+                u.EMAIL,
+                u.SANCIONES,
+                u.CALIFICACION
+            FROM reportesusuarios r
+            JOIN informacionusuario u ON u.PK_USUARIO = r.FK_USUARIO
+            WHERE r.VALIDO = 0;
+            `);
+                return resultado;
+            } catch (error) {
+                console.error('Error al obtener a los usuarios reportados', error);
+                throw error;
+            }
+    }
+
+   
+
 
 
     async obtenerUsuariosFiltrados({ estatus, pkusuario, carrera, semestre, calf, medallaEs }) {
@@ -282,9 +313,69 @@ class  modeloAdmin
             throw error;
         }
     }
+
+
+
+    async sancionAlumno({ pkReporte, pkusuario }) {
+        try {
+            const promesadb = db.promise();
+            await promesadb.beginTransaction();
+            
+            await promesadb.query(`
+                UPDATE informacionusuario 
+                SET SANCIONES = SANCIONES + 1 
+                WHERE PK_USUARIO = ?`, 
+                [pkusuario]
+            );
+            
+            await promesadb.query(`
+                UPDATE reportesusuarios 
+                SET VALIDO = 1 
+                WHERE PK_REPORTE = ?`, 
+                [pkReporte]
+            );
     
+            await promesadb.commit();
+            return { message: 'Usuario sancionado correctamente' };
+        } catch (error) {
+            await promesadb.rollback();
+            console.error('Error al sancionar al usuario', error);
+            throw error;
+        }
+    }
+
+    async vetar({ pkReporte, pkusuario }) {
+        try {
+            const promesadb = db.promise();
+            await promesadb.beginTransaction();
+            
+            await promesadb.query(`UPDATE informacionusuario SET FK_ESTATUSUSUARIO = 6, FECHA_BORRADO = CURRENT_TIMESTAMP WHERE PK_USUARIO = ?`, [pkusuario]
+            );
+            
+            await promesadb.query(`UPDATE reportesusuarios SET VALIDO = 1 WHERE PK_REPORTE = ?`, [pkReporte]
+            );
     
+            await promesadb.commit();
+            return { message: 'Usuario Vetado correctamente' };
+        } catch (error) {
+            await promesadb.rollback();
+            console.error('Error al eliminar al usuario', error);
+            throw error;
+        }
+    }
+
+    async omitirR ({pkReporte})
+    {
+        const promesadb= db.promise();
+                 const [resultado] =await promesadb.query(`UPDATE reportesusuarios SET VALIDO = 2 WHERE PK_REPORTE = ?`, [pkReporte]);
+                 return resultado;
+              
+            } catch (error) {
+                console.error('Error al ignorar reporte', error);
+        res.status(500).send('Error en el servidor');
+            }
     
+            
     
 }
 module.exports = new modeloAdmin();

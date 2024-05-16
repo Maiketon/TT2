@@ -144,4 +144,54 @@ exports.datosGraficaUsoAplicacion = async (req,res)=>
                 });
             }
         };
+
+        exports.reportesUsuarios  = async (req, res) =>
+        {
+            try {
+                const resultado = await modeloAdmin.obtenerUsuariosReportes();
+                console.log(resultado); // Imprime los datos en la consola del servidor
+                res.status(200).json(resultado);
+            } catch (error) {
+                console.error('Error al obtener los datos para el componente de usuarios reportados');
+                 res.status(500).send('Error al obtener los datos de usuarios reportados', error);
+                
+            }
+        };
+
+
+        exports.sancionAlumno = async (req,res) =>
+            {
+                const {pkReporte,pkusuario} = req.body;
+                try {
+                    const resultado = await modeloAdmin.sancionAlumno({pkReporte,pkusuario});
+                    res.status(201).send('Usuario sancionado correctamente');
+                } catch (error) {
+                    console.error('Error al sancionar al alumno',error);
+                    res.status(500).send('Error al enviar la peticion de sancion');
+                }
+            };
+
+        exports.omitirReporte = async (req,res)=>
+            {
+                const {pkReporte} = req.body;
+                try {
+                    const resultado = await modeloAdmin.omitirR({pkReporte});
+                    res.status(201).send('Reporte omitido Correctamente');
+                } catch (error) {
+                    console.error('Error al omitir el reporte',error);
+                    res.status(500).send('Error al enviar la peticion de omitir');
+                }
+            };
         
+    
+        exports.vetarAlumnoPk= async (req,res)=> 
+            {
+                const {pkReporte,pkusuario}= req.body
+                try {
+                    const resultado = await modeloAdmin.vetar({pkReporte,pkusuario});
+                    res.status(201).send('Usuario Eliminado correctamente');
+                } catch (error) {
+                    console.error('Error al vetar al alumno',error);
+                    res.status(500).send('Error al enviar la peticion de vetado');
+                }
+            };

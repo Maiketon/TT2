@@ -38,9 +38,6 @@ const BarraNavegacion = ({ setVista }) => {
             Sanciones de cada usuario
           </button>
           <button className="elemento" onClick={() => setVista('inscribirse')}>
-            Calificaciones de usuario
-          </button>
-          <button className="elemento" onClick={() => setVista('inscribirse')}>
             Configuracion
           </button>
         </div>
