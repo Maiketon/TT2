@@ -194,3 +194,15 @@ exports.obtenerPKaValidar = async(req,res) => {
     }
 }
 
+exports.validarEmparejamiento = async(req,res) => {
+    const {userPk,PK_EMPAREJAMIENTO} = req.query;
+    try {
+        const validarMyA = await modeloEmparejamiento.validarEmparejamiento(userPk, PK_EMPAREJAMIENTO);
+        res.json(validarMyA);
+    } catch (error) {
+        console.error('Error realizando la consulta:', error);
+        res.status(500).send('Error en el servidor al cambiar el estado a VALIDADO');
+    }
+}
+
+

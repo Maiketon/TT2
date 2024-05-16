@@ -16,4 +16,5 @@ router.post('/actualizarEmparejamientosDisponibles', controlEmparejamiento.actua
 router.post('/insertarRegistros', controlEmparejamiento.insertarRegistros);
 router.post('/obtenerPkaValidar',controlEmparejamiento.obtenerPKaValidar);
 router.post('/verificarColision', controlEmparejamiento.verificarColision);
+router.get('/ValidarEmparejamiento', controlEmparejamiento.validarEmparejamiento);
 module.exports = router;
