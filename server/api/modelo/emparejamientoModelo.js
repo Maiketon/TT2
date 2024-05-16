@@ -265,6 +265,27 @@ class modeloEmparejamiento{
         }
     }
 
+    async validarEmparejamiento(userPk, PK_EMPAREJAMIENTO){
+        const sql=`
+        SELECT 
+	        PK_EMPAREJAMIENTO,
+	        FK_ESTADOEMPAREJAMIENTO
+        FROM emparejamiento
+        WHERE
+	        (FK_USUARIO1 = ? OR FK_USUARIO2=?)
+
+        AND 
+	        PK_EMPAREJAMIENTO = ?
+        `;
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk,userPk,PK_EMPAREJAMIENTO]);    
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
 
 
 

@@ -7,8 +7,6 @@ const DetalleEmparejamiento = () => {
     const userPk = sessionStorage.getItem("userPk");
     const [Mentor, setMentor] = useState([]);
     const [Aprendiz, setAprendiz] = useState([]);
-    const [PKaValidarMentor, setPkaValidarMentor] = useState([]);
-    const [PKaValidarAprendiz, setPkaValidarAprendiz] = useState([]);
     const [banderaValidacionMentor, setBanderaValidacionMentor] = useState(null);
     const [banderaValidacionAprendiz, setBanderaValidacionAprendiz] = useState(null);
   
@@ -18,7 +16,6 @@ const DetalleEmparejamiento = () => {
             try {
                 const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerMentor?userPk=${userPk}`);
                 setMentor(response.data);
-                setPkaValidarMentor(response.data);
             } catch (error) {
                 console.error('Error al obtener los datos del emparejamiento activo del mentor:', error);
             }
@@ -31,7 +28,6 @@ const DetalleEmparejamiento = () => {
             try {
                 const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerAprendiz?userPk=${userPk}`);
                 setAprendiz(response.data);
-                setPkaValidarAprendiz(response.data);
             } catch (error) {
                 console.error('Error al obtener los datos del emparejamiento activo del aprendiz:', error);
             }
@@ -43,7 +39,7 @@ const DetalleEmparejamiento = () => {
         const obtenerBanderasValidacionMentor = async () => {
             try {
                 const nuevasBanderas = [];
-                for (const usuario of PKaValidarMentor) {
+                for (const usuario of Mentor) {
                     const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuario;
                     const response = await axios.post(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                     nuevasBanderas.push(response.data);
@@ -54,13 +50,13 @@ const DetalleEmparejamiento = () => {
             }
         };
         obtenerBanderasValidacionMentor();
-    }, [PKaValidarMentor]);
+    }, [Mentor]);
 
     useEffect(() => {
         const obtenerBanderasValidacionAprendiz = async () => {
             try {
                 const nuevasBanderas = [];
-                for (const usuario of PKaValidarAprendiz) {
+                for (const usuario of Aprendiz) {
                     const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuario;
                     const response = await axios.post(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                     nuevasBanderas.push(response.data);
@@ -71,11 +67,32 @@ const DetalleEmparejamiento = () => {
             }
         };
         obtenerBanderasValidacionAprendiz();
-    }, [PKaValidarAprendiz]);
+    }, [Aprendiz]);
 
+    const ValidarEmparejamientoMentor = async() => {
+        try {
+            for (const usuario of Mentor) {
+                const {PK_EMPAREJAMIENTO } = usuario;
+                await axios.get(`http://localhost:3001/api/emparejamiento/ValidarEmparejamiento?userPk=${userPk}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+            }           
+        } catch (error) {
+            console.error('Error al validar al mentor:', error);
+        }
+    }
 
-    console.log(banderaValidacionMentor);
-    console.log(banderaValidacionAprendiz);
+    const ValidarEmparejamientoAprendiz = async() => {
+        try {
+            for (const usuario of Aprendiz) {
+                const {PK_EMPAREJAMIENTO } = usuario;
+                await axios.get(`http://localhost:3001/api/emparejamiento/ValidarEmparejamiento?userPk=${userPk}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+            }              
+        } catch (error) {
+            console.error('Error al validar al aprendiz:', error);
+        }
+    }
+
+    //console.log(banderaValidacionMentor);
+    //console.log(banderaValidacionAprendiz);
     return (
         <div className='margen_superior'>
             <Card>
@@ -102,7 +119,7 @@ const DetalleEmparejamiento = () => {
                                 </div>
                                 {banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
                                     <div className="row">
-                                        <div className="col"><Button>Activar emparejamiento</Button></div>
+                                        <div className="col"><Button onClick={ValidarEmparejamientoAprendiz}>Activar emparejamiento</Button></div>
                                     </div>
                                 ) : null}
                             </div>
@@ -136,7 +153,7 @@ const DetalleEmparejamiento = () => {
                                 </div>
                                 {banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
                                     <div className="row">
-                                        <div className="col"><Button>Activar emparejamiento</Button></div>
+                                        <div className="col"><Button onClick={ValidarEmparejamientoMentor}>Activar emparejamiento</Button></div>
                                     </div>
                                 ) : null}
                             </div>
