@@ -254,3 +254,14 @@ exports.preFinalizarEmparejamiento = async (req,res) => {
         res.status(500).send('Error en el servidor al actualizar el emparejamiento');
     }
 }
+
+exports.actualizarCalificacion = async(req,res) => {
+    const {pkemparejamiento,userPk,promedio} = req.body;
+    try {
+        response = await modeloEmparejamiento.actualizarCalificacion(pkemparejamiento,userPk,promedio);
+        res.json(response);
+    } catch (error) {
+        console.error('Error realizando la consulta:', err);
+        res.status(500).send('Error en el servidor al actualizar la calificacion del usuario');
+    }
+}
