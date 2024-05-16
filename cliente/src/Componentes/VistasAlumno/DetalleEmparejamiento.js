@@ -1,22 +1,52 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card } from 'react-bootstrap';
+import {Button, Card, Modal,Container, CardTitle, CardBody,Form,Pagination } from 'react-bootstrap';
 import perfil_generico from './Utils/perfil.png';
 import Swal from "sweetalert2";
 import axios from "axios";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 const DetalleEmparejamiento = () => {
     const userPk = sessionStorage.getItem("userPk");
     const [Mentor, setMentor] = useState([]);
     const [Aprendiz, setAprendiz] = useState([]);
+    const [PKaValidarMentor, setPkaValidarMentor] = useState([]);
+    const [PKaValidarAprendiz, setPkaValidarAprendiz] = useState([]);
     const [banderaValidacionMentor, setBanderaValidacionMentor] = useState(null);
     const [banderaValidacionAprendiz, setBanderaValidacionAprendiz] = useState(null);
-  
+    const [showModal, setShowModal] = useState(false);
+
+    const [rating, setRating] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const handleRatingChange = (event) => {
+        setRating(event.target.value);
+    };
+
+    const nextPage = () => {
+        setCurrentPage(currentPage + 1);
+    };
+
+    const prevPage = () => {
+        setCurrentPage(currentPage - 1);
+    };
+
+    const abrirModal = () => {
+        setShowModal(true);
+    };
+
+    const enviarModal = () => {
+        setShowModal(false);
+    };
+
 
     useEffect(() => {
         const obtenerEmparejamientoMentor = async () => {
             try {
                 const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerMentor?userPk=${userPk}`);
                 setMentor(response.data);
+                setPkaValidarMentor(response.data);
             } catch (error) {
                 console.error('Error al obtener los datos del emparejamiento activo del mentor:', error);
             }
@@ -29,6 +59,7 @@ const DetalleEmparejamiento = () => {
             try {
                 const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerAprendiz?userPk=${userPk}`);
                 setAprendiz(response.data);
+                setPkaValidarAprendiz(response.data);
             } catch (error) {
                 console.error('Error al obtener los datos del emparejamiento activo del aprendiz:', error);
             }
@@ -40,7 +71,7 @@ const DetalleEmparejamiento = () => {
         const obtenerBanderasValidacionMentor = async () => {
             try {
                 const nuevasBanderas = [];
-                for (const usuario of Mentor) {
+                for (const usuario of PKaValidarMentor) {
                     const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuario;
                     const response = await axios.post(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                     nuevasBanderas.push(response.data);
@@ -51,13 +82,13 @@ const DetalleEmparejamiento = () => {
             }
         };
         obtenerBanderasValidacionMentor();
-    }, [Mentor]);
+    }, [PKaValidarMentor]);
 
     useEffect(() => {
         const obtenerBanderasValidacionAprendiz = async () => {
             try {
                 const nuevasBanderas = [];
-                for (const usuario of Aprendiz) {
+                for (const usuario of PKaValidarAprendiz) {
                     const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuario;
                     const response = await axios.post(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                     nuevasBanderas.push(response.data);
@@ -87,15 +118,9 @@ const DetalleEmparejamiento = () => {
 
     const handleRechazarEmparejamiento = async (PK_EMPAREJAMIENTO) => {
         try {
-            // Aqui primero se hacec una consulta para obtener el estado del emparejamiento, si esta pendiente o activo, dependiendo, se hace el rechazo o se finaliza el emparejamiento
-            const response = await axios.post(`http://localhost:3001/api/emparejamiento/saberEstado?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
-            if (response.data == 2) {
-                console.log("dio 2");
-                //await axios.post(`http://localhost:3001/api/emparejamiento/finalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
-            }else if(response.data == 1){
-                console.log("dio 1");
-                await axios.post(`http://localhost:3001/api/emparejamiento/rechazarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
-            }
+            abrirModal();
+            // Agregar lógica para rechazar el emparejamiento utilizando PK_EMPAREJAMIENTO
+            console.log('Emparejamiento rechazado:', PK_EMPAREJAMIENTO);
         } catch (error) {
             console.error('Error al rechazar el emparejamiento:', error);
         }
@@ -181,6 +206,246 @@ const DetalleEmparejamiento = () => {
                     ))}
                 </Card.Body>
             </Card>
+            <Modal show={showModal} onHide={() => {}} backdrop="static" keyboard={false} size="xl">
+                <Modal.Header>
+                    <Modal.Title>Califica a tu mentor o aprendiz</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <h3>Te agradezco por participar en este emparejamiento, por favor, califica mi desempeño llenando las estrellas que se ven a continuación:</h3>
+                    <Container>
+                        <i className="bi bi-star fs-1 m-2"></i>
+                        <i className="bi bi-star fs-1 m-2"></i>
+                        <i className="bi bi-star fs-1 m-2"></i>
+                        <i className="bi bi-star fs-1 m-2"></i>
+                        <i className="bi bi-star fs-1 m-2"></i>
+                    </Container>
+                    <Container>
+                        <p>Responde el siguiente cuestionario:</p>
+                    </Container>
+                    <Card>
+                    <CardBody>
+                            {currentPage === 1 && (
+                                <Form>
+                                    <Form.Group>
+                                        <Form.Label>¿Cómo considerarías tu fortalecimiento de seguridad al exponer tus dudas?</Form.Label>
+                                        <div>
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Poco" 
+                                                value="Poco" 
+                                                checked={rating === 'Poco'} 
+                                                onChange={handleRatingChange} 
+                                                name="rating"
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Regular" 
+                                                value="Regular" 
+                                                checked={rating === 'Regular'} 
+                                                onChange={handleRatingChange} 
+                                                name="rating"
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Suficiente" 
+                                                value="Suficiente" 
+                                                checked={rating === 'Suficiente'} 
+                                                onChange={handleRatingChange} 
+                                                name="rating"
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Mucho" 
+                                                value="Mucho" 
+                                                checked={rating === 'Mucho'} 
+                                                onChange={handleRatingChange} 
+                                                name="rating"
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                </Form>
+                            )}
+                            {currentPage === 2 && (
+                                <Form>
+                                <Form.Group>
+                                    <Form.Label>¿Cómo consideras que fue la fluidez en la comunicación con tu pareja?</Form.Label>
+                                    <div>
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Poca" 
+                                            value="Poca" 
+                                            checked={rating === 'Poco'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Regular" 
+                                            value="Regular" 
+                                            checked={rating === 'Regular'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Buena" 
+                                            value="Buena" 
+                                            checked={rating === 'Buena'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Muy buena" 
+                                            value="Muy buena" 
+                                            checked={rating === 'Muy buena'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                    </div>
+                                </Form.Group>
+                            </Form>
+                            )}
+                            {currentPage === 3 && (
+                                <Form>
+                                <Form.Group>
+                                    <Form.Label>¿Cómo consideras que fue tu desempeño en tu rol?</Form.Label>
+                                    <div>
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Poco" 
+                                            value="Poco" 
+                                            checked={rating === 'Poco'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Regular" 
+                                            value="Regular" 
+                                            checked={rating === 'Regular'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Bueno" 
+                                            value="Bueno" 
+                                            checked={rating === 'Bueno'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Muy bueno" 
+                                            value="Muy bueno" 
+                                            checked={rating === 'Muy bueno'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                    </div>
+                                </Form.Group>
+                            </Form>
+                            )}
+                            {currentPage === 4 && (
+                                <Form>
+                                <Form.Group>
+                                    <Form.Label>¿Cómo evaluarías tu experiencia general en esta clase?</Form.Label>
+                                    <div>
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Mala" 
+                                            value="Mala" 
+                                            checked={rating === 'Mala'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Regular" 
+                                            value="Regular" 
+                                            checked={rating === 'Regular'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Buena" 
+                                            value="Buena" 
+                                            checked={rating === 'Buena'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Muy buena" 
+                                            value="Muy buena" 
+                                            checked={rating === 'Muy buena'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                    </div>
+                                </Form.Group>
+                            </Form>
+                            )}
+                            {currentPage === 5 && (
+                                <Form>
+                                <Form.Group>
+                                    <Form.Label>¿Cómo te ha parecido la orientación que has recibido hasta ahora en la clase?</Form.Label>
+                                    <div>
+                                    <Form.Check 
+                                            type="radio" 
+                                            label="Mala" 
+                                            value="Mala" 
+                                            checked={rating === 'Mala'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Regular" 
+                                            value="Regular" 
+                                            checked={rating === 'Regular'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Buena" 
+                                            value="Buena" 
+                                            checked={rating === 'Buena'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                        <Form.Check 
+                                            type="radio" 
+                                            label="Muy buena" 
+                                            value="Muy buena" 
+                                            checked={rating === 'Muy buena'} 
+                                            onChange={handleRatingChange} 
+                                            name="rating"
+                                        />
+                                    </div>
+                                </Form.Group>
+                            </Form>
+                            )}
+                        </CardBody>
+                    </Card>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Pagination>
+                        <Pagination.Prev onClick={prevPage} disabled={currentPage === 1} />
+                        <Pagination.Item active={currentPage === 1} onClick={() => setCurrentPage(1)}>1</Pagination.Item>
+                        <Pagination.Item active={currentPage === 2} onClick={() => setCurrentPage(2)}>2</Pagination.Item>
+                        <Pagination.Item active={currentPage === 3} onClick={() => setCurrentPage(3)}>3</Pagination.Item>
+                        <Pagination.Item active={currentPage === 4} onClick={() => setCurrentPage(4)}>4</Pagination.Item>
+                        <Pagination.Item active={currentPage === 5} onClick={() => setCurrentPage(5)}>5</Pagination.Item>
+                        <Pagination.Next onClick={nextPage} disabled={currentPage === 5} />
+                    </Pagination>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>Cancelar</Button>
+                    <Button variant="primary" onClick={enviarModal}>Enviar</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };
