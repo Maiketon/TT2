@@ -88,6 +88,7 @@ SELECT * FROM estatus;
 SELECT * FROM medallas;
 SELECT * FROM  controlmedallas;
 SELECT * FROM  informacionusuario;
+SELECT * FROM  informacionusuario WHERE PK_USUARIO=47;
 SELECT * FROM estadosemparejamientos;
 SELECT * FROM emparejamiento;
 SELECT * FROM comunicacionzg;

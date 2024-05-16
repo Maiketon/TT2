@@ -11,8 +11,19 @@ class modeloAlumnos {
         throw err;
       }
     }
+
+    //CONSULTA PARA OBTENER SI ESE CORREO EXISTE EN BASE DE DATOS O NO//
+    async verificarCorreoExistente(correo) {
+      const promesaDB = db.promise();
+      const [resultados] = await promesaDB.query(
+          "SELECT PK_USUARIO, FK_ESTATUSUSUARIO, FECHA_BORRADO FROM informacionusuario WHERE EMAIL = ?",
+          [correo]
+      );
+      return resultados; // Devuelve todos los registros que coinciden
+  }
+  
     
-    // Aquí  agregar mas metodos si necesitamos otras operaciones en la tabla de 'materia'
+    
       async guardarNuevoAlumno({ carrera, semestre, nombres, apellidoP, apellidoM, correo, password }) {
         const sql = 
       'INSERT INTO informacionusuario (FK_ESTATUSUSUARIO, FECHA_CREACION, NOMBRE, APELLIDO_PATERNO, APELLIDO_MATERNO, EMAIL, PSW, CARRERA, SEMESTRE) VALUES (1, NOW(), ?, ?, ?, ?, ?, ?, ?)';

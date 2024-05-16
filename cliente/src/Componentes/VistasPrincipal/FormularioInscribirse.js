@@ -1,6 +1,8 @@
 import React,{useState} from 'react';
 import { Container, Row, Col, Form, Button, Card, Modal } from 'react-bootstrap';
 import { useCarga } from "../ContextoCarga";
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const FormularioInscribirse = ({ setVista }) =>
 {
@@ -83,54 +85,69 @@ const GuardarDatosHook = (e) => {
 }
 
 //Funcion evento asincrona que se encarga de realizar la minivalidacion del correo y enviar la petición al servidor//
+
 const Guardar = async (e) => {
   e.preventDefault();
   setEstaCargando(true);
 
   // Validación de contraseñas
   if (usuario.password !== usuario.confirmpassword) {
-    alert("Verifica que tus contraseñas coincidan");
-    setEstaCargando(false);
-    return;
+      Swal.fire('Verificación Fallida', 'Las contraseñas no coinciden.', 'error');
+      setEstaCargando(false);
+      return;
   }
 
   try {
-    // Preparar el cuerpo de la petición, excluyendo la confirmación de contraseña
-    
-    const datosUsuario = {
-      nombres: usuario.nombres,
-      apellidoP: usuario.apellidoP,
-      apellidoM: usuario.apellidoM,
-      correo: usuario.correo,
-      carrera: usuario.carrera,
-      semestre: usuario.semestre,
-      password: usuario.password
-    };
-    
-    const response = await fetch('http://localhost:3001/api/alumnos/registro', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(datosUsuario)
-    });
-    console.log(response.status);
-    console.log(response.ok);
-    if (response.ok===true) {
-//      const result = await response.json(); Debuggin
-      setUsuario(estadoInicial);
-      setEstaCargando(false);
-      handleShow(); //Modal verificacion correcta//
-    } else {
-      throw new Error('Algo salió mal con la solicitud al servidor.');
-    }
-  } catch (error) {
-    console.error('Error:', error); 
-    alert("Algo salió mal con la solicitud al servidor.");
-  }
-  setEstaCargando(false);
-};
+      const datosUsuario = {
+          nombres: usuario.nombres,
+          apellidoP: usuario.apellidoP,
+          apellidoM: usuario.apellidoM,
+          correo: usuario.correo,
+          carrera: usuario.carrera,
+          semestre: usuario.semestre,
+          password: usuario.password
+      };
 
+      const response = await axios.post('http://localhost:3001/api/alumnos/registro', datosUsuario);
+      if (response.status ==201)
+        {
+          setUsuario(estadoInicial);
+      Swal.fire(
+          ' ¡Registro Exitoso! ',
+          'Por favor verifica tu correo electrónico para completar tu registro.',
+          'success'
+      );
+        }
+        else if ( response.status==200)
+          {
+            setUsuario(estadoInicial);
+      Swal.fire(
+          'Falta verificacion!',
+          'Por favor verifica tu correo nuevamente para verificar tu cuenta.',
+          'success'
+      );
+          }
+      
+  } catch (error) {
+      // Error handling específico para status 409
+      if (error.response && error.response.status === 409) {
+          Swal.fire(
+              'Registro Fallido',
+              error.response.data.message || 'El correo electrónico ya está registrado con una cuenta activa o no deseada.',
+              'error'
+          );
+      } else {
+          // Manejo de otros errores
+          Swal.fire(
+              'Error',
+              error.response ? error.response.data.message : 'Hubo un problema al registrar al usuario. Por favor, inténtalo de nuevo.',
+              'error'
+          );
+      }
+  } finally {
+      setEstaCargando(false);
+  }
+};
 
 //MODAL DE REGISTRO EXITOSO//
 const [showModal, setShowModal] = useState(false);

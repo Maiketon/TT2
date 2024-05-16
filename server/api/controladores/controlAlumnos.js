@@ -21,35 +21,58 @@ exports.obtenerTodasLasMaterias = async (req, res) => {
 //REGISTRAR USUARIO
 exports.guardarAlumno = async (req, res) => {
     const { nombres, apellidoP, apellidoM, correo, password, carrera, semestre } = req.body;
-//    const verificationToken = crypto.randomBytes(20).toString('hex');
 
     try {
-        const usuarioId = await modeloAlumnos.guardarNuevoAlumno({ nombres, apellidoP, apellidoM, correo, password, carrera, semestre });
-        //const verificationLink = `http://localhost:3000/verificar/${verificationToken}/${correo}`;
-        const verificacionToken = jsonwebtoken.sign(
-            {usuarioId, correo},
-            'pruebaclave'
-        );
-        const verificationLink = `http://localhost:3001/api/alumnos/verificar/${verificacionToken}`;
-        console.log(usuarioId);
-        console.log(verificacionToken);
-        //EMAIL//
-        const correoOpciones = {
-            from: "learnmatch2024029@hotmail.com", 
-            to: correo,
-            subject: 'Bienvenido a LearnMatch!!!',
-            text: `Hola ${nombres}, por favor verifica tu cuenta haciendo clic en el siguiente enlace: ${verificationLink}, una vez completado tu proceso, por favor procede a iniciar sesión en nuestro sistema`
-        };
-       let info = await transporter.sendMail(correoOpciones);
-        console.log('Mensaje enviado: %s', info.messageId);
-        res.status(201).send('Usuario registrado correctamente. Por favor verifica tu correo electrónico.');
-        //EMAIL//
+        // Verificar si el correo ya existe
+        const registros = await modeloAlumnos.verificarCorreoExistente(correo);
+        console.log(registros);
+        console.log(correo);
+        const cuentaActiva = registros.find(registro => registro.FK_ESTATUSUSUARIO === 1 && registro.FECHA_BORRADO == null);
+        const cuentaReactivable = registros.every(registro => registro.FK_ESTATUSUSUARIO === 7);
+        console.log(cuentaActiva);
+        console.log(cuentaReactivable);
+
+        if (cuentaActiva) {
+            // Reactivar cuenta enviando nuevamente el correo de verificación
+            const verificacionToken = jsonwebtoken.sign({ usuarioId: cuentaActiva.PK_USUARIO, correo }, 'pruebaclave');
+            const verificationLink = `http://localhost:3001/api/alumnos/verificar/${verificacionToken}`;
+            console.log("Entre a cuenta activa voy a enviar 200");
+            const correoOpciones = {
+                from: "learnmatch2024029@hotmail.com", 
+                to: correo,
+                subject: 'Reactivación de tu cuenta en LearnMatch',
+                text: `Hola ${nombres}, parece que no completaste tu proceso de verificación. Por favor verifica tu cuenta haciendo clic en el siguiente enlace: ${verificationLink}`
+            };
+
+            await transporter.sendMail(correoOpciones);
+            return res.status(200).send('Correo de verificación reenviado exitosamente.');
+        } else if (cuentaReactivable) {
+            // Si es registrable, proceder con el registro
+            const usuarioId = await modeloAlumnos.guardarNuevoAlumno({ nombres, apellidoP, apellidoM, correo, password, carrera, semestre });
+            const verificacionToken = jsonwebtoken.sign({ usuarioId, correo }, 'pruebaclave');
+            const verificationLink = `http://localhost:3001/api/alumnos/verificar/${verificacionToken}`;
+            
+            const correoOpciones = {
+                from: "learnmatch2024029@hotmail.com", 
+                to: correo,
+                subject: 'Bienvenido a LearnMatch!!!',
+                text: `Hola ${nombres}, por favor verifica tu cuenta haciendo clic en el siguiente enlace: ${verificationLink}`
+            };
+            console.log("Nuevo registro voy a enviar 201");
+            let info = await transporter.sendMail(correoOpciones);
+            console.log('Mensaje enviado: %s', info.messageId);
+            res.status(201).send('Usuario registrado correctamente. Por favor verifica tu correo electrónico.');
+        } else {
+            return res.status(409).send('El correo ya está registrado con una cuenta activa o no deseada.');
+        }
     
     } catch (error) {
-        console.error('Error al registrar al usuario:', error);
-        res.status(500).send('Error al registrar al usuario.');
+        console.error('Error al registrar o reactivar al usuario:', error);
+        res.status(500).send('Error al registrar o reactivar al usuario.');
     }
 };
+
+
 
 //Actualizar Status Alumno//
 exports.verificarAlumno = async (req, res) => {

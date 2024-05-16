@@ -17,7 +17,7 @@ const Sanciones = () => {
                 const response = await axios.get('http://localhost:3001/api/administracion/reportesAlum');
                 setUsuariosReportados(response.data);
                 console.log('Usuarios cargados:', response.data);  // Verificar el contenido del array
-                setEstaCargando(true);
+                setEstaCargando(false);
             } catch (error) {
                 console.error('Error al cargar usuarios reportados', error);
             }
