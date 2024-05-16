@@ -19,4 +19,5 @@ router.post('/verificarColision', controlEmparejamiento.verificarColision);
 router.post('/updateEmparejamiento', controlEmparejamiento.updateEmparejamiento);
 router.post('/saberEstado', controlEmparejamiento.saberEstado);
 router.post('/rechazarEmparejamiento', controlEmparejamiento.rechazarEmparejamiento);
+router.post('/preFinalizarEmparejamiento',controlEmparejamiento.preFinalizarEmparejamiento);
 module.exports = router;

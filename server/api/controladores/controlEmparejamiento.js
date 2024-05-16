@@ -241,3 +241,14 @@ exports.rechazarEmparejamiento = async (req,res) => {
         res.status(500).send('Error en el servidor al actualizar el emparejamiento');
     }
 }
+
+exports.preFinalizarEmparejamiento = async (req,res) => {
+    const {PK_EMPAREJAMIENTO} = req.query;
+    try {
+        response = await modeloEmparejamiento.preFinalizarEmparejamiento(PK_EMPAREJAMIENTO);
+        res.status(200).json( "Salio bien" );
+    } catch (err) {
+        console.error('Error realizando la consulta:', err);
+        res.status(500).send('Error en el servidor al actualizar el emparejamiento');
+    }
+}

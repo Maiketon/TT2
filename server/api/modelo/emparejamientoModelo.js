@@ -308,11 +308,22 @@ WHERE
         }
     }
 
+    async preFinalizarEmparejamiento(pkemparejamiento){
+        const sql = `
+        UPDATE learnmatch.emparejamiento SET FK_ESTADOEMPAREJAMIENTO = 5 WHERE PK_EMPAREJAMIENTO = ?;
+        `;
 
-
-
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [pkemparejamiento]);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
 
 }
+
 
 
 module.exports = new modeloEmparejamiento();

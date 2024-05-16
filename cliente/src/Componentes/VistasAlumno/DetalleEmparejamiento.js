@@ -17,12 +17,53 @@ const DetalleEmparejamiento = () => {
     const [banderaValidacionMentor, setBanderaValidacionMentor] = useState(null);
     const [banderaValidacionAprendiz, setBanderaValidacionAprendiz] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [respuesta1, setRespuesta1] = useState('');
+    const [respuesta2, setRespuesta2] = useState('');
+    const [respuesta3, setRespuesta3] = useState('');
+    const [respuesta4, setRespuesta4] = useState('');
+    const [respuesta5, setRespuesta5] = useState('');
+    const [handleRespuesta1, setHandleRespuesta1] = useState(null);
+    const [handleRespuesta2, setHandleRespuesta2] = useState(null);
+    const [handleRespuesta3, setHandleRespuesta3] = useState(null);
+    const [handleRespuesta4, setHandleRespuesta4] = useState(null);
+    const [handleRespuesta5, setHandleRespuesta5] = useState(null);
 
-    const [rating, setRating] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
 
-    const handleRatingChange = (event) => {
-        setRating(event.target.value);
+    const setRespuesta = (index, value) => {
+        switch (index) {
+            case 1:
+                setRespuesta1(value);
+                break;
+            case 2:
+                setRespuesta2(value);
+                break;
+            case 3:
+                setRespuesta3(value);
+                break;
+            case 4:
+                setRespuesta4(value);
+                break;
+            case 5:
+                setRespuesta5(value);
+                break;
+            default:
+                break;
+        }
+    };
+
+    const handleRespuesta = (index, value, onChangeCallback) => {
+        setRespuesta(index, value);
+        if (onChangeCallback) {
+            onChangeCallback(value);
+        }
+    };
+
+    const sumarRespuestas = () => {
+        const sumaTotal = parseInt(respuesta1, 10) + parseInt(respuesta2, 10) + parseInt(respuesta3, 10) + parseInt(respuesta4, 10) + parseInt(respuesta5, 10);
+        let promedio= sumaTotal/5;
+        console.log(promedio);
+        return promedio;
     };
 
     const nextPage = () => {
@@ -35,10 +76,17 @@ const DetalleEmparejamiento = () => {
 
     const abrirModal = () => {
         setShowModal(true);
+        setHandleRespuesta1((value) => (event) => handleRespuesta(1, event.target.value, value));
+        setHandleRespuesta2((value) => (event) => handleRespuesta(2, event.target.value, value));
+        setHandleRespuesta3((value) => (event) => handleRespuesta(3, event.target.value, value));
+        setHandleRespuesta4((value) => (event) => handleRespuesta(4, event.target.value, value));
+        setHandleRespuesta5((value) => (event) => handleRespuesta(5, event.target.value, value));
     };
 
-    const enviarModal = () => {
+    const enviarModal = (callback) => {
         setShowModal(false);
+        const result = sumarRespuestas();
+        callback(result);
     };
 
 
@@ -123,8 +171,10 @@ const DetalleEmparejamiento = () => {
             const response = await axios.post(`http://localhost:3001/api/emparejamiento/saberEstado?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
             if (response.data == 3) {
                 console.log("dio 3");
+                await axios.post(`http://localhost:3001/api/emparejamiento/preFinalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                 //await axios.post(`http://localhost:3001/api/emparejamiento/finalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
-                 abrirModal();
+                abrirModal(); // Espera hasta que se resuelva abrirModal
+               // console.log(calif);
             }else if(response.data == 1){
                 console.log("dio 1");
                 await axios.post(`http://localhost:3001/api/emparejamiento/rechazarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
@@ -222,17 +272,7 @@ const DetalleEmparejamiento = () => {
                     <Modal.Title>Califica a tu mentor o aprendiz</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h3>Te agradezco por participar en este emparejamiento, por favor, califica mi desempeño llenando las estrellas que se ven a continuación:</h3>
-                    <Container>
-                        <i className="bi bi-star fs-1 m-2"></i>
-                        <i className="bi bi-star fs-1 m-2"></i>
-                        <i className="bi bi-star fs-1 m-2"></i>
-                        <i className="bi bi-star fs-1 m-2"></i>
-                        <i className="bi bi-star fs-1 m-2"></i>
-                    </Container>
-                    <Container>
-                        <p>Responde el siguiente cuestionario:</p>
-                    </Container>
+                    <h3>Te agradezco por participar en este emparejamiento, por favor, califica mi desempeño llenando el formulario que se presenta a continuación:</h3>
                     <Card>
                     <CardBody>
                             {currentPage === 1 && (
@@ -243,202 +283,188 @@ const DetalleEmparejamiento = () => {
                                             <Form.Check 
                                                 type="radio" 
                                                 label="Poco" 
-                                                value="Poco" 
-                                                checked={rating === 'Poco'} 
-                                                onChange={handleRatingChange} 
-                                                name="rating"
+                                                value={1} 
+                                                checked={respuesta1 === 1} 
+                                                onChange={(e) => setRespuesta1(parseInt(e.target.value, 10))} 
                                             />
                                             <Form.Check 
                                                 type="radio" 
                                                 label="Regular" 
-                                                value="Regular" 
-                                                checked={rating === 'Regular'} 
-                                                onChange={handleRatingChange} 
-                                                name="rating"
+                                                value={2}
+                                                checked={respuesta1 === 2} 
+                                                onChange={(e) => setRespuesta1(parseInt(e.target.value, 10))} 
                                             />
                                             <Form.Check 
                                                 type="radio" 
                                                 label="Suficiente" 
-                                                value="Suficiente" 
-                                                checked={rating === 'Suficiente'} 
-                                                onChange={handleRatingChange} 
-                                                name="rating"
+                                                value={3} 
+                                                checked={respuesta1 === 3} 
+                                                onChange={(e) => setRespuesta1(parseInt(e.target.value, 10))} 
                                             />
                                             <Form.Check 
                                                 type="radio" 
                                                 label="Mucho" 
-                                                value="Mucho" 
-                                                checked={rating === 'Mucho'} 
-                                                onChange={handleRatingChange} 
-                                                name="rating"
+                                                value={4} 
+                                                checked={respuesta1 === 4} 
+                                                onChange={(e) => setRespuesta1(parseInt(e.target.value, 10))} 
                                             />
                                         </div>
                                     </Form.Group>
                                 </Form>
                             )}
+
                             {currentPage === 2 && (
                                 <Form>
-                                <Form.Group>
-                                    <Form.Label>¿Cómo consideras que fue la fluidez en la comunicación con tu pareja?</Form.Label>
-                                    <div>
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Poca" 
-                                            value="Poca" 
-                                            checked={rating === 'Poco'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Regular" 
-                                            value="Regular" 
-                                            checked={rating === 'Regular'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Buena" 
-                                            value="Buena" 
-                                            checked={rating === 'Buena'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Muy buena" 
-                                            value="Muy buena" 
-                                            checked={rating === 'Muy buena'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </Form>
+                                    <Form.Group>
+                                        <Form.Label>¿Cómo consideras que fue la fluidez en la comunicación con tu pareja?</Form.Label>
+                                        <div>
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Poca" 
+                                                value={1} 
+                                                checked={respuesta2 === 1} 
+                                                onChange={(e) => setRespuesta2(parseInt(e.target.value, 10))} 
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Regular" 
+                                                value={2} 
+                                                checked={respuesta2 === 2} 
+                                                onChange={(e) => setRespuesta2(parseInt(e.target.value, 10))} 
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Buena" 
+                                                value={3} 
+                                                checked={respuesta2 === 3} 
+                                                onChange={(e) => setRespuesta2(parseInt(e.target.value, 10))} 
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Muy buena" 
+                                                value={4} 
+                                                checked={respuesta2 === 4} 
+                                                onChange={(e) => setRespuesta2(parseInt(e.target.value, 10))} 
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                </Form>
                             )}
                             {currentPage === 3 && (
                                 <Form>
-                                <Form.Group>
-                                    <Form.Label>¿Cómo consideras que fue tu desempeño en tu rol?</Form.Label>
-                                    <div>
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Poco" 
-                                            value="Poco" 
-                                            checked={rating === 'Poco'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Regular" 
-                                            value="Regular" 
-                                            checked={rating === 'Regular'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Bueno" 
-                                            value="Bueno" 
-                                            checked={rating === 'Bueno'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Muy bueno" 
-                                            value="Muy bueno" 
-                                            checked={rating === 'Muy bueno'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </Form>
+                                    <Form.Group>
+                                        <Form.Label>¿Cómo consideras que fue tu desempeño en tu rol?</Form.Label>
+                                        <div>
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Poco" 
+                                                value={1} 
+                                                checked={respuesta3 === 1} 
+                                                onChange={(e) => setRespuesta3(parseInt(e.target.value, 10))} 
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Regular" 
+                                                value={2} 
+                                                checked={respuesta3 === 2} 
+                                                onChange={(e) => setRespuesta3(parseInt(e.target.value, 10))} 
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Bueno" 
+                                                value={3} 
+                                                checked={respuesta3 === 3} 
+                                                onChange={(e) => setRespuesta3(parseInt(e.target.value, 10))} 
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Muy bueno" 
+                                                value={4} 
+                                                checked={respuesta3 === 4} 
+                                                onChange={(e) => setRespuesta3(parseInt(e.target.value, 10))} 
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                </Form>
                             )}
+
                             {currentPage === 4 && (
                                 <Form>
-                                <Form.Group>
-                                    <Form.Label>¿Cómo evaluarías tu experiencia general en esta clase?</Form.Label>
-                                    <div>
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Mala" 
-                                            value="Mala" 
-                                            checked={rating === 'Mala'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Regular" 
-                                            value="Regular" 
-                                            checked={rating === 'Regular'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Buena" 
-                                            value="Buena" 
-                                            checked={rating === 'Buena'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Muy buena" 
-                                            value="Muy buena" 
-                                            checked={rating === 'Muy buena'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </Form>
+                                    <Form.Group>
+                                        <Form.Label>¿Cómo evaluarías tu experiencia general en esta clase?</Form.Label>
+                                        <div>
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Mala" 
+                                                value={1} 
+                                                checked={respuesta4 === 1} 
+                                                onChange={(e) => setRespuesta4(parseInt(e.target.value, 10))} 
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Regular" 
+                                                value={2} 
+                                                checked={respuesta4 === 2} 
+                                                onChange={(e) => setRespuesta4(parseInt(e.target.value, 10))} 
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Buena" 
+                                                value={3} 
+                                                checked={respuesta4 === 3} 
+                                                onChange={(e) => setRespuesta4(parseInt(e.target.value, 10))} 
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Muy buena" 
+                                                value={4} 
+                                                checked={respuesta4 === 4} 
+                                                onChange={(e) => setRespuesta4(parseInt(e.target.value, 10))} 
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                </Form>
                             )}
                             {currentPage === 5 && (
                                 <Form>
-                                <Form.Group>
-                                    <Form.Label>¿Cómo te ha parecido la orientación que has recibido hasta ahora en la clase?</Form.Label>
-                                    <div>
-                                    <Form.Check 
-                                            type="radio" 
-                                            label="Mala" 
-                                            value="Mala" 
-                                            checked={rating === 'Mala'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Regular" 
-                                            value="Regular" 
-                                            checked={rating === 'Regular'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Buena" 
-                                            value="Buena" 
-                                            checked={rating === 'Buena'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Muy buena" 
-                                            value="Muy buena" 
-                                            checked={rating === 'Muy buena'} 
-                                            onChange={handleRatingChange} 
-                                            name="rating"
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </Form>
+                                    <Form.Group>
+                                        <Form.Label>¿Cómo te ha parecido la orientación que has recibido hasta ahora en la clase?</Form.Label>
+                                        <div>
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Mala" 
+                                                value={1}
+                                                checked={respuesta5 === 1} 
+                                                onChange={(e) => setRespuesta5(parseInt(e.target.value, 10))} 
+                                                name="rating"
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Regular" 
+                                                value={2}
+                                                checked={respuesta5 === 2} 
+                                                onChange={(e) => setRespuesta5(parseInt(e.target.value, 10))} 
+                                                name="rating"
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Buena" 
+                                                value={3}
+                                                checked={respuesta5 === 3} 
+                                                onChange={(e) => setRespuesta5(parseInt(e.target.value, 10))} 
+                                                name="rating"
+                                            />
+                                            <Form.Check 
+                                                type="radio" 
+                                                label="Muy buena" 
+                                                value={4}
+                                                checked={respuesta5 === 4} 
+                                                onChange={(e) => setRespuesta5(parseInt(e.target.value, 10))} 
+                                                name="rating"
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                </Form>
                             )}
                         </CardBody>
                     </Card>
