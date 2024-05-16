@@ -50,3 +50,29 @@
   flex-direction: column;
   align-items: center;
 }
+
+.star-container {
+  display: flex;
+  align-items: center;
+}
+
+.star {
+  cursor: pointer;
+  color: gray;
+}
+
+.star:hover,
+.star.hovered,
+.star.selected {
+  color: yellow;
+}
+
+.half-star:before {
+  content: '\f005';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  overflow: hidden;
+  display: block;
+  color: yellow;
+}
