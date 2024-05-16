@@ -37,6 +37,8 @@ console.log("Materias disponibles:", materias.map(mat => mat.PK_MATERIA));
     
      // Función para obtener el número de estrellas basado en la calificación
      const getStarCount = (calificacion) => {
+        if (calificacion === null) return 0;  // Devuelve 0 si la calificación es null
+
         const calif = parseFloat(calificacion);
         if (calif >= 0.00 && calif <= 1.00) return 1;
         if (calif > 1.00 && calif <= 2.00) return 2;
@@ -61,10 +63,13 @@ console.log("Materias disponibles:", materias.map(mat => mat.PK_MATERIA));
                                 </div>
                                 <div className="usuario-rating">
                                 {[...Array(5)].map((star, i) => (
-                                        i < getStarCount(usuario.CALIFICACION) ? <BsStarFill key={i} /> : <BsStar key={i} />
+                                        <span key={i} title={`Calificación: ${usuario.CALIFICACION || '0'}`}>
+                                            {i < getStarCount(usuario.CALIFICACION) ? <BsStarFill /> : <BsStar />}
+                                        </span>
                                     ))}
                                     <p>Calificación aprendiz; {usuario.CALIFICACION_APRENDIZ} Reportes:{usuario.NUMERO_REPORTES}</p>
                                 <p>Calificación mentor; {usuario.CALIFICACION_MENTOR}         Sanciones;{usuario.SANCIONES}</p>
+                                {usuario.FECHA_BORRADO && <p>Fecha de Borrado: {new Date(usuario.FECHA_BORRADO).toLocaleDateString()}</p>}
                                 </div>
                             </div>
                         </Col>
@@ -75,7 +80,7 @@ console.log("Materias disponibles:", materias.map(mat => mat.PK_MATERIA));
                                 <p>Semestre: {usuario.SEMESTRE}</p>
                                 <p>Contraseña; {usuario.PSW}</p>
                                 <p>Fecha de Inicio: {new Date(usuario.FECHA_CREACION).toLocaleDateString()}</p>
-                                {usuario.FECHA_BORRADO && <p>Fecha de Borrado: {new Date(usuario.FECHA_BORRADO).toLocaleDateString()}</p>}
+                               
                             </Container>
                         </Col>
                         <Row>
@@ -97,12 +102,6 @@ console.log("Materias disponibles:", materias.map(mat => mat.PK_MATERIA));
                                 </ul>
                         </Col>
                     </Row>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Button variant="primary" style={{ marginRight: '10px', padding: '10px' }}>Sancionar</Button>
-                            <Button variant="danger" style={{ padding: '10px' }}>Eliminar Usuario</Button>
-                        </Col>
                     </Row>
                 </div>
             ))}

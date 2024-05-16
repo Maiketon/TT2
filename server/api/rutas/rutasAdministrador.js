@@ -9,9 +9,6 @@ router.get('/materiasRegistroU',controlAdministracion.obtenerNombreMaterias);
 //MODULO DE REGISTROS USUARIO //
 router.post('/buscarFiltrado',controlAdministracion.obtenerUsuariosFiltrados);
 
-
-
-
 //MODULO DE REPORTES
 router.get('/datosGraficaUsoBoton',controlAdministracion.datosGraficaUsoAplicacion);
 router.get('/datosSanciones',controlAdministracion.datosGraficaSanciones);
@@ -20,8 +17,10 @@ router.get('/datosGraficaMaterias',controlAdministracion.datosGraficaMaterias);
 router.get('/datosGraficaCalf',controlAdministracion.datosGraficaCalificaciones);
 router.get('/datosGraficaLogros',controlAdministracion.datosGraficaLogros);
 
-
-
-
+//MODULO DE REPORTE DE USUARIOS
+router.get('/reportesAlum',controlAdministracion.reportesUsuarios);
+router.post ('/sancionarUser',controlAdministracion.sancionAlumno);
+router.post ('/omitirReportAlumno',controlAdministracion.omitirReporte);
+router.post('/vetarAlumno',controlAdministracion.vetarAlumnoPk);
 
 module.exports = router;
