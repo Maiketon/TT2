@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card } from 'react-bootstrap';
 import perfil_generico from './Utils/perfil.png';
+import Swal from "sweetalert2";
 import axios from "axios";
 
 const DetalleEmparejamiento = () => {
@@ -67,32 +68,39 @@ const DetalleEmparejamiento = () => {
             }
         };
         obtenerBanderasValidacionAprendiz();
-    }, [Aprendiz]);
+    }, [PKaValidarAprendiz]);
 
-    const ValidarEmparejamientoMentor = async() => {
+    const handleActivarEmparejamiento = async (PK_EMPAREJAMIENTO) => {
         try {
-            for (const usuario of Mentor) {
-                const {PK_EMPAREJAMIENTO } = usuario;
-                await axios.get(`http://localhost:3001/api/emparejamiento/ValidarEmparejamiento?userPk=${userPk}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
-            }           
-        } catch (error) {
-            console.error('Error al validar al mentor:', error);
+            const response = await axios.post(`http://localhost:3001/api/emparejamiento/updateEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+            console.log('Emparejamiento activado exitosamente:', response.data);
+            await Swal.fire({
+                icon: 'success',
+                title: '¡Emparejamiento activado!',
+                text: 'El emparejamiento ha sido activado exitosamente.',
+            });
+            window.location.reload();
+        } catch (error) {   
+            console.error('Error al activar el emparejamiento:', error);
         }
-    }
+    };
 
-    const ValidarEmparejamientoAprendiz = async() => {
+    const handleRechazarEmparejamiento = async (PK_EMPAREJAMIENTO) => {
         try {
-            for (const usuario of Aprendiz) {
-                const {PK_EMPAREJAMIENTO } = usuario;
-                await axios.get(`http://localhost:3001/api/emparejamiento/ValidarEmparejamiento?userPk=${userPk}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
-            }              
+            // Aqui primero se hacec una consulta para obtener el estado del emparejamiento, si esta pendiente o activo, dependiendo, se hace el rechazo o se finaliza el emparejamiento
+            const response = await axios.post(`http://localhost:3001/api/emparejamiento/saberEstado?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+            if (response.data == 2) {
+                console.log("dio 2");
+                //await axios.post(`http://localhost:3001/api/emparejamiento/finalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+            }else if(response.data == 1){
+                console.log("dio 1");
+                await axios.post(`http://localhost:3001/api/emparejamiento/rechazarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+            }
         } catch (error) {
-            console.error('Error al validar al aprendiz:', error);
+            console.error('Error al rechazar el emparejamiento:', error);
         }
-    }
+    };
 
-    //console.log(banderaValidacionMentor);
-    //console.log(banderaValidacionAprendiz);
     return (
         <div className='margen_superior'>
             <Card>
@@ -113,13 +121,19 @@ const DetalleEmparejamiento = () => {
                                     <div className="col">Fecha</div>
                                 </div>
                                 <div className="row">
-                                    <div className="col"><button className="btn_rechazo">X</button></div>
+                                    <div className="col">
+                                        <button className="btn_rechazo" onClick={() => handleRechazarEmparejamiento(aprendiz.PK_EMPAREJAMIENTO)}>
+                                            X
+                                        </button>
+                                    </div>
                                     <div className="col">{aprendiz.estado}</div>
                                     <div className="col">TOKEN</div>
                                 </div>
                                 {banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
                                     <div className="row">
-                                        <div className="col"><Button onClick={ValidarEmparejamientoAprendiz}>Activar emparejamiento</Button></div>
+                                        <div className="col">
+                                            <Button onClick={() => handleActivarEmparejamiento(aprendiz.PK_EMPAREJAMIENTO)}>Activar emparejamiento</Button>
+                                        </div>
                                     </div>
                                 ) : null}
                             </div>
@@ -147,13 +161,19 @@ const DetalleEmparejamiento = () => {
                                     <div className="col">Fecha</div>
                                 </div>
                                 <div className="row">
-                                    <div className="col"><button className="btn_rechazo">X</button></div>
+                                    <div className="col">
+                                        <button className="btn_rechazo" onClick={() => handleRechazarEmparejamiento(mentor.PK_EMPAREJAMIENTO)}>
+                                            X
+                                        </button>
+                                    </div>
                                     <div className="col">{mentor.estado}</div>
                                     <div className="col">TOKEN</div>
                                 </div>
                                 {banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
                                     <div className="row">
-                                        <div className="col"><Button onClick={ValidarEmparejamientoMentor}>Activar emparejamiento</Button></div>
+                                        <div className="col">
+                                            <Button onClick={() => handleActivarEmparejamiento(mentor.PK_EMPAREJAMIENTO)}>Activar emparejamiento</Button>
+                                        </div>
                                     </div>
                                 ) : null}
                             </div>

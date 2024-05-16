@@ -194,15 +194,50 @@ exports.obtenerPKaValidar = async(req,res) => {
     }
 }
 
-exports.validarEmparejamiento = async(req,res) => {
-    const {userPk,PK_EMPAREJAMIENTO} = req.query;
+exports.updateEmparejamiento = async (req,res) => {
+    const {PK_EMPAREJAMIENTO} = req.query;
     try {
-        const validarMyA = await modeloEmparejamiento.validarEmparejamiento(userPk, PK_EMPAREJAMIENTO);
-        res.json(validarMyA);
-    } catch (error) {
-        console.error('Error realizando la consulta:', error);
-        res.status(500).send('Error en el servidor al cambiar el estado a VALIDADO');
+        await modeloEmparejamiento.updateEmparejamiento(PK_EMPAREJAMIENTO);
+        
+        // Enviamos la respuesta al cliente con los rechazos disponibles actualizados
+        res.status(200).json( "Salio bien" );
+    } catch (err) {
+        console.error('Error realizando la consulta:', err);
+        res.status(500).send('Error en el servidor al actualizar el emparejamiento');
     }
 }
 
+exports.saberEstado = async (req,res) => {
+    const {PK_EMPAREJAMIENTO} = req.query;
+    try {
+        const response = await modeloEmparejamiento.saberEstado(PK_EMPAREJAMIENTO);
+        console.log("Este es el response");
+        console.log(response[0].FK_ESTADOEMPAREJAMIENTO);
+        if (response && response.length > 0) {
+            const estadoEmparejamiento = response[0].FK_ESTADOEMPAREJAMIENTO;
+            if (estadoEmparejamiento === 2) {
+                res.json(2);
+            } else if (estadoEmparejamiento === 1) {
+                res.json(1);
+            }
+        } 
+        // Enviamos la respuesta al cliente con los rechazos disponibles actualizados
 
+    } catch (err) {
+        console.error('Error realizando la consulta:', err);
+        res.status(500).send('Error en el servidor al actualizar el emparejamiento');
+    }
+}
+
+exports.rechazarEmparejamiento = async (req,res) => {
+    const {PK_EMPAREJAMIENTO} = req.query;
+    try {
+        await modeloEmparejamiento.rechazarEmparejamiento(PK_EMPAREJAMIENTO);
+        
+        // Enviamos la respuesta al cliente con los rechazos disponibles actualizados
+        res.status(200).json( "Salio bien" );
+    } catch (err) {
+        console.error('Error realizando la consulta:', err);
+        res.status(500).send('Error en el servidor al actualizar el emparejamiento');
+    }
+}
