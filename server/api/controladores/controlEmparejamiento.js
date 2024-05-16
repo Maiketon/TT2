@@ -215,8 +215,8 @@ exports.saberEstado = async (req,res) => {
         console.log(response[0].FK_ESTADOEMPAREJAMIENTO);
         if (response && response.length > 0) {
             const estadoEmparejamiento = response[0].FK_ESTADOEMPAREJAMIENTO;
-            if (estadoEmparejamiento === 2) {
-                res.json(2);
+            if (estadoEmparejamiento === 3) {
+                res.json(3);
             } else if (estadoEmparejamiento === 1) {
                 res.json(1);
             }
@@ -232,7 +232,7 @@ exports.saberEstado = async (req,res) => {
 exports.rechazarEmparejamiento = async (req,res) => {
     const {PK_EMPAREJAMIENTO} = req.query;
     try {
-        await modeloEmparejamiento.rechazarEmparejamiento(PK_EMPAREJAMIENTO);
+        response = await modeloEmparejamiento.rechazarEmparejamiento(PK_EMPAREJAMIENTO);
         
         // Enviamos la respuesta al cliente con los rechazos disponibles actualizados
         res.status(200).json( "Salio bien" );

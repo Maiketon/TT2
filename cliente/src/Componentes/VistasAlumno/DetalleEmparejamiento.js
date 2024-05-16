@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import {Button, Card, Modal,Container, CardTitle, CardBody,Form,Pagination } from 'react-bootstrap';
 import perfil_generico from './Utils/perfil.png';
@@ -117,15 +118,25 @@ const DetalleEmparejamiento = () => {
     };
 
     const handleRechazarEmparejamiento = async (PK_EMPAREJAMIENTO) => {
-        try {
-            abrirModal();
-            // Agregar lógica para rechazar el emparejamiento utilizando PK_EMPAREJAMIENTO
-            console.log('Emparejamiento rechazado:', PK_EMPAREJAMIENTO);
+        try {           
+            // Aqui primero se hacec una consulta para obtener el estado del emparejamiento, si esta pendiente o activo, dependiendo, se hace el rechazo o se finaliza el emparejamiento
+            const response = await axios.post(`http://localhost:3001/api/emparejamiento/saberEstado?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+            if (response.data == 3) {
+                console.log("dio 3");
+                //await axios.post(`http://localhost:3001/api/emparejamiento/finalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                 abrirModal();
+            }else if(response.data == 1){
+                console.log("dio 1");
+                await axios.post(`http://localhost:3001/api/emparejamiento/rechazarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+            }
         } catch (error) {
+            console.error('Error al validar al aprendiz:', error);
             console.error('Error al rechazar el emparejamiento:', error);
         }
     };
+    
 
+  
     return (
         <div className='margen_superior'>
             <Card>

@@ -122,7 +122,8 @@ WHERE
     emp.ROL_USUARIO1 = 1
     AND emp.ROL_USUARIO2 = 2
     AND emp.FK_USUARIO2 = ?
-    AND emp.FK_ESTADOEMPAREJAMIENTO <> 3 -- Aquí se excluyen los registros con FK_ESTADOEMPAREJAMIENTO igual a 3
+    AND emp.FK_ESTADOEMPAREJAMIENTO != 2
+        AND emp.FK_ESTADOEMPAREJAMIENTO != 4 -- Aquí se excluyen los registros con FK_ESTADOEMPAREJAMIENTO igual a 3
 UNION
 SELECT
     CONCAT(inf.NOMBRE, " ", inf.APELLIDO_PATERNO, " ", inf.APELLIDO_MATERNO) AS nombreCompleto,
@@ -137,7 +138,8 @@ WHERE
     emp.ROL_USUARIO2 = 1
     AND emp.ROL_USUARIO1 = 2
     AND emp.FK_USUARIO1 = ?
-    AND emp.FK_ESTADOEMPAREJAMIENTO != 3;
+    AND emp.FK_ESTADOEMPAREJAMIENTO != 2
+        AND emp.FK_ESTADOEMPAREJAMIENTO != 4;
         `;
 
         try {
@@ -163,7 +165,8 @@ WHERE
     WHERE
         emp.ROL_USUARIO1 = 1
         AND emp.FK_USUARIO1 = ?
-        AND emp.FK_ESTADOEMPAREJAMIENTO <> 3 -- Aquí se excluyen los registros con FK_ESTADOEMPAREJAMIENTO igual a 3
+        AND emp.FK_ESTADOEMPAREJAMIENTO != 2
+        AND emp.FK_ESTADOEMPAREJAMIENTO != 4 -- Aquí se excluyen los registros con FK_ESTADOEMPAREJAMIENTO igual a 3
     UNION
     SELECT
         CONCAT(inf.NOMBRE, " ", inf.APELLIDO_PATERNO, " ", inf.APELLIDO_MATERNO) AS nombreCompleto,
@@ -177,7 +180,8 @@ WHERE
     WHERE
         emp.ROL_USUARIO2 = 1
         AND emp.FK_USUARIO2 = ?
-        AND emp.FK_ESTADOEMPAREJAMIENTO <> 3;
+        AND emp.FK_ESTADOEMPAREJAMIENTO != 2
+        AND emp.FK_ESTADOEMPAREJAMIENTO != 4;
         `;
 
         try {
@@ -263,7 +267,7 @@ WHERE
 
     async updateEmparejamiento(pkemparejamiento){
         const sql = `
-        UPDATE learnmatch.emparejamiento SET FK_ESTADOEMPAREJAMIENTO = 2 WHERE PK_EMPAREJAMIENTO = ?;
+        UPDATE learnmatch.emparejamiento SET FK_ESTADOEMPAREJAMIENTO = 3 WHERE PK_EMPAREJAMIENTO = ?;
         `;
 
         try {
@@ -290,8 +294,9 @@ WHERE
     }
 
     async rechazarEmparejamiento(pkemparejamiento){
+        //aQUI QUE HAGA UN DELETE
         const sql = `
-        UPDATE learnmatch.emparejamiento SET FK_ESTADOEMPAREJAMIENTO = 3 WHERE PK_EMPAREJAMIENTO = ?;
+        UPDATE learnmatch.emparejamiento SET FK_ESTADOEMPAREJAMIENTO = 4 WHERE PK_EMPAREJAMIENTO = ?;
         `;
 
         try {
