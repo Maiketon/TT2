@@ -184,10 +184,24 @@ exports.obtenerPKaValidar = async(req,res) => {
             resultado: resultadoConsulta,
             PK_EMPAREJAMIENTO: PK_EMPAREJAMIENTO
         };
-        console.log("Esta es la bandera y PK_EMPAREJAMIENTO:");
+        if(resultadoConsulta == 0){
+            const resultadoConsulta = await modeloEmparejamiento.obtenerCondicionEvaluacion(PK_USERPAIRED, PK_EMPAREJAMIENTO);
+            
+            const pkvalidar = {
+            resultado: resultadoConsulta,
+            PK_EMPAREJAMIENTO: PK_EMPAREJAMIENTO
+        };
+         console.log("Esta es la bandera y PK_EMPAREJAMIENTO: en caso de que el emparejamiento este activo");
         console.log(pkvalidar);
-        // Enviar el resultado junto con el PK_EMPAREJAMIENTO en formato JSON
         res.json(pkvalidar);
+         }else{
+            console.log("Esta es la bandera y PK_EMPAREJAMIENTO:");
+            console.log(pkvalidar);
+            // Enviar el resultado junto con el PK_EMPAREJAMIENTO en formato JSON
+            res.json(pkvalidar);
+         }
+
+       
     } catch (err) {
         console.error('Error realizando la consulta:', err);
         res.status(500).send('Error en el servidor al obtener el Pk que hará la validación');

@@ -77,8 +77,8 @@ const DetalleEmparejamiento = () => {
         const actualizarCalificacion = axios.post(`https://201.124.154.2:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${pkemparejamiento}&userPk=${userPk}&promedio=${promedio}`);
     //pkemparejmaiento desde session
     //Pkuser desde session
-    //ponga la calificacion en el lugar que le corresponde
-    //verificar si ya estan las 2 calificaciones, si si, updatear a estado 3, si no, dejarlo asi
+    //ponga la calificacion en el lugar que le corresponde (consulta)
+    //verificar si ya estan las 2 calificaciones, si si, updatear a estado 3, si no, dejarlo asi (consulta)
     };
     
     
@@ -200,6 +200,14 @@ const DetalleEmparejamiento = () => {
         }
     };
 
+    const abrirModalParaEvaluar = async (PK_EMPAREJAMIENTO) => {
+        try {
+            abrirModal(PK_EMPAREJAMIENTO);
+        } catch (error) {
+            console.error('Error al activar el emparejamiento:', error);
+        }
+    }
+
  
     
     
@@ -239,6 +247,12 @@ const DetalleEmparejamiento = () => {
                                             <Button onClick={() => handleActivarEmparejamiento(aprendiz.PK_EMPAREJAMIENTO)}>Activar emparejamiento</Button>
                                         </div>
                                     </div>
+                                ) :banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 5) ? (
+                                    <div className="row">
+                                        <div className="col">
+                                        <Button onClick={() => abrirModalParaEvaluar(aprendiz.PK_EMPAREJAMIENTO)}>Hacer evaluación</Button>
+                                        </div>
+                                    </div>
                                 ) : null}
                             </div>
                         </div>
@@ -274,12 +288,18 @@ const DetalleEmparejamiento = () => {
                                     <div className="col">TOKEN</div>
                                 </div>
                                 {banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
-                                    <div className="row">
-                                        <div className="col">
-                                            <Button onClick={() => handleActivarEmparejamiento(mentor.PK_EMPAREJAMIENTO)}>Activar emparejamiento</Button>
-                                        </div>
-                                    </div>
-                                ) : null}
+    <div className="row">
+        <div className="col">
+            <Button onClick={() => handleActivarEmparejamiento(mentor.PK_EMPAREJAMIENTO)}>Activar emparejamiento</Button>
+        </div>
+    </div>
+) : banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 5) ? (
+    <div className="row">
+        <div className="col">
+        <Button onClick={() => abrirModalParaEvaluar(mentor.PK_EMPAREJAMIENTO)}>Hacer evaluación</Button>
+        </div>
+    </div>
+) : null}
                             </div>
                         </div>
                     ))}
