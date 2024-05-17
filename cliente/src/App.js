@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
  //SE IMPORTA BOOSTRAP DENTRO DE REACT//
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Cookies from 'js-cookie';
 //COMPONENTES D ELA VISTA PRINCIPAL//
 import VistaPrincipal from './Componentes/Principal';
 
@@ -17,7 +18,8 @@ function App() {
 
   useEffect(() => {
     // Verificar el rol de usuario al cargar la aplicación
-    const storedRole = sessionStorage.getItem('userRole');
+    //const storedRole = sessionStorage.getItem('userRole');
+    const storedRole = Cookies.get('userRole'); 
     if (storedRole) {
       // Si hay un rol almacenado en la sesión, establecerlo en el estado
       setUserRole(parseInt(storedRole));
@@ -42,7 +44,8 @@ function App() {
 
 function PrivateRoute({ allowedRoles, redirectTo, component: Component, ...props }) {
   // Obtener el rol de usuario de la sesión
-  const userRole = parseInt(sessionStorage.getItem('userRole'));
+  //const userRole = parseInt(sessionStorage.getItem('userRole'));
+  const userRole = parseInt(Cookies.get('userRole'));
 
   if (!userRole || !allowedRoles.includes(userRole)) {
     // Si el usuario no tiene un rol permitido, redirige

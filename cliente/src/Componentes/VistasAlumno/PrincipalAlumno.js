@@ -8,11 +8,13 @@ import MEmparejamiento from './Emparejamiento';
 import MPreferenciasAcademicas from './PreferenciasAcademicas';
 import MEmparejamientosActivos from './DetalleEmparejamiento';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const VistaPrincipal = () => {
   const [vista, setVista] = useState('inicio');
   const [Rol, setRol] = useState([]);
-  const userPk = sessionStorage.getItem('userPk');
+  const userPk = Cookies.get('userPk');
+  //const userPk = sessionStorage.getItem('userPk');
 
   useEffect(() => {
     const obtenerRol = async () => {
@@ -20,10 +22,14 @@ const VistaPrincipal = () => {
         console.log(userPk);
         const response = await axios.get(`https://201.124.154.2:3001/api/emparejamiento/obtenerRol?userPk=${userPk}`);
         setRol(response.data);
-        sessionStorage.setItem('bandera', JSON.stringify(response.data.bandera));
-        sessionStorage.setItem('totalEmparejamientos', JSON.stringify(response.data.totalEmparejamientos));
-        sessionStorage.setItem('totalEnseñante', JSON.stringify(response.data.totalEnseñante));
-        sessionStorage.setItem('totalAprendiz', JSON.stringify(response.data.totalAprendiz));
+        Cookies.set('bandera', JSON.stringify(response.data.bandera), { expires: 1 });
+        Cookies.set('totalEmparejamientos',JSON.stringify(response.data.totalEmparejamientos), { expires: 1 });
+        Cookies.set('totalEnseñante', JSON.stringify(response.data.totalEnseñante), { expires: 1 });
+        Cookies.set('totalAprendiz', JSON.stringify(response.data.totalAprendiz), { expires: 1 });
+        //sessionStorage.setItem('bandera', JSON.stringify(response.data.bandera));
+        //sessionStorage.setItem('totalEmparejamientos', JSON.stringify(response.data.totalEmparejamientos));
+        //sessionStorage.setItem('totalEnseñante', JSON.stringify(response.data.totalEnseñante));
+        //sessionStorage.setItem('totalAprendiz', JSON.stringify(response.data.totalAprendiz));
         
       } catch (error) {
         console.error('Error al obtener el rol:', error);

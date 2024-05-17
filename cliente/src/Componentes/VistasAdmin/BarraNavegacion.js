@@ -2,14 +2,23 @@ import React from 'react';
 import './Css/Sidebar.css';
 import logo from '../VistasAdmin/Utils/usuario.png';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const BarraNavegacion = ({ setVista }) => {
   const navigate = useNavigate(); // Utiliza useNavigate para redireccionar en React Router v6
 
+
+  const limpiarCookies = () => {
+    const cookies = Cookies.get(); // Obtener todas las cookies
+    for (const cookie in cookies) {
+      Cookies.remove(cookie);
+    }
+  };
   const handleLogout = () => {
     // Aquí podrías agregar cualquier lógica relacionada con cerrar sesión, como limpiar el almacenamiento local o enviar una solicitud al servidor
     // Después de cerrar sesión, redirige al usuario a la vista principal
-    sessionStorage.clear();
+    //sessionStorage.clear();
+    limpiarCookies();
     navigate("/"); // Utiliza navigate para redireccionar en React Router v6
   };
 

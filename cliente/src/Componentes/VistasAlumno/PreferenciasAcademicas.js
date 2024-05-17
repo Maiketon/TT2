@@ -3,7 +3,8 @@ import { Container,Form, Button,Modal} from "react-bootstrap";
 import axios from "axios";
 import EstadoFeliz from "../VistasPrincipal/Utils/Sonrisa.png";
 import EstadoTriste from "../VistasPrincipal/Utils/Triste.png";
-import './Css/FormularioPreferencias.css'
+import './Css/FormularioPreferencias.css';
+import Cookies from 'js-cookie';
 
 const PreferenciasAcademicas = () => {
     //Logica para los checkbox de la modal de materias
@@ -114,8 +115,9 @@ const PreferenciasAcademicas = () => {
       
         const cargarPreferencias = async () => {
           try {
-            const userPk = sessionStorage.getItem('userPk');
-            const resPreferencias = await axios.get(`https://201.124.154.2:3001/api/alumnos/obtenerPreferencias?pkUsuario=${userPk}`);
+            const userPk = Cookies.get('userPk');
+            //const userPk = sessionStorage.getItem('userPk');
+            const resPreferencias = await axios.get(`http://localhost:3001/api/alumnos/obtenerPreferencias?pkUsuario=${userPk}`);
             console.log('Preferencias recibidas del backend:', resPreferencias.data);
 
             if (resPreferencias.data.success) {
@@ -134,8 +136,8 @@ const PreferenciasAcademicas = () => {
       {
 
         try {
-          
-        const userPk = sessionStorage.getItem('userPk');
+        const userPk = Cookies.get('userPk');
+        //const userPk = sessionStorage.getItem('userPk');
         console.log(userPk);
         if (!userPk) {
           console.error('No se encontró el userPk en sessionStorage');

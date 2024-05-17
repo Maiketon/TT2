@@ -7,11 +7,15 @@ import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Await } from "react-router";
+import Cookies from 'js-cookie';
 
 
 const DetalleEmparejamiento = () => {
-    const userPk = sessionStorage.getItem("userPk");
-    const pkemparejamiento = sessionStorage.getItem("pkEmparejamiento");
+
+    const userPk = Cookies.get('userPk');
+    //const userPk = sessionStorage.getItem("userPk");
+    const pkemparejamiento = Cookies.get('pkEmparejamiento');
+    //const pkemparejamiento = sessionStorage.getItem("pkEmparejamiento");
     const [Mentor, setMentor] = useState([]);
     const [Aprendiz, setAprendiz] = useState([]);
     const [PKaValidarMentor, setPkaValidarMentor] = useState([]);
@@ -68,7 +72,8 @@ const DetalleEmparejamiento = () => {
      const abrirModal = (PK_EMPAREJAMIENTO) => {
         setShowModal(true);
         console.log(PK_EMPAREJAMIENTO+"aqui");
-        sessionStorage.setItem('pkEmparejamiento', JSON.stringify(PK_EMPAREJAMIENTO));
+        Cookies.set('pkEmparejamiento', JSON.stringify(PK_EMPAREJAMIENTO), { expires: 1 });
+        //sessionStorage.setItem('pkEmparejamiento', JSON.stringify(PK_EMPAREJAMIENTO));
     };
     
     const enviarModal = () => {
@@ -238,7 +243,18 @@ const DetalleEmparejamiento = () => {
                                             X
                                         </button>
                                     </div>
-                                    <div className="col">{aprendiz.estado}</div>
+                                    <div className="col">
+                                    {aprendiz.estado == 1 ? (
+                                    // Aquí va tu condición y lo que deseas renderizar si se cumple la primera condición
+                                    <span>Pendiente</span>
+                                    ) : aprendiz.estado == 3 ? (
+                                    // Aquí va tu condición y lo que deseas renderizar si se cumple la segunda condición
+                                    <span>Activo</span>
+                                    ) : aprendiz.estado == 5 ? (
+                                        // Aquí va tu condición y lo que deseas renderizar si se cumple la segunda condición
+                                        <span>Finalizado parcialmente</span>
+                                    ): null}
+                                    </div>
                                     <div className="col">TOKEN</div>
                                 </div>
                                 {banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
@@ -284,7 +300,18 @@ const DetalleEmparejamiento = () => {
                                             X
                                         </button>
                                     </div>
-                                    <div className="col">{mentor.estado}</div>
+                                    <div className="col">
+                                    {mentor.estado == 1 ? (
+                                    // Aquí va tu condición y lo que deseas renderizar si se cumple la primera condición
+                                    <span>Pendiente</span>
+                                    ) : mentor.estado == 3 ? (
+                                    // Aquí va tu condición y lo que deseas renderizar si se cumple la segunda condición
+                                    <span>Activo</span>
+                                    ) : mentor.estado == 5 ? (
+                                        // Aquí va tu condición y lo que deseas renderizar si se cumple la segunda condición
+                                        <span>Finalizado parcialmente</span>
+                                    ): null}
+                                    </div>
                                     <div className="col">TOKEN</div>
                                 </div>
                                 {banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (

@@ -4,6 +4,7 @@ import { useCarga } from "../ContextoCarga";
 import {Container, Row, Col, Form, Card, Button, Modal} from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
+import Cookies from 'js-cookie';
 // IMAGENESSECCION PRINCIPAL//
 import Avatar1 from "./Utils/Avatar1Login.jpg";
 import Avatar2 from "./Utils/Avatar2Login.jpg";
@@ -96,6 +97,13 @@ const FormLogin = ()=>
           [name]: newValue
       });
   };
+
+  const limpiarCookies = () => {
+    const cookies = Cookies.get(); // Obtener todas las cookies
+    for (const cookie in cookies) {
+      Cookies.remove(cookie);
+    }
+  };
   
     
     const enviarValores = () => {
@@ -112,14 +120,22 @@ const FormLogin = ()=>
             console.log(data.rol)
             console.log(data.pk);
             
-            sessionStorage.setItem('userPk', data.pk);
-            sessionStorage.setItem('userRole', data.rol);
+            Cookies.set('userPk', data.pk, { expires: 1 }); // Ejemplo de expiración en 7 días
+    Cookies.set('userRole', data.rol, { expires: 1 }); // Ejemplo de expiración en 7 días
+
+    const userPk = Cookies.get('userPk');
+    const userRole = Cookies.get('userRole');
+    console.log('Esto guardaste en tus cookies userPk:', userPk);
+    console.log('Esto guardaste en tus cookiesuserRole:', userRole);
+            //sessionStorage.setItem('userPk', data.pk);
+            //sessionStorage.setItem('userRole', );
     
             switch (data.rol) {
               case 1:
                 console.log("SOLICIUTD");
                 setModalVerificacion(true);
-                sessionStorage.clear();
+                //sessionStorage.clear();
+                limpiarCookies();
                 break;
               case 2:
                 console.log("VERIFICADO, CAMBIANDO A SELECCION");
@@ -254,8 +270,8 @@ const FormLogin = ()=>
       {
 
         try {
-          
-        const userPk = sessionStorage.getItem('userPk');
+          const userPk = Cookies.get('userPk');  
+        //const userPk = sessionStorage.getItem('userPk');
         console.log(userPk);
         if (!userPk) {
           console.error('No se encontró el userPk en sessionStorage');
@@ -269,7 +285,9 @@ const FormLogin = ()=>
         const response = await axios.post('https://201.124.154.2:3001/api/alumnos/enviarPreferencias', cargaUtil);
         if(response.status===200)
         {
-          sessionStorage.setItem('userRole',4);
+          
+            Cookies.set('userRole', 4, { expires: 1 }); // Ejemplo de expiración en 7 días
+          //sessionStorage.setItem('userRole',4);
            navigate("/VistasAlumno/PrincipalAlumno");
         }
         else {

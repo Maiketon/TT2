@@ -4,6 +4,7 @@ import MatchUser from './Utils/mentorship.png';
 import Swal from "sweetalert2";
 import './Css/EmparejamientoStyles.css';
 import axios from "axios";
+import Cookies from 'js-cookie';
 
 const Emparejamiento = () => {
     const [showModal, setShowModal] = useState(false);
@@ -12,12 +13,20 @@ const Emparejamiento = () => {
     const [datosAlumno, setDatosAlumno] = useState([]);
     const [deletedCardIndex, setDeletedCardIndex] = useState(null); 
     const [deleteAcceptPairmentCard, setdeleteAcceptPairment] = useState(null);
-    const userPk = sessionStorage.getItem("userPk");
-    const numrechazos = sessionStorage.getItem("numRechazos");
-    const bandera = sessionStorage.getItem("bandera");
-    const numemparejamientos = sessionStorage.getItem("totalEmparejamientos");
-    const total_aprendiz = parseInt(sessionStorage.getItem("totalAprendiz"));
-    const total_enseñante = parseInt(sessionStorage.getItem("totalEnseñante"));
+    
+    const userPk = Cookies.get('userPk');
+    //const userPk = sessionStorage.getItem("userPk");
+    const numrechazos = Cookies.get('numRechazos');
+    //const numrechazos = sessionStorage.getItem("numRechazos");
+    const bandera = Cookies.get('bandera');
+    //const bandera = sessionStorage.getItem("bandera");
+    const numemparejamientos = Cookies.get('totalEmparejamientos');
+    //const numemparejamientos = sessionStorage.getItem("totalEmparejamientos");
+    const total_aprendiz = Cookies.get('totalAprendiz');
+    //const total_aprendiz = parseInt(sessionStorage.getItem("totalAprendiz"));
+    const total_enseñante = Cookies.get('totalEnsenante');
+    //const total_enseñante = parseInt(sessionStorage.getItem("totalEnseñante"));
+    
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
 
 
@@ -30,7 +39,8 @@ const Emparejamiento = () => {
 
   //FUNCIONES PARA BORRAR LAS CARDS CUANDO SE PRESIONA EL BOTON DE RECHAZAR EMPAREJAMIENTO//////////  
     const handleDeleteCard = async (index) => {
-        const numRechazos = parseInt(sessionStorage.getItem("numRechazos"));
+        const numRechazos = Cookies.get('numRechazos');
+        //const numRechazos = parseInt(sessionStorage.getItem("numRechazos"));
         
         if (numRechazos > 0) {
             setDeletedCardIndex(index); // Establecer el índice de la tarjeta eliminada
@@ -83,8 +93,8 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
 
     
     try {
-        
-        const totalEmparejamientos = parseInt(sessionStorage.getItem("totalEmparejamientos"));
+        const totalEmparejamientos =  parseInt(Cookies.get('totalEmparejamientos'));
+        //const totalEmparejamientos = parseInt(sessionStorage.getItem("totalEmparejamientos"));
         let totalEmparejamientosActualizados = totalEmparejamientos + 1;
         if (totalEmparejamientos === 4) {
             Swal.fire({
@@ -127,15 +137,17 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
         }
 
         else {
-            const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/insertarRegistros?usuarioPrincipalPK=${userPk}&tipoCoincidencia=${tipoCoincidencia}&usuarioCandidatoPK=${pkUsuarioCandidato}`);
-            sessionStorage.setItem('totalEmparejamientos',totalEmparejamientosActualizados );
+            const response = await axios.post(`http://localhost:3001/api/emparejamiento/insertarRegistros?usuarioPrincipalPK=${userPk}&tipoCoincidencia=${tipoCoincidencia}&usuarioCandidatoPK=${pkUsuarioCandidato}`);
+            Cookies.set('totalEmparejamientos', totalEmparejamientosActualizados, { expires: 1 });
+            //sessionStorage.setItem('totalEmparejamientos',totalEmparejamientosActualizados );
             // Realizar cualquier otra acción necesaria después de insertar el registro
         }
         if(tipoCoincidencia === "Aprendiz"){
             total_aprendizDisponible = total_aprendiz + 1;
             if(total_aprendizDisponible == 2){
                 banderaDisponible = 1;
-                sessionStorage.setItem('bandera',banderaDisponible );
+                Cookies.set('bandera', banderaDisponible, { expires: 1 });
+                //sessionStorage.setItem('bandera',banderaDisponible );
             }
     
         }else if(tipoCoincidencia === "Mentor"){
@@ -144,7 +156,9 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
             console.log(total_enseñanteDisponible);
             if(total_enseñanteDisponible == 2){
                 banderaDisponible = 2;
-                sessionStorage.setItem('bandera',banderaDisponible );
+                Cookies.set('bandera', banderaDisponible, { expires: 1 });
+                
+                //sessionStorage.setItem('bandera',banderaDisponible );
                 
             }
         }
@@ -156,7 +170,7 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
 const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
     try {let banderaColisiones = 0;
             console.log("entre en verificarColision");
-            const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/verificarColision?pkUsuarioCandidato=${pkUsuarioCandidato}&tipoCoincidencia=${tipoCoincidencia}`);
+            const response = await axios.post(`http://localhost:3001/api/emparejamiento/verificarColision?pkUsuarioCandidato=${pkUsuarioCandidato}&tipoCoincidencia=${tipoCoincidencia}`);
             
             console.log("Esta es la respuesta de la colision");
             console.log(response.data);
@@ -173,7 +187,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
 
     const obtenerStrikes = async () => {
         try {
-            const response = await axios.get(`https://201.124.154.2:3001/api/emparejamiento/obtenerStrikes?userPk=${userPk}`);
+            const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerStrikes?userPk=${userPk}`);
             const strikes = response.data[0].REPORTADO;
             return strikes;
         } catch (error) {
@@ -197,9 +211,11 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
 
     const Rechazos = async () => {
         try {
-            const response = await axios.get(`https://201.124.154.2:3001/api/emparejamiento/obtenerRechazos?userPk=${userPk}`);
+            const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerRechazos?userPk=${userPk}`);
             const rechazos = response.data[0].RECHAZOS;
-            sessionStorage.setItem('numRechazos', JSON.stringify(rechazos));
+            Cookies.set('numRechazos', JSON.stringify(rechazos), { expires: 1 });
+            
+            //sessionStorage.setItem('numRechazos', JSON.stringify(rechazos));
         } catch (error) {
             console.error('Error al obtener la cantidad de rechazos:', error);
         }
@@ -228,7 +244,8 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
 //FUNCION PARA ACTUALIZAR EL NUMERO DE RECHAZOS EN EL CAMPO DE TEXTO
     const actualizarRechazos = async () => {
         try {
-            const numRechazos = parseInt(sessionStorage.getItem("numRechazos"));
+            const numRechazos = Cookies.get('numRechazos');
+            //const numRechazos = parseInt(sessionStorage.getItem("numRechazos"));
     
             if (numRechazos === 0) {
                 Swal.fire({
@@ -238,11 +255,12 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
                     confirmButtonText: 'Aceptar'
                 });
             } else {
-                const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/actualizarRechazos?numrechazos=${numRechazos}&userPk=${userPk}`);
+                const response = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarRechazos?numrechazos=${numRechazos}&userPk=${userPk}`);
                 const rechazosDisponibles = response.data.rechazosdisponibles;
     
-                // Actualizar el valor de rechazos disponibles en sessionStorage
-                sessionStorage.setItem('numRechazos', JSON.stringify(rechazosDisponibles));
+                // Actualizar el valor de rechazos disponibles en numRechazos
+                Cookies.set('numRechazos', JSON.stringify(rechazosDisponibles), { expires: 1 });
+                //sessionStorage.setItem('numRechazos', JSON.stringify(rechazosDisponibles));
             }
         } catch (error) {
             console.error('Error al realizar la actualización de rechazos', error);
@@ -251,7 +269,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
 
     const obtenerAlumnosEmparejamiento = async () => {
         try{
-            const response = await axios.post(`https://201.124.154.2:3001/api/algoritmo/obtenerUsuarioPrincipal?pkUsuarioPrincipal=${userPk}&banderaRol=${bandera}`);
+            const response = await axios.post(`http://localhost:3001/api/algoritmo/obtenerUsuarioPrincipal?pkUsuarioPrincipal=${userPk}&banderaRol=${bandera}`);
             setDatosAlumno(response.data);
         }catch(error){
             console.error('Error al obtener los datos de los alumnos emparejados', error);
@@ -261,7 +279,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
 
     const actualizarEmparejamientosDisponibles = async () => {
         try{
-            const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/actualizarEmparejamientosDisponibles?userPk=${userPk}`);
+            const response = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarEmparejamientosDisponibles?userPk=${userPk}`);
             const emparejamientos_disponibles=response.data.emparejamientosdisponibles;
         }catch(error){
             console.error('Error al actualizar los emparejamientos disponibles', error);
@@ -293,8 +311,8 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
                     <div style={{ backgroundColor: 'white' }}>
                         <p>Resultados del emparejamiento</p>
                         <div class="row">
-                        <div class="col">Rechazos disponibles:  {sessionStorage.getItem('numRechazos')}</div>
-                        <div class="col">Emparejamientos que tienes:  {sessionStorage.getItem('totalEmparejamientos')}</div>
+                        <div class="col">Rechazos disponibles:  {  Cookies.get('numRechazos')  /*sessionStorage.getItem('numRechazos')*/}</div>
+                        <div class="col">Emparejamientos que tienes:  { Cookies.get('totalEmparejamientos') /*sessionStorage.getItem('totalEmparejamientos')*/}</div>
                         </div>
                         {datosAlumno.map((alumno, index) => (
                             <Card key={index} className={index === deletedCardIndex ? 'fadeOutAnimation' : ''}>

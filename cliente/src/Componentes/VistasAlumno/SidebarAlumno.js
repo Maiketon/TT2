@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Button,Col,Row } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import Cookies from 'js-cookie';
 
 
 import perfil_generico from './Utils/perfil.png'
@@ -24,12 +25,20 @@ import axios from "axios";
 
 const SidebarAlumno = ({ setVista }) => {
     const navigate = useNavigate();
-    const userPk = sessionStorage.getItem('userPk');
+    const userPk = Cookies.get('userPk');
+    //const userPk = sessionStorage.getItem('userPk');
     //Cerrar Sesion//
+    const limpiarCookies = () => {
+        const cookies = Cookies.get(); // Obtener todas las cookies
+        for (const cookie in cookies) {
+          Cookies.remove(cookie);
+        }
+      };
     const handleLogout = () => {
         // Aquí podrías agregar cualquier lógica relacionada con cerrar sesión, como limpiar el almacenamiento local o enviar una solicitud al servidor
         // Después de cerrar sesión, redirige al usuario a la vista principal
-        sessionStorage.clear();
+        //sessionStorage.clear();
+        limpiarCookies();
         navigate("/"); // Utiliza navigate para redireccionar en React Router v6
       };
       //MEDALLAS//

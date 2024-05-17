@@ -4,18 +4,29 @@ import { OverlayTrigger, Popover } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
 import axios from "axios";
+import Cookies from 'js-cookie';
 
 const Configuracion = () => {
     const navigate = useNavigate();
     const [correo, setCorreo] = useState("");
     const [pswdactual, setPswActual] = useState("");
     const [pswdnuevo, setNewPswd] = useState("");
-    const userPk = sessionStorage.getItem("userPk");
+    const userPk = Cookies.get('userPk');
+    //const userPk = sessionStorage.getItem("userPk");
     //Cerrar Sesion//
+
+    // Limpiar todas las cookies
+    const limpiarCookies = () => {
+        const cookies = Cookies.get(); // Obtener todas las cookies
+        for (const cookie in cookies) {
+          Cookies.remove(cookie);
+        }
+      };
     const handleLogout = () => {
         // Aquí podrías agregar cualquier lógica relacionada con cerrar sesión, como limpiar el almacenamiento local o enviar una solicitud al servidor
         // Después de cerrar sesión, redirige al usuario a la vista principal
-        sessionStorage.clear();
+        limpiarCookies();
+        //sessionStorage.clear();
         navigate("/"); // Utiliza navigate para redireccionar en React Router v6
       };
     // Función para mostrar el SweetAlert de confirmación al eliminar cuenta
