@@ -121,7 +121,7 @@ if (!validarComplejidadContraseña(usuario.password)) {
       };
 
       const response = await axios.post('https://201.124.154.2:3001/api/alumnos/registro', datosUsuario);
-      if (response.status ==201)
+      if (response.status ===201)
         {
           setUsuario(estadoInicial);
       Swal.fire(
@@ -130,7 +130,7 @@ if (!validarComplejidadContraseña(usuario.password)) {
           'success'
       );
         }
-        else if ( response.status==200)
+        else if ( response.status===200)
           {
             setUsuario(estadoInicial);
       Swal.fire(

@@ -9,12 +9,11 @@ import GraficaEmparejamientosT from './GraficaEmparejamientosT'; // ESTA PARA ME
 import GraficaSanciones from './GraficaSanciones';
 import './Css/EstilosGraficas.css';
 import './Css/Estadisticas.css';
-import {useCarga} from "./ContextoCarga";
+// import {useCarga} from "./ContextoCarga";
 
 const Estadisticas = () => {
 
   const [vista, setGrafica] = useState('');
-  const {setEstaCargando} = useCarga();
 
 
   return (

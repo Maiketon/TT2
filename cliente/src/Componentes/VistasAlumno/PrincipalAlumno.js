@@ -13,6 +13,7 @@ import Cookies from 'js-cookie';
 const VistaPrincipal = () => {
   const [vista, setVista] = useState('inicio');
   const [Rol, setRol] = useState([]);
+  console.log(Rol);
   const userPk = Cookies.get('userPk');
   //const userPk = sessionStorage.getItem('userPk');
 

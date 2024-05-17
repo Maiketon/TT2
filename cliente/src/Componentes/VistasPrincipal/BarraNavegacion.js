@@ -6,20 +6,20 @@ import './Css/Modales.css';
 import { Navbar, NavDropdown ,Nav, Container, Button, Modal } from 'react-bootstrap';
 const BarraNavegacion = ({ setVista }) => 
 {
-    const pdfFiles = {
-        "UA C\u00E1lculo": "calculo_ISC2020.pdf",
-        "UA An\u00E1lisis Vectorial": "analisisVectorial_ISC2020.pdf",
-        "UA Matem\u00E1ticas Discretas" : "matematicasDiscretas_ISC2020.pdf",
-        "UA Comunicaci\u00F3n Oral y Escrita": "comunicacionOralEscrita_ISC2020.pdf",
-        "UA Fundamentos de Programaci\u00F3n": "fundamentosProgramacion_ISC2020.pdf",
-        "UA \u00C1lgebra Lineal": "algebraLineal_ISC2020.pdf",
-        "UA C\u00E1lculo Aplicado": "calculoAplicado_ISC2020.pdf",
-        "UA Mec\u00E1nica y Electromagnetismo": "mecanicaElectromagnetismo_ISC2020.pdf",
-        "UA Ingenier\u00EDa, \u00C9tica y Sociedad": "ingenieriaEticaSociedad_ISC2020.pdf",
-        "UA Fundamentos Econ\u00F3micos": "fundamentosEconomicos_ISC2020.pdf",
-        "UA Algoritmos y Estructura de Datos": "algoritmosEstructurasDatos_ISC2020.pdf"
-        // ...continúa con los nombres de todos tus archivos
-      };
+    // const pdfFiles = {
+    //     "UA C\u00E1lculo": "calculo_ISC2020.pdf",
+    //     "UA An\u00E1lisis Vectorial": "analisisVectorial_ISC2020.pdf",
+    //     "UA Matem\u00E1ticas Discretas" : "matematicasDiscretas_ISC2020.pdf",
+    //     "UA Comunicaci\u00F3n Oral y Escrita": "comunicacionOralEscrita_ISC2020.pdf",
+    //     "UA Fundamentos de Programaci\u00F3n": "fundamentosProgramacion_ISC2020.pdf",
+    //     "UA \u00C1lgebra Lineal": "algebraLineal_ISC2020.pdf",
+    //     "UA C\u00E1lculo Aplicado": "calculoAplicado_ISC2020.pdf",
+    //     "UA Mec\u00E1nica y Electromagnetismo": "mecanicaElectromagnetismo_ISC2020.pdf",
+    //     "UA Ingenier\u00EDa, \u00C9tica y Sociedad": "ingenieriaEticaSociedad_ISC2020.pdf",
+    //     "UA Fundamentos Econ\u00F3micos": "fundamentosEconomicos_ISC2020.pdf",
+    //     "UA Algoritmos y Estructura de Datos": "algoritmosEstructurasDatos_ISC2020.pdf"
+    //     // ...continúa con los nombres de todos tus archivos
+    //   };
       const uaContents = {
         "UA C\u00E1lculo": {
             "Programa Sintético": "calculo_ISC2020.pdf",
@@ -78,18 +78,18 @@ const BarraNavegacion = ({ setVista }) =>
         }
         // Continúa hasta UA 11
     };
-    const descargarProgramSinteticoUA = (nombreMaterial, event)=> 
-    {
-        event.preventDefault();
+    // const descargarProgramSinteticoUA = (nombreMaterial, event)=> 
+    // {
+    //     event.preventDefault();
         
-        const link = document.createElement('a');
-        link.href= `${window.location.origin}/ProgramasSinteticosUAs/${nombreMaterial}`;
-        link.setAttribute('download',nombreMaterial);
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
+    //     const link = document.createElement('a');
+    //     link.href= `${window.location.origin}/ProgramasSinteticosUAs/${nombreMaterial}`;
+    //     link.setAttribute('download',nombreMaterial);
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     link.parentNode.removeChild(link);
 
-    }
+    // }
     //Logica para los submenus//
     //Logica para invocar la modal //
     const [showModal, setShowModal] = useState(false);

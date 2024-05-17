@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, MenuItem, Sidebar } from 'react-pro-sidebar';
+import { Menu, MenuItem } from 'react-pro-sidebar';
 import { useNavigate } from 'react-router-dom';
 import { Container, Button,Col,Row } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,7 +15,7 @@ import medalla_Escucha from './Utils/Escucha.png';
 import medalla_Comunicados from './Utils/Comunicados.png'
 import medalla_Conex from './Utils/Conexion.png';
 
-import DetalleEmparejamiento from './DetalleEmparejamiento'; 
+// import DetalleEmparejamiento from './DetalleEmparejamiento'; 
 
 
 
@@ -71,10 +71,10 @@ const SidebarAlumno = ({ setVista }) => {
       const medallaGranC = medallas.length > 0 ? medallas.find(medalla => medalla.FK_MEDALLA === 6) : null;
 
       // LOGICA PARA LAS PEQUEÑAS CARDS DE LOS EMPAREJAMIENTOS ACTIVOS DE MENTORIAS O AREAS DE OPORTUNIDAD //
-      const emparejamientos = [
-        { nombreUsuario: "Juan Pérez", iconoPerfil: "/path/to/juan.jpg", caducidad: "2024-12-31", token: "abcd1234", iconoEstado: "/path/to/estado1.jpg" },
-        // Otros emparejamientos
-    ];
+    //   const emparejamientos = [
+    //     { nombreUsuario: "Juan Pérez", iconoPerfil: "/path/to/juan.jpg", caducidad: "2024-12-31", token: "abcd1234", iconoEstado: "/path/to/estado1.jpg" },
+    //     // Otros emparejamientos
+    // ];
     return (
         <>
         <Container>

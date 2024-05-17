@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { PolarArea } from 'react-chartjs-2';
 import { useCarga } from "./ContextoCarga";
-import Chart from 'chart.js/auto';
+// import Chart from 'chart.js/auto';
 import axios from 'axios';
 import { jsPDF } from 'jspdf';
 import { Button, Container,Row } from 'react-bootstrap';  // Asumiendo que estás usando React-Bootstrap
