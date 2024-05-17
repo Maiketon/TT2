@@ -18,7 +18,7 @@ const VistaPrincipal = () => {
     const obtenerRol = async () => {
       try {
         console.log(userPk);
-        const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerRol?userPk=${userPk}`);
+        const response = await axios.get(`https://201.124.154.2:3001/api/emparejamiento/obtenerRol?userPk=${userPk}`);
         setRol(response.data);
         sessionStorage.setItem('bandera', JSON.stringify(response.data.bandera));
         sessionStorage.setItem('totalEmparejamientos', JSON.stringify(response.data.totalEmparejamientos));

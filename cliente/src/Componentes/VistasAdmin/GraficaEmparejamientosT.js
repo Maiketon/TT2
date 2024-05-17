@@ -27,7 +27,7 @@ const PolarAreaChart = () => {
         const fetchData = async () => {
             try {
                 setEstaCargando(true);
-                const response = await axios.get('http://localhost:3001/api/administracion/datosEmparejameintosT');
+                const response = await axios.get('https://201.124.154.2:3001/api/administracion/datosEmparejameintosT');
                 setChartData(prevData => ({
                     ...prevData,
                     datasets: [{

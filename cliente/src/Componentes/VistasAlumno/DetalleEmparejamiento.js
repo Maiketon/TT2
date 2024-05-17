@@ -74,7 +74,7 @@ const DetalleEmparejamiento = () => {
     const enviarModal = () => {
         setShowModal(false);
         const promedio = sumarRespuestas();
-        const actualizarCalificacion = axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${pkemparejamiento}&userPk=${userPk}&promedio=${promedio}`);
+        const actualizarCalificacion = axios.post(`https://201.124.154.2:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${pkemparejamiento}&userPk=${userPk}&promedio=${promedio}`);
     //pkemparejmaiento desde session
     //Pkuser desde session
     //ponga la calificacion en el lugar que le corresponde
@@ -93,7 +93,7 @@ const DetalleEmparejamiento = () => {
     useEffect(() => {
         const obtenerEmparejamientoMentor = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerMentor?userPk=${userPk}`);
+                const response = await axios.get(`https://201.124.154.2:3001/api/emparejamiento/obtenerMentor?userPk=${userPk}`);
                 setMentor(response.data);
                 setPkaValidarMentor(response.data);
             } catch (error) {
@@ -106,7 +106,7 @@ const DetalleEmparejamiento = () => {
     useEffect(() => {
         const obtenerEmparejamientoAprendiz = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerAprendiz?userPk=${userPk}`);
+                const response = await axios.get(`https://201.124.154.2:3001/api/emparejamiento/obtenerAprendiz?userPk=${userPk}`);
                 setAprendiz(response.data);
                 setPkaValidarAprendiz(response.data);
             } catch (error) {
@@ -122,7 +122,7 @@ const DetalleEmparejamiento = () => {
                 const nuevasBanderas = [];
                 for (const usuario of PKaValidarMentor) {
                     const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuario;
-                    const response = await axios.post(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                    const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                     nuevasBanderas.push(response.data);
                 }
                 setBanderaValidacionMentor(nuevasBanderas);
@@ -139,7 +139,7 @@ const DetalleEmparejamiento = () => {
                 const nuevasBanderas = [];
                 for (const usuario of PKaValidarAprendiz) {
                     const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuario;
-                    const response = await axios.post(`http://localhost:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                    const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                     nuevasBanderas.push(response.data);
                 }
                 setBanderaValidacionAprendiz(nuevasBanderas);
@@ -152,7 +152,7 @@ const DetalleEmparejamiento = () => {
 
     const handleActivarEmparejamiento = async (PK_EMPAREJAMIENTO) => {
         try {
-            const response = await axios.post(`http://localhost:3001/api/emparejamiento/updateEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+            const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/updateEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
             console.log('Emparejamiento activado exitosamente:', response.data);
             await Swal.fire({
                 icon: 'success',
@@ -168,7 +168,7 @@ const DetalleEmparejamiento = () => {
     const handleRechazarEmparejamiento = async (PK_EMPAREJAMIENTO) => {
         try {           
             // Aqui primero se hacec una consulta para obtener el estado del emparejamiento, si esta pendiente o activo, dependiendo, se hace el rechazo o se finaliza el emparejamiento
-            const response = await axios.post(`http://localhost:3001/api/emparejamiento/saberEstado?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+            const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/saberEstado?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
            
             if(response.data == 5){
                 console.log("dio 5");
@@ -179,7 +179,7 @@ const DetalleEmparejamiento = () => {
                 });
             }else if (response.data == 3) {
                 console.log("dio 3");
-                await axios.post(`http://localhost:3001/api/emparejamiento/preFinalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                await axios.post(`https://201.124.154.2:3001/api/emparejamiento/preFinalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
 
                 let promedio = abrirModal(PK_EMPAREJAMIENTO); // Abre el modal y obtiene el promedio
                 console.log("La suma de respuestas es:", promedio);
@@ -187,12 +187,12 @@ const DetalleEmparejamiento = () => {
                 console.log("Soy una consulta y recibo este parametro", promedio);
 
                 //axios hacer consulta del pk y promedio
-                //axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&CALIFICACION=${promedio}`);
+                //axios.post(`https://201.124.154.2:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&CALIFICACION=${promedio}`);
                //update en la base con la calificacion where  // Espera hasta que se resuelva abrirModal
                // console.log(calif);
             }else if(response.data == 1){
                 console.log("dio 1");
-                await axios.post(`http://localhost:3001/api/emparejamiento/rechazarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                await axios.post(`https://201.124.154.2:3001/api/emparejamiento/rechazarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
             }
         } catch (error) {
            

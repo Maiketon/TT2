@@ -31,7 +31,7 @@ const PieChart = () => {
 
     useEffect(() => {
         setEstaCargando(true);
-        axios.get('http://localhost:3001/api/administracion/datosSanciones')
+        axios.get('https://201.124.154.2:3001/api/administracion/datosSanciones')
             .then(response => {
                 const data = [
                     response.data.sanciones0,

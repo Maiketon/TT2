@@ -19,7 +19,7 @@ const RegistroUsuarios = () => {
   useEffect(() => {
     const fetchEstatus = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/administracion/obtenerEstatus');
+        const response = await axios.get('https://201.124.154.2:3001/api/administracion/obtenerEstatus');
         setEstatus(response.data);
       } catch (error) {
         console.error('Error al obtener los estatus', error);
@@ -28,7 +28,7 @@ const RegistroUsuarios = () => {
 
     const fetchMedallas = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/administracion/obtenerMedallas');
+        const response = await axios.get('https://201.124.154.2:3001/api/administracion/obtenerMedallas');
         setMedallas(response.data);
       } catch (error) {
         console.error('Error al obtener las medallas', error);
@@ -93,7 +93,7 @@ const RegistroUsuarios = () => {
     };
     try {
       setEstaCargando(true);
-      const response = await axios.post('http://localhost:3001/api/administracion/buscarFiltrado', informacionBuscar);
+      const response = await axios.post('https://201.124.154.2:3001/api/administracion/buscarFiltrado', informacionBuscar);
       setUsuarios(Array.isArray(response.data.data) ? response.data.data : []);
       console.log(response.data);
       setEstaCargando(false);
