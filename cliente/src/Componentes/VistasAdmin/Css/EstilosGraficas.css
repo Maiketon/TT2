@@ -1,3 +1,19 @@
+:root {
+  --azul-oceano: #007aa3;
+  --azul-profundo: #00475f;
+  --azul-cielo-hover: #0073a0;
+  --azul-armonia : #3c6dae;
+  --negro-absoluto: #000000;
+  --gris-oscuro: #333333;
+  --gris-tenue:#cbc7c7;
+  --Brighter-Green: #76B947;
+  --Soft-Violet: #6A4C93;
+  --Soft-Violet-Hover:#8065a6;
+  --danger-color: #dc3545;
+  --light-color: #f8f9fa;
+  --grey-color: #a9acb0;
+  --dark-color: #343a40;
+  }
 .contendedor-grafica {
   width: 100%; 
   max-width: 680px;
@@ -5,4 +21,5 @@
   padding: 20px;
   display: flex;
   justify-content: center;
+  background-color: var(--gris-tenue);
 }

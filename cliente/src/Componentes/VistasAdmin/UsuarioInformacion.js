@@ -3,6 +3,7 @@ import { Row, Col, Button, Image , Container} from 'react-bootstrap';
 import { BsStarFill, BsStar } from 'react-icons/bs';
 import Avatar1 from "./Utils/Avatar1Login.jpg"; // Asegúrate de tener la imagen en tu proyecto
 import axios from 'axios';
+import './Css/PrincipalAdm.css';
 
 const UsuarioComponent = ({ usuarios }) => {
     const [materias, setMaterias] = useState([]);
@@ -51,8 +52,8 @@ console.log("Materias disponibles:", materias.map(mat => mat.PK_MATERIA));
     return (
         <>
             {usuarios.map((usuario, index) => (
-                <div key={index}>
-                    <Row>
+                <Container className='principal' key={index}>
+                    <Row >
                         <Col className="border">Nombre de usuario: {usuario.NOMBRE} {usuario.APELLIDO_PATERNO} {usuario.APELLIDO_MATERNO} Identificador: {usuario.PK_USUARIO}</Col>
                     </Row>
                     <Row className="border">
@@ -103,7 +104,7 @@ console.log("Materias disponibles:", materias.map(mat => mat.PK_MATERIA));
                         </Col>
                     </Row>
                     </Row>
-                </div>
+                </Container>
             ))}
         </>
     );

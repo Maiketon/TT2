@@ -31,11 +31,8 @@ const BarraNavegacion = ({ setVista }) => {
         <button className="logo-button">
           <img src={logo} alt="Logo" />
         </button>
-        {/* Botón de Cerrar Sesión */}
         <button className="cerrar-sesion" onClick={handleLogout}>Cerrar Sesión</button>
-        {/* Título Administrador */}
         <h3 className="titulo">Administrador</h3>
-        {/* Lista */}
         <div className="botones">
           <button className="elemento" onClick={() => setVista('registro')}>
             Registros de usuarios

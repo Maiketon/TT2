@@ -9,12 +9,27 @@
     --Brighter-Green: #76B947;
     --Soft-Violet: #6A4C93;
     --Soft-Violet-Hover:#8065a6;
+    --Soft-Violet-F:#533c72;
     --danger-color: #dc3545;
     --light-color: #f8f9fa;
     --grey-color: #a9acb0;
     --dark-color: #343a40;
     }
-.principal
-{
+
+    
+.container-bg {
     background-color: var(--Soft-Violet-Hover);
+    min-height: 100vh; /* Asegura que cubra toda la pantalla */
+    padding: 20px;
+    color: white; /* Ajusta el color del texto */
+}
+
+.card-bg {
+    background-color: var(--Soft-Violet-Hover);
+    color: white; /* Ajusta el color del texto */
+}
+
+.button-bg {
+    background-color: var(--Soft-Violet-F);
+    color: white; /* Ajusta el color del texto */
 }

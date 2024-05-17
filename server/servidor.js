@@ -53,6 +53,6 @@ app.use((err, req, res, next) => {
 const PORT = 3001;
 app.listen (PORT, () =>
 {
-    console.log("Servidor corriendo en el puerto ${PORT}");
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
 }
 );

@@ -101,106 +101,120 @@ const RegistroUsuarios = () => {
       console.error('Error al realizar la búsqueda', error);
     }
   };
+
+  const containerStyle = {
+    backgroundColor: '#8065a6', // Color morado
+    minHeight: '100vh', // Asegura que cubra toda la pantalla
+    padding: '20px', // Opcional, para espaciado interno
+    color: 'white' // Ajusta el color del texto
+};
+
+const tituloStyle = {
+    color: 'white' // Ajusta el color del título
+};
+
+const formLabelStyle = {
+    color: 'white' // Ajusta el color de las etiquetas de los formularios
+};
   
 
   return (
     <>
-      <Container fluid>
-        <Container className="mt-4">
-          <h2 className='titulo'>Filtrar Usuarios</h2>
-          <Form>
-            <Row>
-              <Col>
-                <Form.Group controlId="estatusAlumno">
-                  <Form.Label className="text-md-right text-start form-label-pe-none titulo">Estatus usuario</Form.Label>
-                  <Form.Select name='estatusAlumno' value={selectedEstatus} onChange={CambioEstatus}>
-                    <option value="0">GLOBAL</option>
-                    {estatus.map((statusItem) => (
-                      <option key={statusItem.PK_ESTATUS} value={statusItem.PK_ESTATUS}>
-                        {statusItem.NOMBRE_ESTADO}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
-              </Col>
+       <Container style={containerStyle} fluid>
+            <Container className="mt-4" style={containerStyle}>
+                <h2 style={tituloStyle}>Filtrar Usuarios</h2>
+                <Form>
+                    <Row>
+                        <Col>
+                            <Form.Group controlId="estatusAlumno">
+                                <Form.Label style={formLabelStyle}>Estatus usuario</Form.Label>
+                                <Form.Select name='estatusAlumno' value={selectedEstatus} onChange={CambioEstatus}>
+                                    <option value="0">GLOBAL</option>
+                                    {estatus.map((statusItem) => (
+                                        <option key={statusItem.PK_ESTATUS} value={statusItem.PK_ESTATUS}>
+                                            {statusItem.NOMBRE_ESTADO}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
 
-              <Col>
-                <Form.Group controlId="pkusuario">
-                  <Form.Label className="text-md-right text-start form-label-pe-none titulo">Nombre:</Form.Label>
-                  <Form.Control name='pkusuario' type="text" placeholder="Ingrese el ID del alumno" value={pkUsuario} onChange={e => setPkUsuario(e.target.value)} />
-                </Form.Group>
-              </Col>
+                        <Col>
+                            <Form.Group controlId="pkusuario">
+                                <Form.Label style={formLabelStyle}>Nombre:</Form.Label>
+                                <Form.Control name='pkusuario' type="text" placeholder="Ingrese el ID del alumno" value={pkUsuario} onChange={e => setPkUsuario(e.target.value)} />
+                            </Form.Group>
+                        </Col>
 
-              <Col>
-                <Form.Group  controlId="carrera">
-                  <Form.Label className="text-md-right text-start form-label-pe-none titulo">Carrera</Form.Label>
-                  <Form.Select name='carrera' value={carrera} onChange={e => setCarrera(e.target.value)}>
-                    <option value={1}>ISC</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-            </Row>
+                        <Col>
+                            <Form.Group controlId="carrera">
+                                <Form.Label style={formLabelStyle}>Carrera</Form.Label>
+                                <Form.Select name='carrera' value={carrera} onChange={e => setCarrera(e.target.value)}>
+                                    <option value={1}>ISC</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                    </Row>
 
-            <Row>
-              <Col>
-                <Form.Group controlId="semestre">
-                  <Form.Label className="text-md-right text-start form-label-pe-none titulo">Semestre</Form.Label>
-                  <Form.Select name='semestre' value={semestre} onChange={e => setSemestre(e.target.value)} disabled={disabledStatuses.semestre}>
-                    <option value={0}>TODOS LOS SEMESTRES</option>
-                    <option value={1}>PRIMER SEMESTRE</option>
-                    <option value={2}>SEGUNDO SEMESTRE</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
+                    <Row>
+                        <Col>
+                            <Form.Group controlId="semestre">
+                                <Form.Label style={formLabelStyle}>Semestre</Form.Label>
+                                <Form.Select name='semestre' value={semestre} onChange={e => setSemestre(e.target.value)} disabled={disabledStatuses.semestre}>
+                                    <option value={0}>TODOS LOS SEMESTRES</option>
+                                    <option value={1}>PRIMER SEMESTRE</option>
+                                    <option value={2}>SEGUNDO SEMESTRE</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
 
-              <Col>
-                <Form.Group  controlId="calificacion">
-                  <Form.Label className="text-md-right text-start form-label-pe-none titulo">Calificación</Form.Label>
-                  <Form.Select name='calificacion' value={calificacion} onChange={e => setCalificacion(e.target.value)} disabled={disabledStatuses.calificacion}>
-                    <option value={0}>TODAS LAS CALIFICACIONES</option>
-                    <option value={5}>5</option>
-                    <option value={4}>4</option>
-                    <option value={3}>3</option>
-                    <option value={2}>2</option>
-                    <option value={1}>1</option>
-                  </Form.Select
-                  ></Form.Group>
-              </Col>
+                        <Col>
+                            <Form.Group controlId="calificacion">
+                                <Form.Label style={formLabelStyle}>Calificación</Form.Label>
+                                <Form.Select name='calificacion' value={calificacion} onChange={e => setCalificacion(e.target.value)} disabled={disabledStatuses.calificacion}>
+                                    <option value={0}>TODAS LAS CALIFICACIONES</option>
+                                    <option value={5}>5</option>
+                                    <option value={4}>4</option>
+                                    <option value={3}>3</option>
+                                    <option value={2}>2</option>
+                                    <option value={1}>1</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
 
-              <Col>
-                <Form.Group controlId="medallas">
-                  <Form.Label className="text-md-right text-start form-label-pe-none titulo">Medallas</Form.Label>
-                  <Form.Select name='medallas'value={medallaEs} onChange={e => setMedallaEs(e.target.value)} disabled={disabledStatuses.medallas}>
-                    <option value={0}>SIN ESPCIFICAR</option>
-                    {medallas.map((medallaItem) => (
-                      <option key={medallaItem.PK_MEDALLAS} value={medallaItem.PK_MEDALLAS}>
-                        {medallaItem.NOMBRE_MEDALLA}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-            </Row>
-            
-            <Container>
-              <Row>
-                <Col as={Row}>
-                <Button variant="primary" type="button" onClick={buscar}>Buscar</Button>
+                        <Col>
+                            <Form.Group controlId="medallas">
+                                <Form.Label style={formLabelStyle}>Medallas</Form.Label>
+                                <Form.Select name='medallas' value={medallaEs} onChange={e => setMedallaEs(e.target.value)} disabled={disabledStatuses.medallas}>
+                                    <option value={0}>SIN ESPCIFICAR</option>
+                                    {medallas.map((medallaItem) => (
+                                        <option key={medallaItem.PK_MEDALLAS} value={medallaItem.PK_MEDALLAS}>
+                                            {medallaItem.NOMBRE_MEDALLA}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                    </Row>
 
-                </Col>
-                <Col as={Row}>
-                  <Button variant="danger" type="button" onClick={limpiar}>Limpiar</Button>
-                </Col>
-              </Row>
+                    <Container>
+                        <Row>
+                            <Col as={Row}>
+                                <Button variant="primary" type="button" onClick={buscar}>Buscar</Button>
+                            </Col>
+                            <Col as={Row}>
+                                <Button variant="danger" type="button" onClick={limpiar}>Limpiar</Button>
+                            </Col>
+                        </Row>
+                    </Container>
+
+                    <Container>
+                        <UsuarioComponent usuarios={usuarios} />
+                    </Container>
+
+                </Form>
             </Container>
-
-            <Container>
-              <UsuarioComponent usuarios={usuarios} />
-            </Container>
-
-          </Form>
         </Container>
-      </Container>
     </>
   );
 }

@@ -1,0 +1,44 @@
+:root {
+    --azul-oceano: #007aa3;
+    --azul-profundo: #00475f;
+    --azul-cielo-hover: #0073a0;
+    --azul-armonia : #3c6dae;
+    --negro-absoluto: #000000;
+    --gris-oscuro: #333333;
+    --gris-tenue:#f5ecec;
+    --Brighter-Green: #76B947;
+    --Soft-Violet: #6A4C93;
+    --Soft-Violet-Hover:#8065a6;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --grey-color: #a9acb0;
+    --dark-color: #343a40;
+    }
+.principal {
+    background-color:var(--Soft-Violet-Hover); /* Color morado */
+    min-height: 100vh; /* Asegura que cubra toda la pantalla */
+    color: white; /* Ajusta el color del texto si es necesario */
+}
+
+.titulo {
+    color: white; /* Ajusta el color del título */
+}
+
+.form-label-pe-none {
+    color: white; /* Ajusta el color de las etiquetas de los formularios */
+}
+
+
+.titulo, .form-label-pe-none {
+    color: white; /* Ajusta el color del texto si es necesario */
+}
+
+/* Asegurémonos de que los formularios y otros contenedores también tengan el fondo morado */
+.container-fluid, .container, .form-group, .row, .col {
+    background-color: #6a1b9a !important; /* Color morado */
+    color: white; /* Ajusta el color del texto si es necesario */
+}
+
+button {
+    margin-top: 10px;
+}
