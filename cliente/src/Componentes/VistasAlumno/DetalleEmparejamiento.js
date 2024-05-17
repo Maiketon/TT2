@@ -6,10 +6,12 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { Await } from "react-router";
 
 
 const DetalleEmparejamiento = () => {
     const userPk = sessionStorage.getItem("userPk");
+    const pkemparejamiento = sessionStorage.getItem("pkEmparejamiento");
     const [Mentor, setMentor] = useState([]);
     const [Aprendiz, setAprendiz] = useState([]);
     const [PKaValidarMentor, setPkaValidarMentor] = useState([]);
@@ -17,7 +19,6 @@ const DetalleEmparejamiento = () => {
     const [banderaValidacionMentor, setBanderaValidacionMentor] = useState(null);
     const [banderaValidacionAprendiz, setBanderaValidacionAprendiz] = useState(null);
     const [showModal, setShowModal] = useState(false);
-     //const [rating, setRating] = useState('');
      const [respuesta1, setRespuesta1] = useState('');
      const [respuesta2, setRespuesta2] = useState('');
      const [respuesta3, setRespuesta3] = useState('');
@@ -64,15 +65,17 @@ const DetalleEmparejamiento = () => {
 
 
 
-     const abrirModal = () => {
+     const abrirModal = (PK_EMPAREJAMIENTO) => {
         setShowModal(true);
+        console.log(PK_EMPAREJAMIENTO+"aqui");
+        sessionStorage.setItem('pkEmparejamiento', JSON.stringify(PK_EMPAREJAMIENTO));
     };
     
     const enviarModal = () => {
         setShowModal(false);
         const promedio = sumarRespuestas();
-        
-        //pkemparejmaiento desde session
+        const actualizarCalificacion = axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${pkemparejamiento}&userPk=${userPk}&promedio=${promedio}`);
+    //pkemparejmaiento desde session
     //Pkuser desde session
     //ponga la calificacion en el lugar que le corresponde
     //verificar si ya estan las 2 calificaciones, si si, updatear a estado 3, si no, dejarlo asi
@@ -178,7 +181,7 @@ const DetalleEmparejamiento = () => {
                 console.log("dio 3");
                 await axios.post(`http://localhost:3001/api/emparejamiento/preFinalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
 
-                const promedio = abrirModal(); // Abre el modal y obtiene el promedio
+                let promedio = abrirModal(PK_EMPAREJAMIENTO); // Abre el modal y obtiene el promedio
                 console.log("La suma de respuestas es:", promedio);
 
                 console.log("Soy una consulta y recibo este parametro", promedio);

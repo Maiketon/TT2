@@ -322,6 +322,25 @@ WHERE
         }
     }
 
+    async actualizarCalificacion(pkemparejamiento,userPk,promedio){
+        const sql = `
+            UPDATE emparejamiento
+            SET 
+                CALIFICACION_USUARIO1 = CASE WHEN FK_USUARIO1 = ? THEN ? ELSE CALIFICACION_USUARIO1 END,
+                CALIFICACION_USUARIO2 = CASE WHEN FK_USUARIO2 = ? THEN ? ELSE CALIFICACION_USUARIO2 END
+            WHERE 
+                PK_EMPAREJAMIENTO = ?
+            
+        `;
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk,promedio,userPk,promedio,pkemparejamiento]);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
 }
 
 
