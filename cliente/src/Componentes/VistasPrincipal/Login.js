@@ -30,12 +30,12 @@ const FormLogin = ()=>
     //       setEstaCargando(false);
     //     }, 3000); // Ajusta el tiempo según tus necesidades
     //   }, [setEstaCargando]);
-    const handleClick = async () => {
-        setEstaCargando(true);
-        // Simula una operación asíncrona como una petición de red
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Espera 2 segundos
-        setEstaCargando(false);
-      };
+    // const handleClick = async () => {
+    //     setEstaCargando(true);
+    //     // Simula una operación asíncrona como una petición de red
+    //     await new Promise(resolve => setTimeout(resolve, 2000)); // Espera 2 segundos
+    //     setEstaCargando(false);
+    //   };
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -45,6 +45,11 @@ const FormLogin = ()=>
 
     const GuardarDatosHook = (e) => {
       const { name, value } = e.target;
+      if (password ==='')
+        {
+          alert("Falta su password");
+          return;
+        }
       switch (name) {
           case 'email':
               setCorreo(value.toLowerCase().slice(0, 55));
@@ -65,8 +70,8 @@ const FormLogin = ()=>
 
     const navigate = useNavigate(); // Utiliza useNavigate para redireccionar en React Router v6
     // Variables y funciones para manejar el modal de bienvenida al administrador
-    const [modalAdmin, setModalAdmin] = useState(false);
-    const [modalAlumno, setModalAlumno] = useState(false);
+    // const [modalAdmin, setModalAdmin] = useState(false);
+    // const [modalAlumno, setModalAlumno] = useState(false);
     const [modalParaverificar, setModalVerificacion] = useState(false);
     const [modalVerificado, setModalVerificado] = useState(false);
     const [datosUsuario, setDatos] = useState({username: '',password: ''})
