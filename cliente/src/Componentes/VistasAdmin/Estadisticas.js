@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Container, Button,Card, Row, Col} from 'react-bootstrap';
 
 import GraficaUsoA from './GraficaUsoAplicacion';
