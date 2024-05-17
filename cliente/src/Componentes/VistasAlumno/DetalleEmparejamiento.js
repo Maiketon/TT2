@@ -76,15 +76,26 @@ const DetalleEmparejamiento = () => {
         //sessionStorage.setItem('pkEmparejamiento', JSON.stringify(PK_EMPAREJAMIENTO));
     };
     
-    const enviarModal = () => {
-        setShowModal(false);
-        const promedio = sumarRespuestas();
-        const actualizarCalificacion = axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${pkemparejamiento}&userPk=${userPk}&promedio=${promedio}`);
-    //pkemparejmaiento desde session
-    //Pkuser desde session
-    //ponga la calificacion en el lugar que le corresponde (consulta)
-    //verificar si ya estan las 2 calificaciones, si si, updatear a estado 3, si no, dejarlo asi (consulta)
+    const enviarModal = async () => { 
+        try {
+            setShowModal(false);
+            const promedio = sumarRespuestas();
+            const pkemparejamiento = Cookies.get('pkEmparejamiento');
+            const userPk = Cookies.get('userPk');
+            console.log(pkemparejamiento);
+            console.log(userPk);
+            console.log(promedio);
+            console.log("aqui");
+            console.log("Aqui empieza el insertar califiacion");
+            const response = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${pkemparejamiento}&userPk=${userPk}&promedio=${promedio}`);
+            console.log(response);
+            // Verificar la respuesta para asegurarse de que la actualización fue exitosa
+            window.location.reload();
+        } catch (error) {
+            console.error("Error al enviar la calificación:", error);
+        }
     };
+     
     
     
     

@@ -348,13 +348,13 @@ WHERE
         CASE 
             WHEN FK_USUARIO1 = ? THEN
                 CASE 
-                    WHEN CALIFICACION_USUARIO2 IS NOT NULL THEN 5
-                    ELSE 4
+                    WHEN CALIFICACION_USUARIO2 IS NOT NULL THEN 4
+                    ELSE 5
                 END
             WHEN FK_USUARIO2 = ? THEN
                 CASE 
-                    WHEN CALIFICACION_USUARIO1 IS NOT NULL THEN 5
-                    ELSE 4
+                    WHEN CALIFICACION_USUARIO1 IS NOT NULL THEN 4
+                    ELSE 5
                 END
             ELSE 5
         END AS bandera

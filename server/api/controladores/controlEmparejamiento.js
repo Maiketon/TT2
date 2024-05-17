@@ -269,13 +269,18 @@ exports.preFinalizarEmparejamiento = async (req,res) => {
     }
 }
 
-exports.actualizarCalificacion = async(req,res) => {
-    const {pkemparejamiento,userPk,promedio} = req.body;
+exports.actualizarCalificacion = async (req, res) => {
+    const { PK_EMPAREJAMIENTO, userPk, promedio } = req.query;
     try {
-        response = await modeloEmparejamiento.actualizarCalificacion(pkemparejamiento,userPk,promedio);
+        console.log(PK_EMPAREJAMIENTO);
+        console.log(userPk);
+        console.log(promedio);
+        response = await modeloEmparejamiento.actualizarCalificacion(PK_EMPAREJAMIENTO, userPk, promedio);
+        console.log("Esta es la respuesta");
+        console.log(response);
         res.json(response);
     } catch (error) {
-        console.error('Error realizando la consulta:', err);
+        console.error('Error realizando la consulta:', error); // Aquí cambiamos err por error
         res.status(500).send('Error en el servidor al actualizar la calificacion del usuario');
     }
 }
