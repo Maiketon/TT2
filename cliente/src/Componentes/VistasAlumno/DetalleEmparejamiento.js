@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { Await } from "react-router";
+// import { Await } from "react-router";
 import Cookies from 'js-cookie';
 
 
