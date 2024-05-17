@@ -28,7 +28,7 @@ const Sanciones = () => {
 
     const removeUserFromList = (pkUsuario) => {
         setUsuariosReportados(prevUsuarios => prevUsuarios.filter(usuario => usuario.PK_USUARIO !== pkUsuario));
-        console.log('Usuario eliminado:', pkUsuario);  // Debugging para ver qué PK se está intentando eliminar
+        console.log('Usuario eliminado:', pkUsuario);
     };
 
     return (

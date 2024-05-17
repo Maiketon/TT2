@@ -16,7 +16,7 @@ const Sancion = ({ usuario, onRemoveUser }) => {
                 'Omitido',
                 'El reporte ha sido omitido.',
                 'success'
-            ).then(()=>{onRemoveUser(usuario.PK_REPORTE)});
+            ).then(()=>{onRemoveUser(usuario.PK_USUARIO)});
         }
     } catch (error) {
         console.error('Error al omitir el reporte del usuario', error);
@@ -24,7 +24,7 @@ const Sancion = ({ usuario, onRemoveUser }) => {
             'Error',
             'No se pudo omitir el reporte.',
             'error'
-        ).then(()=>{onRemoveUser(usuario.PK_REPORTE)});
+        ).then(()=>{onRemoveUser(usuario.PK_USUARIO)});
     }
 };
 const sancionar = async () => {

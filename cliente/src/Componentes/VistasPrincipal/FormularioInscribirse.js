@@ -85,6 +85,11 @@ const GuardarDatosHook = (e) => {
 }
 
 //Funcion evento asincrona que se encarga de realizar la minivalidacion del correo y enviar la petición al servidor//
+function validarComplejidadContraseña(contraseña) {
+  const tieneMayuscula = /[A-Z]/.test(contraseña);
+  const tieneCaracterEspecial = /[\W_]/.test(contraseña);
+  return tieneMayuscula && tieneCaracterEspecial;
+}
 
 const Guardar = async (e) => {
   e.preventDefault();
@@ -92,10 +97,17 @@ const Guardar = async (e) => {
 
   // Validación de contraseñas
   if (usuario.password !== usuario.confirmpassword) {
-      Swal.fire('Verificación Fallida', 'Las contraseñas no coinciden.', 'error');
-      setEstaCargando(false);
-      return;
-  }
+    Swal.fire('Verificación Fallida', 'Las contraseñas no coinciden.', 'error');
+    setEstaCargando(false);
+    return;
+}
+
+// Verificar si la contraseña cumple con los requisitos de complejidad
+if (!validarComplejidadContraseña(usuario.password)) {
+    Swal.fire('Verificación Fallida', 'La contraseña debe incluir al menos una letra mayúscula y un carácter especial.', 'error');
+    setEstaCargando(false);
+    return;
+}
 
   try {
       const datosUsuario = {

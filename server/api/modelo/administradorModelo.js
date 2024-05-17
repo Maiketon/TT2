@@ -322,11 +322,13 @@ class  modeloAdmin
             await promesadb.beginTransaction();
             
             await promesadb.query(`
-                UPDATE informacionusuario 
-                SET SANCIONES = SANCIONES + 1 
-                WHERE PK_USUARIO = ?`, 
-                [pkusuario]
-            );
+            UPDATE informacionusuario 
+            SET SANCIONES = SANCIONES + 1,
+                FK_ESTATUSUSUARIO = 5
+            WHERE PK_USUARIO = ?`, 
+            [pkusuario]
+        );
+        
             
             await promesadb.query(`
                 UPDATE reportesusuarios 

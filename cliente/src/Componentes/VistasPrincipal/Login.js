@@ -69,15 +69,35 @@ const FormLogin = ()=>
     const [modalParaverificar, setModalVerificacion] = useState(false);
     const [modalVerificado, setModalVerificado] = useState(false);
     const [datosUsuario, setDatos] = useState({username: '',password: ''})
-
     const inputChange = ({ target }) => {
-      const { name, value } = target
-
+      const { name, value } = target;
+      let newValue = value;
+  
+      // Si el campo es 'password', aplicar las restricciones necesarias
+      if (name === 'password') {
+          // Truncar si el valor excede los 8 caracteres
+          if (value.length > 8) {
+              newValue = value.slice(0, 8);
+          }
+  
+          // Verificar que la contraseña incluya al menos una letra mayúscula y un carácter especial
+          const hasUpperCase = /[A-Z]/.test(newValue);
+          const hasSpecialChar = /[\W_]/.test(newValue);
+  
+          if (!hasUpperCase || !hasSpecialChar) {
+              // Mostrar error o manejar como necesario
+              console.log("La contraseña debe incluir al menos una letra mayúscula y un carácter especial.");
+          }
+      }
+  
+      // Actualizar el estado con el nuevo valor
       setDatos({
-        ...datosUsuario,
-        [name]: value
-      })
-    }
+          ...datosUsuario,
+          [name]: newValue
+      });
+  };
+  
+    
     const enviarValores = () => {
       setEstaCargando(true);
       axios.post('http://localhost:3001/api/login/login', datosUsuario)
