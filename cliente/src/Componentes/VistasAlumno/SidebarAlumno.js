@@ -47,7 +47,7 @@ const SidebarAlumno = ({ setVista }) => {
       useEffect(() => {
         const fetchMedallas = async () => {
             try {
-                const response = await axios.get(`https://201.124.154.2:3001/api/alumnos/obtenerMedallas?pkUsuario=${userPk}`);
+                const response = await axios.get(`http://localhost:3001/api/alumnos/obtenerMedallas?pkUsuario=${userPk}`);
                 if (response.data && response.data.data) {
                     setMedallas(response.data.data);
                 } else {

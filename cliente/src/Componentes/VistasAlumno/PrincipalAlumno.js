@@ -20,11 +20,11 @@ const VistaPrincipal = () => {
     const obtenerRol = async () => {
       try {
         console.log(userPk);
-        const response = await axios.get(`https://201.124.154.2:3001/api/emparejamiento/obtenerRol?userPk=${userPk}`);
+        const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerRol?userPk=${userPk}`);
         setRol(response.data);
         Cookies.set('bandera', JSON.stringify(response.data.bandera), { expires: 1 });
         Cookies.set('totalEmparejamientos',JSON.stringify(response.data.totalEmparejamientos), { expires: 1 });
-        Cookies.set('totalEnseñante', JSON.stringify(response.data.totalEnseñante), { expires: 1 });
+        Cookies.set('totalEnseante', JSON.stringify(response.data.totalEnseñante), { expires: 1 });
         Cookies.set('totalAprendiz', JSON.stringify(response.data.totalAprendiz), { expires: 1 });
         //sessionStorage.setItem('bandera', JSON.stringify(response.data.bandera));
         //sessionStorage.setItem('totalEmparejamientos', JSON.stringify(response.data.totalEmparejamientos));

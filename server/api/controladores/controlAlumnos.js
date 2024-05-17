@@ -35,7 +35,7 @@ exports.guardarAlumno = async (req, res) => {
         if (cuentaActiva) {
             // Reactivar cuenta enviando nuevamente el correo de verificación
             const verificacionToken = jsonwebtoken.sign({ usuarioId: cuentaActiva.PK_USUARIO, correo }, 'pruebaclave');
-            const verificationLink = `https://201.124.154.2:3001/api/alumnos/verificar/${verificacionToken}`;
+            const verificationLink = `http://localhost:3001/api/alumnos/verificar/${verificacionToken}`;
             console.log("Entre a cuenta activa voy a enviar 200");
             const correoOpciones = {
                 from: "learnmatch2024029@hotmail.com", 
@@ -50,7 +50,7 @@ exports.guardarAlumno = async (req, res) => {
             // Si es registrable, proceder con el registro
             const usuarioId = await modeloAlumnos.guardarNuevoAlumno({ nombres, apellidoP, apellidoM, correo, password, carrera, semestre });
             const verificacionToken = jsonwebtoken.sign({ usuarioId, correo }, 'pruebaclave');
-            const verificationLink = `https://201.124.154.2:3001/api/alumnos/verificar/${verificacionToken}`;
+            const verificationLink = `http://localhost:3001/api/alumnos/verificar/${verificacionToken}`;
             
             const correoOpciones = {
                 from: "learnmatch2024029@hotmail.com", 

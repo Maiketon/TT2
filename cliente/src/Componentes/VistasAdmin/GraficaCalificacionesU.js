@@ -32,7 +32,7 @@ const MyBarChart = () => {
 
   useEffect(() => {
     setEstaCargando(true);
-    axios.get('https://201.124.154.2:3001/api/administracion/datosGraficaCalf')
+    axios.get('http://localhost:3001/api/administracion/datosGraficaCalf')
       .then(response => {
         const data = response.data[0];
         setChartData({
