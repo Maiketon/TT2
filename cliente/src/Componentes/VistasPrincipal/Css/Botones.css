@@ -4,13 +4,23 @@
   --azul-cielo-hover: #0073a0;
   --negro-absoluto: #000000;
   --gris-oscuro: #333333;
-
+  --gris-tenue:#f5ecec;
   --Lighter-Blue:  #81C3D7;
   --Brighter-Green: #76B947;
   --Soft-Violet: #6A4C93;
   --danger-color: #dc3545;
   --light-color: #f8f9fa;
   --dark-color: #343a40;
+}
+
+
+.btn-modal
+{
+  background: var(--azul-oceano);
+}
+.btn-modal:hover
+{
+  background: var(--azul-cielo-hover);
 }
 
 .btn-inscribete {
@@ -50,7 +60,7 @@
 
   .btn-recuperar:hover
   {
-    background-color: red; /* Un color púrpura */
+    background-color: var(--azul-oceano); /* Un color púrpura */
     border-color: #6f42c1;
     font-style: italic;
     color:white ;

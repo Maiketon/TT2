@@ -1,3 +1,35 @@
+:root {
+    --azul-oceano: #007aa3;
+    --azul-profundo: #00475f;
+    --azul-cielo-hover: #0073a0;
+    --azul-armonia : #3c6dae;
+    --negro-absoluto: #000000;
+    --gris-oscuro: #333333;
+    --gris-tenue:#f5ecec;
+    --Brighter-Green: #76B947;
+    --Soft-Violet: #6A4C93;
+    --Soft-Violet-Hover:#8065a6;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --grey-color: #a9acb0;
+    --dark-color: #343a40;
+    }
+
+.fondo-header
+{
+    background: var(--azul-profundo);
+    color: white;
+}
+.fondo-footer{
+    background: var(--azul-profundo);
+    color: white;
+}
+
+.fondo-modal
+{
+    background: var(--gris-tenue);
+}
+
 .modal-materias
 {
     background-color: white;
@@ -7,23 +39,24 @@
 
 .modal-materias-header
 {
-    background-color: #f8f9fa;
+    background-color: var(--azul-profundo);
     border-bottom: 1px solid #dee2e6;
 }
 
 .modal-materias-titulo
 {
-    color: #495056;
+    color: white;
 }
 
 .modal-materias-body
 {
     padding: 20px;
+    background-color: var(--gris-tenue);
 }
 
 .modal-materias-footer
 {
-    background-color: #f8f9fa;
+    background-color: var(--azul-profundo);
 }
 
 

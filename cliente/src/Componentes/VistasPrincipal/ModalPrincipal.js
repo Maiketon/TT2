@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { Button, Modal, Card } from 'react-bootstrap';
 import './Css/Botones.css';
+import "./Css/Modales.css";
 
 // Componente de la modal //
 const MiModal = ({ show, handleClose, title, children }) => {
   return (
     <>
     <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
+      <Modal.Header className='fondo-header' closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{children}</Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+      <Modal.Body className='fondo-modal'>{children}</Modal.Body>
+      <Modal.Footer className='fondo-footer'>
+        <Button className='btn-modal' variant="secondary" onClick={handleClose}>
           Cerrar
         </Button>
       </Modal.Footer>

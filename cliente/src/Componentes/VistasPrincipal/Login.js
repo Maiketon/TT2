@@ -415,7 +415,7 @@ const FormLogin = ()=>
 
 
       <Modal  className="modal-materias justify-content-md-center align-items-center" centered size="lg"  show={modalRecuperar}  onHide={() => setModalRecuperacion(false)}>
-        <Modal.Header className="modal-materias-header" >
+        <Modal.Header  className="modal-materias-header" >
           <Modal.Title className="modal-materias-titulo" > ¿Deseas recuperar tu contraseña ?</Modal.Title>
         </Modal.Header>
         <Modal.Body className="modal-materias-body">Si olvidaste tu contraseña, por favor ingresa tu correo electronico con el que registraste tu cuenta y en breve
@@ -425,16 +425,16 @@ const FormLogin = ()=>
                                 <Form.Label className="text-md-right text-start form-label-pe-none">Correo electronico:</Form.Label>
                                 <Form.Control name="email" type="email" placeholder="Ingresa tu correo electronico" value={correo} onChange={GuardarDatosHook} />
             </Form.Group>
-            <Modal.Footer modal-materias-footer >
-        <Button variant="primary" type="submit" className="btn-recuperar">
+            </Form>
+        </Modal.Body>
+        <Modal.Footer className="modal-materias-footer" >
+        <Button  variant="primary" type="submit" className="btn-recuperar">
             Aceptar
           </Button>
           <Button variant="secondary" onClick={() => setModalRecuperacion(false)}>
             Cancelar
           </Button>
         </Modal.Footer>
-            </Form>
-        </Modal.Body>
        
       </Modal>
 

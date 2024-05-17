@@ -46,17 +46,17 @@ const ContenidoPrincipal = () =>
           </Col>
           <Col md={3} className="d-flex align-items-stretch">
           <CardConModal className="mb-3 d-flex"
-          title="Trabajo en equipo" 
-          text="¿Qué es el trabajo en equipo?" 
-          fullText="Se refiere a la cooperación que se debe tener con los colegas para alcanzar los objetivos que solos no se podrían alcanzar; las habilidades que abarca son ayudar a los demás, capacidad de negociación, capacidad de ceder en ocasiones y tener la habilidad de llegar a acuerdos."
+          title="Optimismo" 
+          text="¿Cómo cambiaría tu experiencia escolar si siempre vieras el lado positivo de las cosas?" 
+          fullText="El optimismo es una habilidad blanda esencial que puede transformar tu experiencia escolar. En lugar de ver los desafíos académicos como obstáculos insuperables, un estudiante optimista los percibe como oportunidades para aprender y crecer. Esta mentalidad positiva no solo mejora tu rendimiento académico, sino que también te ayuda a mantener la calma y la concentración durante los exámenes y tareas difíciles. Además, el optimismo puede mejorar tus relaciones con compañeros y profesores, ya que una actitud positiva y esperanzadora es contagiosa y puede inspirar a otros a adoptar una perspectiva similar. En resumen, el optimismo no solo te hace sentir mejor en el día a día, sino que también te prepara para enfrentar y superar cualquier desafío que la escuela te presente."
         />
 
           </Col>
           <Col md={3} className="d-flex align-items-stretch">
           <CardConModal className="mb-3 d-flex"
-          title="Comunicaci&oacute;n" 
-          text="¿Se considera a la Comunicaci&oacute;n habilidad blanda? " 
-          fullText="Capacidad de entablar una conversación con otra persona o de redactar cuando se trata de comunicación escrita, la forma de comunicar algo ante un público, interactuar con clientes, proveedores, colegas, superiores y público en general."
+          title="Motivación" 
+          text="¿Qué te impulsa a seguir adelante y dar lo mejor de ti en la escuela?" 
+          fullText="La motivación es el motor que te impulsa a esforzarte y alcanzar tus metas académicas. Es la fuerza que te ayuda a levantarte temprano para estudiar, a dedicar horas a tus tareas y a participar activamente en clase. La motivación puede ser intrínseca, naciendo de tu propio interés y pasión por aprender, o extrínseca, influenciada por el deseo de obtener buenas calificaciones, reconocimiento o incluso recompensas de tus padres o profesores. Identificar y nutrir tu fuente de motivación es crucial para mantener un alto nivel de compromiso y dedicación en tus estudios. "
         />
           </Col>
           

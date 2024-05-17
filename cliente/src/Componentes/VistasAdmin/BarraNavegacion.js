@@ -16,9 +16,9 @@ const BarraNavegacion = ({ setVista }) => {
   return (
     <>
     <div className="pagina">
-      {/* Side bar */}
+     
       <div className="sidebar">
-        {/* Logo */}
+      
         <button className="logo-button">
           <img src={logo} alt="Logo" />
         </button>
@@ -36,9 +36,6 @@ const BarraNavegacion = ({ setVista }) => {
           </button>
           <button className="elemento" onClick={() => setVista('sanciones')}>
             Reportes de cada usuario
-          </button>
-          <button className="elemento" onClick={() => setVista('inscribirse')}>
-            Configuracion
           </button>
         </div>
       </div>

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Logo from './Utils/LearnMatchCaraHumana.png';
 import './Css/Botones.css';
 import './Css/BarraNavegacion.css';
+import './Css/Modales.css';
 import { Navbar, NavDropdown ,Nav, Container, Button, Modal } from 'react-bootstrap';
 const BarraNavegacion = ({ setVista }) => 
 {
@@ -153,11 +154,11 @@ const BarraNavegacion = ({ setVista }) =>
     </Navbar>
 
                                    
-    <Modal show={showModal} onHide={handleCloseModal} size="xl">
-                <Modal.Header closeButton>
+    <Modal  show={showModal} onHide={handleCloseModal} size="xl">
+                <Modal.Header    className='fondo-header' closeButton>
                     <Modal.Title>Visualización de {modalContent.type}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body   className='fondo-modal'>
                 {modalContent.type === 'Videos' ? (
         <iframe
             src={modalContent.url}
@@ -175,8 +176,8 @@ const BarraNavegacion = ({ setVista }) =>
         ></iframe>
     )}
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>Cerrar</Button>
+                <Modal.Footer  className='fondo-footer'>
+                    <Button className='btn-modal' variant="secondary" onClick={handleCloseModal}>Cerrar</Button>
                     {modalContent.type !== 'Videos' && (
                         <Button variant="primary" href={modalContent.url} target="_blank" download>Descargar</Button>
                     )}

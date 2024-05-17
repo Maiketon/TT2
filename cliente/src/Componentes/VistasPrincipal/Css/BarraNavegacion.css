@@ -2,11 +2,13 @@
   --azul-oceano: #007aa3;
   --azul-profundo: #00475f;
   --azul-cielo-hover: #0073a0;
+  --azul-armonia : #3c6dae;
   --negro-absoluto: #000000;
   --gris-oscuro: #333333;
-
+  --gris-tenue:#f5ecec;
   --Brighter-Green: #76B947;
   --Soft-Violet: #6A4C93;
+  --Soft-Violet-Hover:#8065a6;
   --danger-color: #dc3545;
   --light-color: #f8f9fa;
   --grey-color: #a9acb0;
@@ -18,7 +20,7 @@
     color: white !important;
   }
   .dropdown-menu {
-    background-color: var(--azul-profundo) !important; 
+    background-color: var(--azul-oceano) !important; 
     min-width: max-content;
   }
   
@@ -39,7 +41,6 @@
 
 .dropdown-item-text {
   text-align: left;
-  padding: 8px 15px; 
   white-space: nowrap;
   overflow: hidden; 
   text-overflow: ellipsis; 
@@ -54,7 +55,6 @@
 .submenu {
   position: absolute;
   left: 100%; /* Esto posiciona el submenú justo a la derecha del contenedor padre */
-  top: 0; /* Alinea el submenú con la parte superior del contenedor padre */
   min-width: 150px; /* Ajusta según necesites */
 }
 

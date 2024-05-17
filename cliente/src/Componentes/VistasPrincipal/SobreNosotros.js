@@ -19,13 +19,13 @@ const SobreNosotros = () => {
       <Col>
         <div>
         Misi&oacute;n
-        <p style={{ textAlign: "justify" }}>Desarrollar un sistema web prototipo que integre un algoritmo avanzado de emparejamiento de usuarios, diseñado específicamente para fortalecer habilidades blandas en estudiantes de nivel superior. Mediante el uso de chats y videochats, nuestro sistema facilitará la interacción efectiva y el intercambio de conocimientos, permitiendo a los estudiantes mejorar sus competencias comunicativas y de trabajo en equipo en un entorno virtual dinámico y adaptativo.</p>
+        <p style={{ textAlign: "justify" }}>Posicionar nuestro sistema web como la herramienta de referencia en la ESCOM IPN para el desarrollo de habilidades blandas, adaptándonos continuamente para incluir más semestres y expandirnos a nuevas carreras. Aspiramos a fomentar una comunidad educativa interactiva y colaborativa, donde los estudiantes de diferentes disciplinas y niveles puedan mejorar sus competencias comunicativas y de trabajo en equipo.</p>
     </div>
       </Col>
       <Col>
         <div>
         Visi&oacute;n
-        <p style={{ textAlign: "justify" }}>Posicionar nuestro sistema web como la herramienta de referencia en la ESCOM IPN para el desarrollo de habilidades blandas, adaptándonos continuamente para incluir más semestres y expandirnos a nuevas carreras. Aspiramos a fomentar una comunidad educativa interactiva y colaborativa, donde los estudiantes de diferentes disciplinas y niveles puedan mejorar sus competencias comunicativas y de trabajo en equipo. </p>
+        <p style={{ textAlign: "justify" }}>Desarrollar un sistema web prototipo que integre un algoritmo avanzado de emparejamiento de usuarios, diseñado específicamente para fortalecer habilidades blandas en estudiantes de nivel superior. Mediante el uso de chats y videochats, nuestro sistema facilitará la interacción efectiva y el intercambio de conocimientos, permitiendo a los estudiantes mejorar sus competencias comunicativas y de trabajo en equipo en un entorno virtual dinámico y adaptativo. </p>
     </div>
       </Col>
     </Row>

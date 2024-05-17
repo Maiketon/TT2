@@ -1,4 +1,39 @@
+:root {
+  --azul-oceano: #007aa3;
+  --azul-profundo: #00475f;
+  --azul-cielo-hover: #0073a0;
+  --azul-armonia : #3c6dae;
+  --negro-absoluto: #000000;
+  --gris-oscuro: #333333;
+  --gris-tenue:#f5ecec;
+  --Brighter-Green: #76B947;
+  --Soft-Violet: #6A4C93;
+  --Soft-Violet-Hover:#8065a6;
+  --danger-color: #dc3545;
+  --light-color: #f8f9fa;
+  --grey-color: #a9acb0;
+  --dark-color: #343a40;
+  }
+  
+.objeto-menu {
+  color: white;
+  align-items: center;
+ 
+}
 
+.objeto-menu:hover {
+  color: var(--azul-cielo-hover); /* Mantén el color del texto blanco para que sea legible */
+}
+
+
+.btn-cerrar-sesion
+{
+  background-color:var(--azul-profundo);
+}
+.btn-cerrar-sesion:hover
+{
+  background-color: var(--negro-absoluto);
+}
 .size_iconoEmparejamiento{
     width: 35px;
 }
@@ -34,7 +69,7 @@
     position: fixed; /* Sidebar fijo en la ventana */
     top: 0; /* Alineado en la parte superior */
     left: 0; /* Alineado a la izquierda */
-    background-color: #f0f0f0; /* Color de fondo del sidebar */
+    background-color:var(--azul-armonia); /* Color de fondo del sidebar */
     z-index: 1000; /* Z-index alto para que esté por encima del contenido */
 }
 
@@ -98,7 +133,7 @@
     position: fixed; /* Sidebar fijo en la ventana */
     top: 0; /* Alineado en la parte superior */
     left: 0; /* Alineado a la izquierda */
-    background-color: #f0f0f0; /* Color de fondo del sidebar */
+    background-color:var(--azul-armonia); /* Color de fondo del sidebar */
     z-index: 1000; /* Z-index alto para que esté por encima del contenido */
   }
 
@@ -144,7 +179,7 @@
     position: fixed; /* Sidebar fijo en la ventana */
     top: 0; /* Alineado en la parte superior */
     left: 0; /* Alineado a la izquierda */
-    background-color: #f0f0f0; /* Color de fondo del sidebar */
+    background-color:var(--azul-armonia); /* Color de fondo del sidebar */
     z-index: 1000; /* Z-index alto para que esté por encima del contenido */
   }
 
@@ -159,6 +194,7 @@
 
   .menu_list{
     padding-left: 15px;
+    background: white;
   }
 
   .divide_secciones{
@@ -186,7 +222,7 @@
     position: fixed; /* Sidebar fijo en la ventana */
     top: 0; /* Alineado en la parte superior */
     left: 0; /* Alineado a la izquierda */
-    background-color: #f0f0f0; /* Color de fondo del sidebar */
+    background-color: var(--azul-armonia); /* Color de fondo del sidebar */
     z-index: 1000; /* Z-index alto para que esté por encima del contenido */
   }
 
@@ -228,7 +264,7 @@
     position: fixed; /* Sidebar fijo en la ventana */
     top: 0; /* Alineado en la parte superior */
     left: 0; /* Alineado a la izquierda */
-    background-color: #f0f0f0; /* Color de fondo del sidebar */
+    background-color:var(--azul-armonia); /* Color de fondo del sidebar */
     z-index: 1000; /* Z-index alto para que esté por encima del contenido */
   }
 
@@ -260,7 +296,7 @@
     position: fixed; /* Sidebar fijo en la ventana */
     top: 0; /* Alineado en la parte superior */
     left: 0; /* Alineado a la izquierda */
-    background-color: #f0f0f0; /* Color de fondo del sidebar */
+    background-color: var(--azul-armonia); /* Color de fondo del sidebar */
     z-index: 1000; /* Z-index alto para que esté por encima del contenido */
 }
 
@@ -289,7 +325,7 @@
     position: fixed; /* Sidebar fijo en la ventana */
     top: 0; /* Alineado en la parte superior */
     left: 0; /* Alineado a la izquierda */
-    background-color: #f0f0f0; /* Color de fondo del sidebar */
+    background-color:var(--azul-armonia); /* Color de fondo del sidebar */
     z-index: 1000; /* Z-index alto para que esté por encima del contenido */
   }
 
