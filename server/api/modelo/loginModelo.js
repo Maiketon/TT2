@@ -18,7 +18,7 @@ class modeloLogin {
                 for (let i = 0; i < resultado1.length; i++) {
                     const estadoUsuario = resultado1[i].FK_ESTATUSUSUARIO;
     
-                    if (estadoUsuario !== 7) {
+                    if (estadoUsuario !== 7 ) {
                         // Si encuentra al menos una cuenta activa, tomarla y salir del bucle
                         cuentaActivaEncontrada = true;
                         break;

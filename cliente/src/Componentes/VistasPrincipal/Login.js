@@ -142,6 +142,12 @@ const FormLogin = ()=>
                 console.log("Entra en el case 7");
                 Swal.fire("Tu usuario esta eliminado", "", "error");
                 break;
+              case 6:
+                console.log("Entra en el case 7");
+                Swal.fire("Tu usuario esta vetado", "", "error");
+                break;
+
+
               case 8:
                 
                  navigate("/VistasAdmin/PrincipalAdmin");

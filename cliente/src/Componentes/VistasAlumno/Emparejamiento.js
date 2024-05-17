@@ -294,7 +294,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
                         <p>Resultados del emparejamiento</p>
                         <div class="row">
                         <div class="col">Rechazos disponibles:  {sessionStorage.getItem('numRechazos')}</div>
-                        <div class="col">Emparejamientos disponibles para aceptar:  {sessionStorage.getItem('totalEmparejamientos')}</div>
+                        <div class="col">Emparejamientos que tienes:  {sessionStorage.getItem('totalEmparejamientos')}</div>
                         </div>
                         {datosAlumno.map((alumno, index) => (
                             <Card key={index} className={index === deletedCardIndex ? 'fadeOutAnimation' : ''}>

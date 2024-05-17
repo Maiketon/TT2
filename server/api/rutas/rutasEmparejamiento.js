@@ -21,4 +21,5 @@ router.post('/saberEstado', controlEmparejamiento.saberEstado);
 router.post('/rechazarEmparejamiento', controlEmparejamiento.rechazarEmparejamiento);
 router.post('/preFinalizarEmparejamiento',controlEmparejamiento.preFinalizarEmparejamiento);
 router.post('/actualizarCalificacion',controlEmparejamiento.actualizarCalificacion);
+
 module.exports = router;

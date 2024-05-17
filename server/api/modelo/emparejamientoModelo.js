@@ -60,8 +60,8 @@ class modeloEmparejamiento{
                 SUM(CASE WHEN (FK_USUARIO1 = ? AND ROL_USUARIO1 = 2) THEN 1 ELSE 0 END +
                     CASE WHEN (FK_USUARIO2 = ? AND ROL_USUARIO2 = 2) THEN 1 ELSE 0 END) AS total_aprendiz
             FROM emparejamiento
-            WHERE (FK_USUARIO1 = ? AND FK_ESTADOEMPAREJAMIENTO IN (1, 3))
-                OR (FK_USUARIO2 = ? AND FK_ESTADOEMPAREJAMIENTO IN (1, 3))
+            WHERE (FK_USUARIO1 = ? AND FK_ESTADOEMPAREJAMIENTO IN (1, 3, 5))
+                OR (FK_USUARIO2 = ? AND FK_ESTADOEMPAREJAMIENTO IN (1, 3, 5))
         `;
     
         try {
@@ -336,6 +336,39 @@ WHERE
             const promesadb = db.promise();
             const [result] = await promesadb.query(sql, [userPk,promedio,userPk,promedio,pkemparejamiento]);
             return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async obtenerCondicionEvaluacion(pkuserPaired,pkemparejamiento){
+  
+        const sql = `
+        SELECT 
+        CASE 
+            WHEN FK_USUARIO1 = ? THEN
+                CASE 
+                    WHEN CALIFICACION_USUARIO2 IS NOT NULL THEN 5
+                    ELSE 4
+                END
+            WHEN FK_USUARIO2 = ? THEN
+                CASE 
+                    WHEN CALIFICACION_USUARIO1 IS NOT NULL THEN 5
+                    ELSE 4
+                END
+            ELSE 5
+        END AS bandera
+    FROM emparejamiento
+    WHERE PK_EMPAREJAMIENTO = ? AND FK_ESTADOEMPAREJAMIENTO = 5;
+        `;
+
+        try {
+            const promesadb = db.promise();
+            const result = await promesadb.query(sql, [pkuserPaired, pkuserPaired, pkemparejamiento]);
+            console.log("esta es desde el backend ",result);
+
+            const bandera = result[0][0].bandera;     
+            return bandera;
         } catch (err) {
             throw err;
         }
