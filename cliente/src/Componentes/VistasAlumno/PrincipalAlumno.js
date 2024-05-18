@@ -24,9 +24,9 @@ const VistaPrincipal = () => {
         setRol(response.data);
         Cookies.set('bandera', JSON.stringify(response.data.bandera), { expires: 1 });
         Cookies.set('totalEmparejamientos',JSON.stringify(response.data.totalEmparejamientos), { expires: 1 });
-        Cookies.set('totalEnseante', JSON.stringify(response.data.totalEnseñante), { expires: 1 });
+        Cookies.set('totalEnsenante', JSON.stringify(response.data.totalEnseñante), { expires: 1 });
         Cookies.set('totalAprendiz', JSON.stringify(response.data.totalAprendiz), { expires: 1 });
-        //sessionStorage.setItem('bandera', JSON.stringify(response.data.bandera));
+        sessionStorage.setItem('bandera', JSON.stringify(response.data.bandera));
         //sessionStorage.setItem('totalEmparejamientos', JSON.stringify(response.data.totalEmparejamientos));
         //sessionStorage.setItem('totalEnseñante', JSON.stringify(response.data.totalEnseñante));
         //sessionStorage.setItem('totalAprendiz', JSON.stringify(response.data.totalAprendiz));

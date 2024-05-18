@@ -71,14 +71,33 @@ class modeloEmparejamiento{
     
             // Realizar la consulta para obtener todos los registros asociados al usuario
             const [resultado1] = await promesadb.query(sql1, [userPk, userPk, userPk, userPk, userPk, userPk]);
-            
-            // Obtener los totales de enseñantes y aprendices del resultado de la consulta
-            const totalEnseñante = parseInt(resultado1[0].total_enseñante);
-            const totalAprendiz = parseInt(resultado1[0].total_aprendiz);
-            totalEmparejamientos = totalEnseñante + totalAprendiz;
+console.log("Estos son los totales");
+console.log("totalEnseñante: ", resultado1[0].total_enseñante);
+console.log("totalAprendiz: ", resultado1[0].total_aprendiz);
+
+// Declarar las variables fuera de los bloques if
+let totalEnseñante;
+let totalAprendiz;
+
+// Obtener los totales de enseñantes y aprendices del resultado de la consulta
+if (resultado1[0].total_enseñante !== null) {
+    totalEnseñante = parseInt(resultado1[0].total_enseñante);
+} else {
+    totalEnseñante = 0;
+}
+
+if (resultado1[0].total_aprendiz !== null) {
+    totalAprendiz = parseInt(resultado1[0].total_aprendiz);
+} else {
+    totalAprendiz = 0;
+}
+
+ totalEmparejamientos = totalEnseñante + totalAprendiz;
+
+console.log("Total emparejamientos: ", totalEmparejamientos);
     
             // Comprobar el rol según los totales obtenidos
-            if (totalEnseñante === 2 && totalAprendiz === 2) {
+            if (totalEnseñante >= 2 && totalAprendiz >= 2) {
                 console.log("CUATRO EMPAREJAMIENTOS COMPLETOS");
                 bandera = 3;
             } else if (totalEnseñante === 2) {
@@ -88,15 +107,16 @@ class modeloEmparejamiento{
                 console.log("APRENDIZ");
                 bandera = 1;
             } else if (
-                (totalEnseñante === 0 && totalAprendiz === 0) ||
-                (totalEnseñante === 0 && totalAprendiz === 1) ||
-                (totalEnseñante === 1 && totalAprendiz === 0) ||
-                (totalEnseñante === 1 && totalAprendiz === 1)
+                (totalEnseñante == 0 && totalAprendiz == 0) ||
+                (totalEnseñante == 0 && totalAprendiz == 1) ||
+                (totalEnseñante == 1 && totalAprendiz == 0) ||
+                (totalEnseñante == 1 && totalAprendiz == 1)
             ) {
                 console.log("AUN PUEDE EMPAREJAR");
                 bandera = 0;
             } else {
                 console.log("VARIABLE NO RECONOCIDA");
+                bandera = 0;
             }
             console.log("totalEns: ", totalEnseñante, "totalApr: ", totalAprendiz);
             console.log("bandera: ", bandera);

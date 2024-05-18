@@ -91,6 +91,9 @@ const DetalleEmparejamiento = () => {
             console.log(response);
             // Verificar la respuesta para asegurarse de que la actualización fue exitosa
             window.location.reload();
+            //verificar si si se inserto calificacion
+            //Falta hacer una funcion para comprobar si ya estan las 2 calificaciones
+            //Falta hacer una actualizacion en la tabla de alumnos, para actualizar su calificacion
         } catch (error) {
             console.error("Error al enviar la calificación:", error);
         }
