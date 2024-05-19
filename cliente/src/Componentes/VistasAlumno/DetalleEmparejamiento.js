@@ -81,6 +81,7 @@ const DetalleEmparejamiento = () => {
             Cookies.set('pkEmparejamiento', JSON.stringify(PK_EMPAREJAMIENTO), { expires: 1 });
             Cookies.set('rol',rol);
             setRol(rol);
+
     };
     
     const enviarModal = async () => { 
@@ -88,11 +89,16 @@ const DetalleEmparejamiento = () => {
             await Swal.fire({
                 icon: 'warning',
                 title: 'Faltan preguntas por responder',
-                text: 'Debes de responder a todas las preguntas si quieres continuar con tu proceso de finalizar emparejamiento'
+                text: 'Debes de responder a todas las preguntas si quieres continuar con tu proceso de finalizar emparejamiento.'
             });
             return;
         }
         try {
+            await Swal.fire({
+                icon: 'success',
+                title: 'Tus respuestas fueron evaluadas',
+                text: 'Gracias por contestar la evaluación,puedes continuar con tus emparejamientos.'
+            });
             setShowModal(false);
             const promedio = sumarRespuestas();
             const pkemparejamiento = Cookies.get('pkEmparejamiento');
@@ -140,6 +146,7 @@ const DetalleEmparejamiento = () => {
                 const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerMentor?userPk=${userPk}`);
                 setMentor(response.data);
                 setPkaValidarMentor(response.data);
+                //setRol(response.data.rol);
             } catch (error) {
                 console.error('Error al obtener los datos del emparejamiento activo del mentor:', error);
             }
@@ -153,6 +160,7 @@ const DetalleEmparejamiento = () => {
                 const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerAprendiz?userPk=${userPk}`);
                 setAprendiz(response.data);
                 setPkaValidarAprendiz(response.data);
+                //setRol(response.data.rol);
             } catch (error) {
                 console.error('Error al obtener los datos del emparejamiento activo del aprendiz:', error);
             }
@@ -232,7 +240,7 @@ const DetalleEmparejamiento = () => {
 
                 //axios hacer consulta del pk y promedio
                 //axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&CALIFICACION=${promedio}`);
-               //update en la base con la calificacion where  // Espera hasta que se resuelva abrirModal
+                //update en la base con la calificacion where  // Espera hasta que se resuelva abrirModal
                // console.log(calif);
             }else if(response.data == 1){
                 console.log("dio 1");
@@ -245,9 +253,9 @@ const DetalleEmparejamiento = () => {
         }
     };
 
-    const abrirModalParaEvaluar = async (PK_EMPAREJAMIENTO) => {
+    const abrirModalParaEvaluar = async (PK_EMPAREJAMIENTO,rol) => {
         try {
-            abrirModal(PK_EMPAREJAMIENTO);
+            abrirModal(PK_EMPAREJAMIENTO,rol);
         } catch (error) {
             console.error('Error al activar el emparejamiento:', error);
         }
@@ -324,7 +332,7 @@ const DetalleEmparejamiento = () => {
                                 ) :banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 5) ? (
                                     <div className="row">
                                         <div className="col">
-                                        <Button onClick={() => abrirModalParaEvaluar(aprendiz.PK_EMPAREJAMIENTO)}>Hacer evaluación</Button>
+                                        <Button onClick={() => abrirModalParaEvaluar(aprendiz.PK_EMPAREJAMIENTO,aprendiz.rol)}>Hacer evaluación</Button>
                                         </div>
                                     </div>
                                 ) : null}
@@ -337,7 +345,7 @@ const DetalleEmparejamiento = () => {
            
             <Card>
                 <Card.Body>
-                    <Card.Title>Mis A.O </Card.Title>
+                    <Card.Title>Mis áreas de oportunidad </Card.Title>
                     {Mentor.map((mentor, index) => (
                         <div className="card" key={index}>
                             <div>
@@ -399,7 +407,7 @@ const DetalleEmparejamiento = () => {
                                 ) : banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 5) ? (
                                     <div className="row">
                                         <div className="col">
-                                        <Button onClick={() => abrirModalParaEvaluar(mentor.PK_EMPAREJAMIENTO)}>Hacer evaluación</Button>
+                                        <Button onClick={() => abrirModalParaEvaluar(mentor.PK_EMPAREJAMIENTO,mentor.rol)}>Hacer evaluación</Button>
                                         </div>
                                     </div>
                                 ) : null}

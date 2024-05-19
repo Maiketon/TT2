@@ -421,7 +421,7 @@ WHERE
     async actualizarEstadoEmparejamiento(PK_EMPAREJAMIENTO) {
         const sql = `
         UPDATE learnmatch.emparejamiento
-        SET FK_ESTADOEMPAREJAMIENTO = 3
+        SET FK_ESTADOEMPAREJAMIENTO = 2
         WHERE PK_EMPAREJAMIENTO = ?;
         `;
     
