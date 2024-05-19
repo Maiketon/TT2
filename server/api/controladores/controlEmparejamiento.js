@@ -172,7 +172,7 @@ exports.verificarColision = async (req,res) => {
     }
 }
 
-exports.obtenerCondicionEvaluacion = async(req,res) => {
+exports.obtenerPKaValidar  = async(req,res) => {
     const {PK_USERPAIRED,PK_EMPAREJAMIENTO} = req.query;
     try {  
         console.log("Esta recibiendo el PK_USERPAIRED y PK_EMPAREJAMIENTO");
@@ -285,6 +285,7 @@ exports.actualizarCalificacion = async (req, res) => {
     }
 }
 
+// controlEmparejamiento.js
 exports.comprobar2Calificaciones = async (req, res) => {
     const { PK_EMPAREJAMIENTO } = req.query;
     try {
@@ -295,14 +296,12 @@ exports.comprobar2Calificaciones = async (req, res) => {
             console.log("Hay valores en CALIFICACION_USUARIO1 y CALIFICACION_USUARIO2 para PK_EMPAREJAMIENTO =", PK_EMPAREJAMIENTO);
             res.json("Completo");
         } else {
-            res.json("Incompleto");
             console.log("No hay valores en CALIFICACION_USUARIO1 o CALIFICACION_USUARIO2 para PK_EMPAREJAMIENTO =", PK_EMPAREJAMIENTO);
+            res.json("Incompleto");
         }
-       
-        
     } catch (error) {
         console.error('Error realizando la consulta:', error);
-        res.status(500).send('Error en el servidor al actualizar la calificación del usuario');
+        res.status(500).send('Error en el servidor al verificar las calificaciones del emparejamiento');
     }
 }
 
@@ -316,3 +315,4 @@ exports.actualizarEstadoEmparejamiento = async (req, res) => {
         res.status(500).send('Error en el servidor al actualizar el estado del emparejamiento');
     }
 }
+
