@@ -161,6 +161,10 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
             if(total_aprendizDisponible == 2){
                 banderaDisponible = 1;
                 Cookies.set('bandera', banderaDisponible, { expires: 1 });
+                if(total_ensenante + total_aprendiz >= 4){
+                    banderaDisponible = 3;
+                    Cookies.set('bandera', banderaDisponible, { expires: 1 });
+                }
                 //sessionStorage.setItem('bandera',banderaDisponible );
             }
     
@@ -175,7 +179,10 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
             if(total_enseñanteDisponible == 2){
                 banderaDisponible = 2;
                 Cookies.set('bandera', banderaDisponible, { expires: 1 });
-                
+                if(total_ensenante + total_aprendiz == 4){
+                    banderaDisponible = 3;
+                    Cookies.set('bandera', banderaDisponible, { expires: 1 });
+                }
                 //sessionStorage.setItem('bandera',banderaDisponible );
                 
             }
@@ -243,7 +250,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
 
 //MANEJADOR DE LA BARRA DE CARGA
     const handleStartLoading = async () => {
-        
+
         if (parseInt(bandera) !== 3) {
             handleShowModal();
             await obtenerAlumnosEmparejamiento();
