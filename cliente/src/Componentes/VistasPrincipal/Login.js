@@ -327,212 +327,185 @@ const FormLogin = ()=>
    
     return (
         <>
-        <Container className='pt-3 pb-3' style={{ width: '40%', display:"flex", flexDirection:"column"}}> 
-      
-      <Modal show={modalMaterias} className="modal-materias" centered size="lg" onHide={() => setModalMaterias(false)}>
-        <Modal.Header className="modal-materias-header">
-          <Modal.Title className="modal-materias-titulo">Bienvenido: Selecciona tus Áreas Académicas</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="modal-materias-body">
-            <p>Con base a tu criterio, selecciona 3 areas academicas en las que consideres que tienes deficiencias y 3 opciones academicas en las que posees un dominio que te gustaria compartir con los demás. </p>
-        <Row>
-        <Col sm={5} >
-        <div style={{display:"flex", flexDirection: "column", alignItems: "center"}}>
-        <strong>DEFICIENCIAS</strong>
-        <img
-            src={EstadoTriste}
-            width={100}
-            height={100}
-            roundedCircle
-            style ={{borderRadius: "50%"}}
-             alt="Avatar"
+       <Container className='pt-3 pb-3' style={{ width: '100%', maxWidth: '40%', display: 'flex', flexDirection: 'column' }}>
+  
+  <Modal show={modalMaterias} className="modal-materias" centered size="lg" onHide={() => setModalMaterias(false)}>
+    <Modal.Header className="modal-materias-header">
+      <Modal.Title className="modal-materias-titulo">Bienvenido: Selecciona tus Áreas Académicas</Modal.Title>
+    </Modal.Header>
+    <Modal.Body className="modal-materias-body">
+      <p>Con base a tu criterio, selecciona 3 áreas académicas en las que consideres que tienes deficiencias y 3 opciones académicas en las que posees un dominio que te gustaría compartir con los demás.</p>
+      <Row>
+        <Col sm={5}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <strong>DEFICIENCIAS</strong>
+            <img
+              src={EstadoTriste}
+              width={100}
+              height={100}
+              style={{ borderRadius: '50%' }}
+              alt="Avatar"
             />
-        </div>
+          </div>
+          <Col>
+          {crearCheckboxes(seleccionIzquierda, 'izquierda')}
+        </Col>
         </Col>
         <Col sm={2} className="d-flex align-items-center justify-content-center">
-        <div style={{ width: '1px', height: '100%', backgroundColor: 'lightgrey' }} />
+          <div style={{ width: '1px', height: '100%', backgroundColor: 'lightgrey' }} />
         </Col>
         <Col sm={5}>
-        <div style={{display:"flex", flexDirection: "column", alignItems: "center"}}>
-        <strong>ENSEÑANZA</strong>
-        <img
-            src={EstadoFeliz}
-            width={100}
-            height={100}
-            roundedCircle
-            style ={{borderRadius: "50%"}}
-             alt="Avatar"
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <strong>ENSEÑANZA</strong>
+            <img
+              src={EstadoFeliz}
+              width={100}
+              height={100}
+              style={{ borderRadius: '50%' }}
+              alt="Avatar"
             />
-        </div>
-            
+          </div>
+          <Col>
+          {crearCheckboxes(seleccionDerecha, 'derecha')}
         </Col>
+        </Col>
+      </Row>
+    </Modal.Body>
+    <Modal.Footer className="modal-materias-footer">
+      <Button variant="primary" onClick={guardarPreferencias}>
+        Se ve bien.
+      </Button>
+    </Modal.Footer>
+  </Modal>
 
-        </Row>
-        <Row className="pt-3">
-            <Col sm={5}>
-                {crearCheckboxes(seleccionIzquierda, 'izquierda')}
+  <Modal show={modalIncorrecto} onHide={() => setModalIncorrecto(false)}>
+    <Modal.Header>
+      <Modal.Title>Error</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>Usuario o clave incorrecta.</Modal.Body>
+    <Modal.Footer>
+      <Button variant="secondary" onClick={() => setModalIncorrecto(false)}>
+        Cerrar
+      </Button>
+    </Modal.Footer>
+  </Modal>
+
+  <Modal show={modalParaverificar} onHide={() => setModalVerificacion(false)}>
+    <Modal.Header>
+      <Modal.Title>Verificación</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>Falta verificación</Modal.Body>
+    <Modal.Footer>
+      <Button variant="secondary" onClick={() => setModalVerificacion(false)}>
+        Cerrar
+      </Button>
+    </Modal.Footer>
+  </Modal>
+
+  <Modal show={modalVerificado} onHide={() => setModalVerificado(false)}>
+    <Modal.Header>
+      <Modal.Title>Verificación</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>Tu usuario está verificado</Modal.Body>
+    <Modal.Footer>
+      <Button variant="secondary" onClick={() => setModalVerificado(false)}>
+        Cerrar
+      </Button>
+    </Modal.Footer>
+  </Modal>
+
+  <Modal show={modalRecuperarSuccess} onHide={() => setModalRC(false)}>
+    <Modal.Header>
+      <Modal.Title>Solicitud de nueva contraseña</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>Correo con nueva contraseña enviado al correo electrónico registrado.</Modal.Body>
+    <Modal.Footer>
+      <Button variant="secondary" onClick={() => setModalRC(false)}>
+        Cerrar
+      </Button>
+    </Modal.Footer>
+  </Modal>
+
+  <Modal className="modal-materias justify-content-md-center align-items-center" centered size="lg" show={modalRecuperar} onHide={() => setModalRecuperacion(false)}>
+    <Modal.Header className="modal-materias-header">
+      <Modal.Title className="modal-materias-titulo">¿Deseas recuperar tu contraseña?</Modal.Title>
+    </Modal.Header>
+    <Modal.Body className="modal-materias-body">
+      Si olvidaste tu contraseña, por favor ingresa tu correo electrónico con el que registraste tu cuenta y en breve te llegará un correo electrónico con una contraseña temporal.
+      <Form onSubmit={recuperarContra}>
+        <Form.Group as={Row} className="mb-3" controlId="email">
+          <Form.Label className="text-md-right text-start form-label-pe-none">Correo electrónico:</Form.Label>
+          <Form.Control name="email" type="email" placeholder="Ingresa tu correo electrónico" value={correo} onChange={GuardarDatosHook} />
+        </Form.Group>
+      </Form>
+    </Modal.Body>
+    <Modal.Footer className="modal-materias-footer">
+      <Button variant="primary" type="submit" className="btn-recuperar">
+        Aceptar
+      </Button>
+      <Button variant="secondary" onClick={() => setModalRecuperacion(false)}>
+        Cancelar
+      </Button>
+    </Modal.Footer>
+  </Modal>
+
+  <Row className="justify-content-md-center">
+    <Col>
+      <Card className="d-flex flex-column" style={{ minHeight: '60vh', flex: 1 }}>
+        <Card.Body className="d-flex flex-column justify-content-between">
+          <Row>
+            <Col className="d-flex justify-content-center">
+              <img
+                src={Avatar1}
+                width={100}
+                height={100}
+                style={{ borderRadius: '50%' }}
+                alt="Avatar"
+              />
             </Col>
-
-            <Col sm={2} className="d-flex align-items-center justify-content-center">
-            <div style={{ width: '1px', height: '100%', backgroundColor: 'lightgrey' }} />
+            <Col className="d-flex flex-column align-items-center">
+              <Card.Title>Bienvenido a LearnMatch</Card.Title>
+              <Card.Text>
+                Para Iniciar Sesión en nuestro sistema, por favor accede con tu correo electrónico y tu contraseña.
+              </Card.Text>
             </Col>
-
-            <Col sm={5}>
-                {crearCheckboxes(seleccionDerecha, 'derecha')}
+            <Col className="d-flex justify-content-center">
+              <img
+                src={Avatar2}
+                width={100}
+                height={100}
+                style={{ borderRadius: '50%' }}
+                alt="Avatar"
+              />
             </Col>
-        </Row>
-        </Modal.Body>
-        <Modal.Footer className="modal-materias-footer">
-          <Button variant="primary" onClick={guardarPreferencias}>
-            Se ve bien.
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={modalIncorrecto}  onHide={() => setModalIncorrecto(false)}>
-        <Modal.Header >
-          <Modal.Title >Error</Modal.Title>
-        </Modal.Header>
-        <Modal.Body >Usuario o clave incorrecta.</Modal.Body>
-        <Modal.Footer >
-          <Button variant="secondary" onClick={() => setModalIncorrecto(false)}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={modalParaverificar} onHide={() => setModalVerificacion(false)}>
-        <Modal.Header >
-          <Modal.Title >Verificacion</Modal.Title>
-        </Modal.Header>
-        <Modal.Body >Falta verificacion</Modal.Body>
-        <Modal.Footer >
-          <Button variant="secondary" onClick={() => setModalVerificacion(false)}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={modalVerificado} onHide={() => setModalVerificado(false)}>
-        <Modal.Header >
-          <Modal.Title >Verificacion</Modal.Title>
-        </Modal.Header>
-        <Modal.Body >Tu usuario esta verificado</Modal.Body>
-        <Modal.Footer >
-          <Button variant="secondary" onClick={() => setModalVerificado(false)}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={modalRecuperarSuccess}  onHide={() => setModalRC(false)}>
-        <Modal.Header >
-          <Modal.Title >Solicitud de nueva contraseña</Modal.Title>
-        </Modal.Header>
-        <Modal.Body >Correo con nueva contraseña enviado al correo electronico registrado.</Modal.Body>
-        <Modal.Footer >
-          <Button variant="secondary" onClick={() => setModalRC(false)}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-
-      <Modal  className="modal-materias justify-content-md-center align-items-center" centered size="lg"  show={modalRecuperar}  onHide={() => setModalRecuperacion(false)}>
-        <Modal.Header  className="modal-materias-header" >
-          <Modal.Title className="modal-materias-titulo" > ¿Deseas recuperar tu contraseña ?</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="modal-materias-body">Si olvidaste tu contraseña, por favor ingresa tu correo electronico con el que registraste tu cuenta y en breve
-            te llegara un correo electronico con una contraseña temporal.
-            <Form onSubmit={recuperarContra}>
+          </Row>
+          <Form>
             <Form.Group as={Row} className="mb-3" controlId="email">
-                                <Form.Label className="text-md-right text-start form-label-pe-none">Correo electronico:</Form.Label>
-                                <Form.Control name="email" type="email" placeholder="Ingresa tu correo electronico" value={correo} onChange={GuardarDatosHook} />
+              <Form.Label className="text-md-right text-start form-label-pe-none">Correo electrónico:</Form.Label>
+              <Form.Control type="email" placeholder="Ingresa tu correo electrónico" value={datosUsuario.username} onChange={inputChange} name='username' />
             </Form.Group>
-            </Form>
-        </Modal.Body>
-        <Modal.Footer className="modal-materias-footer" >
-        <Button  variant="primary" type="submit" className="btn-recuperar">
-            Aceptar
-          </Button>
-          <Button variant="secondary" onClick={() => setModalRecuperacion(false)}>
-            Cancelar
-          </Button>
-        </Modal.Footer>
-       
-      </Modal>
-
-
-
-            <Row className="justify-content-md-center"> 
-                <Col>
-                    <Card className="d-flex flex-column" style={{ minHeight: '60vh',flex:1}}>
-                        <Card.Body className="d-flex flex-column justify-content-between">
-                            <Row>
-                                <Col>
-                                <img
-                                src={Avatar1}
-                                width={100}
-                                height={100}
-                                roundedCircle
-                                style ={{borderRadius: "50%"}}
-                                alt="Avatar"
-                                />
-                                </Col>
-
-                                <Col>
-                                <Card.Title>Bienvenido a LearnMatch</Card.Title>
-                                <Card.Text>
-                              Para Iniciar Sesi&oacute;n en nuestro sistema, por favor accede con tu correo electr&oacute;nico y tu contraseña.
-                            </Card.Text>
-                                </Col>
-                                
-                                <Col>
-                                <img
-                                src={Avatar2}
-                                width={100}
-                                height={100}
-                                roundedCircle
-                                style ={{borderRadius: "50%"}}
-                                alt="Avatar"
-                                />
-                                </Col>
-                            </Row>
-                            
-                            <Form>
-
-                            <Form.Group as={Row} className="mb-3" controlId="email">
-                                <Form.Label className="text-md-right text-start form-label-pe-none">Correo electronico:</Form.Label>
-                                <Form.Control type="email" placeholder="Ingresa tu correo electronico" value ={datosUsuario.username} onChange={inputChange} name='username'/>
-                            
-                            </Form.Group>
-
-                            <Form.Group as={Row} className="mb-3" controlId="password">
-                                <Form.Label className="text-md-right text-start form-label-pe-none">Contraseña:</Form.Label>
-                                <Form.Control type="password" placeholder="Ingresa tu contraseña." value ={datosUsuario.password} onChange={inputChange} name='password' />
-                            </Form.Group>
-                            </Form> 
-                            <Container>
-                                <Col>
-                                    <Button variant="outline-primary" type="submit" className="ms-2 btn-iniciar-sesion" onClick={enviarValores}>
-                                    Iniciar Sesion
-                                    </Button>
-                                    </Col>
-                            </Container>
-                            <Container>
-                                <Col>
-                                <p>Si olvidaste tu contraseña. No te preocupes haz clic aqu&iacute;!!</p>
-                                    <Button  onClick={handleRecuperacion} variant="outline-primary" type="submit" className="ms-2 btn-recuperar">
-                                    <strong>Recuperar Contraseña </strong>
-                                    </Button>
-                                    </Col>
-                            </Container>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-            <Row className="d-flex flex-column" style={{ minHeight: '21vh',flex:1}}> <br/></Row> 
-        </Container>
+            <Form.Group as={Row} className="mb-3" controlId="password">
+              <Form.Label className="text-md-right text-start form-label-pe-none">Contraseña:</Form.Label>
+              <Form.Control type="password" placeholder="Ingresa tu contraseña." value={datosUsuario.password} onChange={inputChange} name='password' />
+            </Form.Group>
+          </Form>
+          <Container className="d-flex justify-content-center">
+            <Button variant="outline-primary" type="submit" className="ms-2 btn-iniciar-sesion" onClick={enviarValores}>
+              Iniciar Sesión
+            </Button>
+          </Container>
+          <Container className="d-flex justify-content-center mt-3">
+            <p>Si olvidaste tu contraseña, no te preocupes :</p>
+            <Button onClick={handleRecuperacion} variant="outline-primary" className="ms-2 btn-recuperar">
+              <strong>Recuperar Contraseña</strong>
+            </Button>
+          </Container>
+        </Card.Body>
+      </Card>
+    </Col>
+  </Row>
+  <Row className="d-flex flex-column" style={{ minHeight: '21vh', flex: 1 }}> <br /></Row>
+</Container>
         </>
     );
 
