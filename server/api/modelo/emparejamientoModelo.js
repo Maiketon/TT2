@@ -394,6 +394,46 @@ WHERE
         }
     }
 
+
+    async comprobar2Calificaciones(PK_EMPAREJAMIENTO) {
+        const sql = `
+        SELECT 
+            PK_EMPAREJAMIENTO, 
+            CALIFICACION_USUARIO1, 
+            CALIFICACION_USUARIO2
+        FROM 
+            learnmatch.emparejamiento
+        WHERE 
+            PK_EMPAREJAMIENTO = ? 
+            AND CALIFICACION_USUARIO1 IS NOT NULL
+            AND CALIFICACION_USUARIO2 IS NOT NULL;
+        `;
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [PK_EMPAREJAMIENTO]);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async actualizarEstadoEmparejamiento(PK_EMPAREJAMIENTO) {
+        const sql = `
+        UPDATE learnmatch.emparejamiento
+        SET FK_ESTADOEMPAREJAMIENTO = 3
+        WHERE PK_EMPAREJAMIENTO = ?;
+        `;
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [PK_EMPAREJAMIENTO]);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
 }
 
 

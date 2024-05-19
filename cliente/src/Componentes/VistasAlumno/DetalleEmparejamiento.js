@@ -89,7 +89,17 @@ const DetalleEmparejamiento = () => {
             console.log("Aqui empieza el insertar califiacion");
             const response = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${pkemparejamiento}&userPk=${userPk}&promedio=${promedio}`);
             console.log(response);
+            const response2 = await axios.post(`http://localhost:3001/api/emparejamiento/comprobar2Calificaciones?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
             // Verificar la respuesta para asegurarse de que la actualización fue exitosa
+            if(response2.data == "Completo"){
+                await Swal.fire({
+                    icon: 'success',
+                    title: '¡Emparejamiento finalzido!',
+                    text: 'Ya puedes hacer mas emparejamientos.',
+                });
+
+            const response3 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarEstadoEmparejamiento?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
+             }    
             window.location.reload();
             //verificar si si se inserto calificacion
             //Falta hacer una funcion para comprobar si ya estan las 2 calificaciones
