@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-// import { Await } from "react-router";
+import { Await } from "react-router";
 import Cookies from 'js-cookie';
 
 
@@ -110,7 +110,7 @@ const DetalleEmparejamiento = () => {
             console.log("Aqui empieza el insertar califiacion");
             const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${pkemparejamiento}&userPk=${userPk}&promedio=${promedio}`);
             console.log(response);
-            const response2 = await axios.post(`http://localhost:3001/api/emparejamiento/comprobar2Calificaciones?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
+            const response2 = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/comprobar2Calificaciones?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
             // Verificar la respuesta para asegurarse de que la actualización fue exitosa
             if(response2.data == "Completo"){
                 await Swal.fire({
@@ -119,7 +119,7 @@ const DetalleEmparejamiento = () => {
                     text: 'Ya puedes hacer mas emparejamientos.',
                 });
 
-            const response3 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarEstadoEmparejamiento?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
+            const response3 = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/actualizarEstadoEmparejamiento?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
              }    
             window.location.reload();
             //verificar si si se inserto calificacion
@@ -206,12 +206,12 @@ const DetalleEmparejamiento = () => {
         try {
 
                //Se inserta en la tabla en la tabla comunicacionzg un nuevo registro //
-               const generartoken = await axios.post('http://localhost:3001/api/emparejamiento/hacerTokenSala', {
+               const generartoken = await axios.post('https://201.124.154.2:3001/api/emparejamiento/hacerTokenSala', {
                 PK_EMPAREJAMIENTO: PK_EMPAREJAMIENTO
             });            
             console.log('Este es el token generado', generartoken);
             //Se cambia el estatus del emparejamiento//
-            const response = await axios.post(`http://localhost:3001/api/emparejamiento/updateEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+            const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/updateEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
             console.log('Emparejamiento activado exitosamente:', response.data);
             await Swal.fire({
                 icon: 'success',
@@ -227,7 +227,7 @@ const DetalleEmparejamiento = () => {
     const obtenerToken = async(PK_EMPAREJAMIENTO)=>
         {
             try {
-                const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerToken?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                const response = await axios.get(`https://201.124.154.2:3001/api/emparejamiento/obtenerToken?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                 const { token } = response.data;
 
                 // Mostrar Sweet Alert
@@ -238,7 +238,7 @@ const DetalleEmparejamiento = () => {
                 });
 
                 // Concatenar el token al final del URL
-                const newUrl = `http://localhost:3000/VistasAlumno/PrincipalAlumno?roomID=${token}`;
+                const newUrl = `https://201.124.154.2:3001/VistasAlumno/PrincipalAlumno?roomID=${token}`;
                 window.history.replaceState({}, '', newUrl);
                 // Recargar la pestaña actual
                 window.location.reload();
@@ -267,19 +267,19 @@ const DetalleEmparejamiento = () => {
             }else if (response.data == 3) {
                 console.log("dio 3");
                 console.log(rol);
-                await axios.post(`http://localhost:3001/api/emparejamiento/preFinalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                await axios.post(`https://201.124.154.2:3001/api/emparejamiento/preFinalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                 let promedio = abrirModal(PK_EMPAREJAMIENTO,rol); // Abre el modal y obtiene el promedio
                 console.log("La suma de respuestas es:", promedio);
 
                 console.log("Soy una consulta y recibo este parametro", promedio);
 
                 //axios hacer consulta del pk y promedio
-                //axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&CALIFICACION=${promedio}`);
+                //axios.post(`https://201.124.154.2:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&CALIFICACION=${promedio}`);
                 //update en la base con la calificacion where  // Espera hasta que se resuelva abrirModal
                // console.log(calif);
             }else if(response.data == 1){
                 console.log("dio 1");
-                await axios.post(`http://localhost:3001/api/emparejamiento/rechazarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                await axios.post(`https://201.124.154.2:3001/api/emparejamiento/rechazarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                 //handleDeleteCard(index,dato);
             }
         } catch (error) {

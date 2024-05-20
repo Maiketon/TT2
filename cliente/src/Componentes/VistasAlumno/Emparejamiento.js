@@ -145,7 +145,7 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
         }
 
         else {
-            const response = await axios.post(`http://localhost:3001/api/emparejamiento/insertarRegistros?usuarioPrincipalPK=${userPk}&tipoCoincidencia=${tipoCoincidencia}&usuarioCandidatoPK=${pkUsuarioCandidato}`);
+            const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/insertarRegistros?usuarioPrincipalPK=${userPk}&tipoCoincidencia=${tipoCoincidencia}&usuarioCandidatoPK=${pkUsuarioCandidato}`);
             let totalEmparejamientosActualizados = totalEmparejamientos + 1;
             Cookies.set('totalEmparejamientos', totalEmparejamientosActualizados, { expires: 1 });
             //sessionStorage.setItem('totalEmparejamientos',totalEmparejamientosActualizados );
