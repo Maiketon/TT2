@@ -356,7 +356,14 @@ const DetalleEmparejamiento = () => {
                                         </div>
                                     ): null}
                                     </div>
-                                    <div className="col">TOKEN<Container><Button onClick={() => obtenerToken(aprendiz.PK_EMPAREJAMIENTO)}>Copiar Token</Button></Container> </div>
+                                    {aprendiz.estado == 3 ? (
+                                    <div className="col">
+                                        TOKEN
+                                        <Container>
+                                            <Button onClick={() => obtenerToken(aprendiz.PK_EMPAREJAMIENTO)}>Copiar Token</Button>
+                                        </Container> 
+                                    </div>
+                                    ):null}
                                 </div>
                                 {banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
                                     <div className="row">
@@ -431,7 +438,14 @@ const DetalleEmparejamiento = () => {
                                     </div>
                                     ): null}
                                     </div>
-                                    <div className="col">TOKEN<Container><Button onClick={() => obtenerToken(mentor.PK_EMPAREJAMIENTO)}>Copiar Token</Button></Container> </div>
+                                    {mentor.estado == 3 ? (
+                                    <div className="col">
+                                        TOKEN
+                                        <Container>
+                                            <Button onClick={() => obtenerToken(mentor.PK_EMPAREJAMIENTO)}>Copiar Token</Button>
+                                        </Container> 
+                                    </div>
+                                    ):null}
                                 </div>
                                 {banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
                                 <div className="row">
