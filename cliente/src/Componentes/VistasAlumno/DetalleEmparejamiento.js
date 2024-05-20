@@ -227,7 +227,7 @@ const DetalleEmparejamiento = () => {
     const obtenerToken = async(PK_EMPAREJAMIENTO)=>
         {
             try {
-                const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerToken?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerTokenC?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                 const { token } = response.data;
 
                 // Mostrar Sweet Alert
