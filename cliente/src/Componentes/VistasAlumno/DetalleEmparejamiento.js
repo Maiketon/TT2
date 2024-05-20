@@ -23,40 +23,46 @@ const DetalleEmparejamiento = () => {
     const [banderaValidacionMentor, setBanderaValidacionMentor] = useState(null);
     const [banderaValidacionAprendiz, setBanderaValidacionAprendiz] = useState(null);
     const [showModal, setShowModal] = useState(false);
-     const [respuesta1, setRespuesta1] = useState('');
-     const [respuesta2, setRespuesta2] = useState('');
-     const [respuesta3, setRespuesta3] = useState('');
-     const [respuesta4, setRespuesta4] = useState('');
-     const [respuesta5, setRespuesta5] = useState('');
+    const [respuesta1, setRespuesta1] = useState(0);
+    const [respuesta2, setRespuesta2] = useState(0);
+    const [respuesta3, setRespuesta3] = useState(0);
+    
      const [currentPage, setCurrentPage] = useState(1);
- 
-     const handleRespuesta1 = (event) => {
-         const value = parseInt(event.target.value, 10);
-         setRespuesta1(value);
-     };
- 
-     const handleRespuesta2 = (event) => {
-         const value = parseInt(event.target.value, 10);
-         setRespuesta2(value);
-     };
- 
-     const handleRespuesta3 = (event) => {
-         const value = parseInt(event.target.value, 10);
-         setRespuesta3(value);
-     };
- 
-     const handleRespuesta4 = (event) => {
-         const value = parseInt(event.target.value, 10);
-         setRespuesta4(value);
-     };
- 
-     const handleRespuesta5 = (event) => {
-         const value = parseInt(event.target.value, 10);
-         setRespuesta5(value);
-     };
- 
+     const [deletedCardIndex, setDeletedCardIndex] = useState(null); 
+     const [rol, setRol] = useState(null);
+     let banderaFormulario = 0;
 
  
+     const handleRespuesta1 = (event) => {
+        const value = event.target.value ? parseInt(event.target.value, 10) : 0;
+        console.log("AQUI"+value);
+        setRespuesta1(value);
+    };
+
+    const handleRespuesta2 = (event) => {
+        const value = event.target.value ? parseInt(event.target.value, 10) : 0;
+        console.log(value);
+        setRespuesta2(value);
+    };
+
+    const handleRespuesta3 = (event) => {
+        const value = event.target.value ? parseInt(event.target.value, 10) : 0;
+        console.log(value);
+        setRespuesta3(value);
+    };
+ 
+     const handleDeleteCard = async (index) => {
+            setDeletedCardIndex(index);
+    };
+
+    useEffect(() => {
+        if (deletedCardIndex !== null) {
+            setTimeout(() => {
+                setMentor((prevDatos) => prevDatos.filter((_, index) => index !== deletedCardIndex));
+                setDeletedCardIndex(null);
+            }, 300); // Tiempo de espera que coincide con la duración de la animación
+        }
+    }, [deletedCardIndex]);
      
  
      const nextPage = () => {
@@ -69,15 +75,30 @@ const DetalleEmparejamiento = () => {
 
 
 
-     const abrirModal = (PK_EMPAREJAMIENTO) => {
-        setShowModal(true);
-        console.log(PK_EMPAREJAMIENTO+"aqui");
-        Cookies.set('pkEmparejamiento', JSON.stringify(PK_EMPAREJAMIENTO), { expires: 1 });
-        //sessionStorage.setItem('pkEmparejamiento', JSON.stringify(PK_EMPAREJAMIENTO));
+     const abrirModal = (PK_EMPAREJAMIENTO,rol) => {
+            setShowModal(true);
+            console.log(PK_EMPAREJAMIENTO+"aqui");
+            Cookies.set('pkEmparejamiento', JSON.stringify(PK_EMPAREJAMIENTO), { expires: 1 });
+            Cookies.set('rol',rol);
+            setRol(rol);
+
     };
     
     const enviarModal = async () => { 
+        if (respuesta1 === 0 || respuesta2 === 0 || respuesta3 === 0) {
+            await Swal.fire({
+                icon: 'warning',
+                title: 'Faltan preguntas por responder',
+                text: 'Debes de responder a todas las preguntas si quieres continuar con tu proceso de finalizar emparejamiento.'
+            });
+            return;
+        }
         try {
+            await Swal.fire({
+                icon: 'success',
+                title: 'Tus respuestas fueron evaluadas',
+                text: 'Gracias por contestar la evaluación,puedes continuar con tus emparejamientos.'
+            });
             setShowModal(false);
             const promedio = sumarRespuestas();
             const pkemparejamiento = Cookies.get('pkEmparejamiento');
@@ -89,8 +110,21 @@ const DetalleEmparejamiento = () => {
             console.log("Aqui empieza el insertar califiacion");
             const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${pkemparejamiento}&userPk=${userPk}&promedio=${promedio}`);
             console.log(response);
+            const response2 = await axios.post(`http://localhost:3001/api/emparejamiento/comprobar2Calificaciones?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
             // Verificar la respuesta para asegurarse de que la actualización fue exitosa
+            if(response2.data == "Completo"){
+                await Swal.fire({
+                    icon: 'success',
+                    title: '¡Emparejamiento finalizado!',
+                    text: 'Ya puedes hacer mas emparejamientos.',
+                });
+
+            const response3 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarEstadoEmparejamiento?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
+             }    
             window.location.reload();
+            //verificar si si se inserto calificacion
+            //Falta hacer una funcion para comprobar si ya estan las 2 calificaciones
+            //Falta hacer una actualizacion en la tabla de alumnos, para actualizar su calificacion
         } catch (error) {
             console.error("Error al enviar la calificación:", error);
         }
@@ -100,7 +134,7 @@ const DetalleEmparejamiento = () => {
     
     
     const sumarRespuestas = () => {
-        const sumaTotal = respuesta1 + respuesta2 + respuesta3 + respuesta4 + respuesta5;
+        const sumaTotal = respuesta1 + respuesta2 + respuesta3;
         const promedio = sumaTotal / 5;
         console.log(promedio);
         return promedio;
@@ -112,6 +146,7 @@ const DetalleEmparejamiento = () => {
                 const response = await axios.get(`https://201.124.154.2:3001/api/emparejamiento/obtenerMentor?userPk=${userPk}`);
                 setMentor(response.data);
                 setPkaValidarMentor(response.data);
+                //setRol(response.data.rol);
             } catch (error) {
                 console.error('Error al obtener los datos del emparejamiento activo del mentor:', error);
             }
@@ -125,6 +160,7 @@ const DetalleEmparejamiento = () => {
                 const response = await axios.get(`https://201.124.154.2:3001/api/emparejamiento/obtenerAprendiz?userPk=${userPk}`);
                 setAprendiz(response.data);
                 setPkaValidarAprendiz(response.data);
+                //setRol(response.data.rol);
             } catch (error) {
                 console.error('Error al obtener los datos del emparejamiento activo del aprendiz:', error);
             }
@@ -168,7 +204,14 @@ const DetalleEmparejamiento = () => {
 
     const handleActivarEmparejamiento = async (PK_EMPAREJAMIENTO) => {
         try {
-            const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/updateEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+
+               //Se inserta en la tabla en la tabla comunicacionzg un nuevo registro //
+               const generartoken = await axios.post('http://localhost:3001/api/emparejamiento/hacerTokenSala', {
+                PK_EMPAREJAMIENTO: PK_EMPAREJAMIENTO
+            });            
+            console.log('Este es el token generado', generartoken);
+            //Se cambia el estatus del emparejamiento//
+            const response = await axios.post(`http://localhost:3001/api/emparejamiento/updateEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
             console.log('Emparejamiento activado exitosamente:', response.data);
             await Swal.fire({
                 icon: 'success',
@@ -181,7 +224,35 @@ const DetalleEmparejamiento = () => {
         }
     };
 
-    const handleRechazarEmparejamiento = async (PK_EMPAREJAMIENTO) => {
+    const obtenerToken = async(PK_EMPAREJAMIENTO)=>
+        {
+            try {
+                const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerToken?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                const { token } = response.data;
+
+                // Mostrar Sweet Alert
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Token de videochat copiado',
+                    text: 'Ve a tu módulo de Comunicación, coloca tu nombre y entra a la reunión.'
+                });
+
+                // Concatenar el token al final del URL
+                const newUrl = `http://localhost:3000/VistasAlumno/PrincipalAlumno?roomID=${token}`;
+                window.history.replaceState({}, '', newUrl);
+                // Recargar la pestaña actual
+                window.location.reload();
+            } catch (error) {
+                console.error('Error al obtener el token:', error);
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo obtener el token. Inténtalo de nuevo más tarde.'
+                });
+            }
+        }
+
+    const handleRechazarEmparejamiento = async (PK_EMPAREJAMIENTO,rol) => {
         try {           
             // Aqui primero se hacec una consulta para obtener el estado del emparejamiento, si esta pendiente o activo, dependiendo, se hace el rechazo o se finaliza el emparejamiento
             const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/saberEstado?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
@@ -195,20 +266,21 @@ const DetalleEmparejamiento = () => {
                 });
             }else if (response.data == 3) {
                 console.log("dio 3");
-                await axios.post(`https://201.124.154.2:3001/api/emparejamiento/preFinalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
-
-                let promedio = abrirModal(PK_EMPAREJAMIENTO); // Abre el modal y obtiene el promedio
+                console.log(rol);
+                await axios.post(`http://localhost:3001/api/emparejamiento/preFinalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                let promedio = abrirModal(PK_EMPAREJAMIENTO,rol); // Abre el modal y obtiene el promedio
                 console.log("La suma de respuestas es:", promedio);
 
                 console.log("Soy una consulta y recibo este parametro", promedio);
 
                 //axios hacer consulta del pk y promedio
-                //axios.post(`https://201.124.154.2:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&CALIFICACION=${promedio}`);
-               //update en la base con la calificacion where  // Espera hasta que se resuelva abrirModal
+                //axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&CALIFICACION=${promedio}`);
+                //update en la base con la calificacion where  // Espera hasta que se resuelva abrirModal
                // console.log(calif);
             }else if(response.data == 1){
                 console.log("dio 1");
-                await axios.post(`https://201.124.154.2:3001/api/emparejamiento/rechazarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                await axios.post(`http://localhost:3001/api/emparejamiento/rechazarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                //handleDeleteCard(index,dato);
             }
         } catch (error) {
            
@@ -216,9 +288,9 @@ const DetalleEmparejamiento = () => {
         }
     };
 
-    const abrirModalParaEvaluar = async (PK_EMPAREJAMIENTO) => {
+    const abrirModalParaEvaluar = async (PK_EMPAREJAMIENTO,rol) => {
         try {
-            abrirModal(PK_EMPAREJAMIENTO);
+            abrirModal(PK_EMPAREJAMIENTO,rol);
         } catch (error) {
             console.error('Error al activar el emparejamiento:', error);
         }
@@ -250,23 +322,41 @@ const DetalleEmparejamiento = () => {
                                 </div>
                                 <div className="row">
                                     <div className="col">
-                                        <button className="btn_rechazo" onClick={() => handleRechazarEmparejamiento(aprendiz.PK_EMPAREJAMIENTO)}>
+                                        <button className="btn_rechazo" onClick={() => handleRechazarEmparejamiento(aprendiz.PK_EMPAREJAMIENTO,aprendiz.rol)}>
                                             X
                                         </button>
                                     </div>
                                     <div className="col">
                                     {aprendiz.estado == 1 ? (
                                     // Aquí va tu condición y lo que deseas renderizar si se cumple la primera condición
-                                    <span>Pendiente</span>
+                                        <div class="col">
+                                            <p>Pendiente</p>
+                                            <i className="bi bi-clock-fill fs-1 text-primary"></i>
+                                        </div>
+                                    ) : aprendiz.estado == 2 ? (
+                                        <div class="col">
+                                            <p>Finalizado</p>
+                                            <i className="bi bi-person-badge-fill fs-1 text-danger"></i>
+                                        </div>
                                     ) : aprendiz.estado == 3 ? (
-                                    // Aquí va tu condición y lo que deseas renderizar si se cumple la segunda condición
-                                    <span>Activo</span>
+                                        <div class="col">
+                                            <p>Activo</p>
+                                            <i className="bi bi-person-fill-check fs-1 text-success"></i>
+                                        </div>
+                                    ) : aprendiz.estado == 4 ? (
+                                        <div class="col">
+                                            <p>Rechazado</p>
+                                            <i className="bi bi-person-fill-x fs-1 text-danger"></i>
+                                        </div>
                                     ) : aprendiz.estado == 5 ? (
                                         // Aquí va tu condición y lo que deseas renderizar si se cumple la segunda condición
-                                        <span>Finalizado parcialmente</span>
+                                        <div class="col">
+                                            <p>Finalizado parcialmente</p>
+                                            <i className="bi bi-person-fill-down fs-1 text-success"></i>
+                                        </div>
                                     ): null}
                                     </div>
-                                    <div className="col">TOKEN</div>
+                                    <div className="col">TOKEN<Container><Button onClick={() => obtenerToken(aprendiz.PK_EMPAREJAMIENTO)}>Copiar Token</Button></Container> </div>
                                 </div>
                                 {banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
                                     <div className="row">
@@ -277,7 +367,7 @@ const DetalleEmparejamiento = () => {
                                 ) :banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 5) ? (
                                     <div className="row">
                                         <div className="col">
-                                        <Button onClick={() => abrirModalParaEvaluar(aprendiz.PK_EMPAREJAMIENTO)}>Hacer evaluación</Button>
+                                        <Button onClick={() => abrirModalParaEvaluar(aprendiz.PK_EMPAREJAMIENTO,aprendiz.rol)}>Hacer evaluación</Button>
                                         </div>
                                     </div>
                                 ) : null}
@@ -290,7 +380,7 @@ const DetalleEmparejamiento = () => {
            
             <Card>
                 <Card.Body>
-                    <Card.Title>Mis A.O </Card.Title>
+                    <Card.Title>Mis áreas de oportunidad </Card.Title>
                     {Mentor.map((mentor, index) => (
                         <div className="card" key={index}>
                             <div>
@@ -307,37 +397,55 @@ const DetalleEmparejamiento = () => {
                                 </div>
                                 <div className="row">
                                     <div className="col">
-                                        <button className="btn_rechazo" onClick={() => handleRechazarEmparejamiento(mentor.PK_EMPAREJAMIENTO)}>
+                                        <button className="btn_rechazo" onClick={() => handleRechazarEmparejamiento(mentor.PK_EMPAREJAMIENTO,mentor.rol)}>
                                             X
                                         </button>
                                     </div>
                                     <div className="col">
                                     {mentor.estado == 1 ? (
                                     // Aquí va tu condición y lo que deseas renderizar si se cumple la primera condición
-                                    <span>Pendiente</span>
-                                    ) : mentor.estado == 3 ? (
+                                        <div class="col">
+                                            <p>Pendiente</p>
+                                            <i className="bi bi-clock-fill fs-1 text-primary"></i>
+                                        </div>
+                                    ) : mentor.estado == 2 ? (
                                     // Aquí va tu condición y lo que deseas renderizar si se cumple la segunda condición
-                                    <span>Activo</span>
+                                        <div class="col">
+                                            <p>Finalizado</p>
+                                            <i className="bi bi-person-badge-fill fs-1 text-danger"></i>
+                                        </div>
+                                    ) : mentor.estado == 3 ? (
+                                        <div class="col">
+                                            <p>Activo</p>
+                                            <i className="bi bi-person-fill-check fs-1 text-success"></i>
+                                        </div>
+                                    ) : mentor.estado == 4 ? (
+                                        <div class="col">
+                                            <p>Rechazado</p>
+                                            <i className="bi bi-person-fill-x fs-1 text-danger"></i>
+                                        </div>
                                     ) : mentor.estado == 5 ? (
-                                        // Aquí va tu condición y lo que deseas renderizar si se cumple la segunda condición
-                                        <span>Finalizado parcialmente</span>
+                                        <div class="col">
+                                            <p>Finalizado parcialmente</p>
+                                            <i className="bi bi-person-fill-down fs-1 text-success"></i>
+                                    </div>
                                     ): null}
                                     </div>
-                                    <div className="col">TOKEN</div>
+                                    <div className="col">TOKEN<Container><Button onClick={() => obtenerToken(mentor.PK_EMPAREJAMIENTO)}>Copiar Token</Button></Container> </div>
                                 </div>
                                 {banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
-    <div className="row">
-        <div className="col">
-            <Button onClick={() => handleActivarEmparejamiento(mentor.PK_EMPAREJAMIENTO)}>Activar emparejamiento</Button>
-        </div>
-    </div>
-) : banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 5) ? (
-    <div className="row">
-        <div className="col">
-        <Button onClick={() => abrirModalParaEvaluar(mentor.PK_EMPAREJAMIENTO)}>Hacer evaluación</Button>
-        </div>
-    </div>
-) : null}
+                                <div className="row">
+                                    <div className="col">
+                                        <Button onClick={() => handleActivarEmparejamiento(mentor.PK_EMPAREJAMIENTO)}>Activar emparejamiento</Button>
+                                    </div>
+                                </div>
+                                ) : banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 5) ? (
+                                    <div className="row">
+                                        <div className="col">
+                                        <Button onClick={() => abrirModalParaEvaluar(mentor.PK_EMPAREJAMIENTO,mentor.rol)}>Hacer evaluación</Button>
+                                        </div>
+                                    </div>
+                                ) : null}
                             </div>
                         </div>
                     ))}
@@ -345,16 +453,20 @@ const DetalleEmparejamiento = () => {
                 </Card>
             <Modal show={showModal} onHide={() => {}} backdrop="static" keyboard={false} size="xl">
                 <Modal.Header>
-                    <Modal.Title>Califica a tu mentor o aprendiz</Modal.Title>
+                    <Modal.Title>Califica a tu {rol == '1' ? "mentor" : "aprendiz"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <h3>Te agradezco por participar en este emparejamiento, por favor, califica mi desempeño llenando el formulario que se presenta a continuación:</h3>
                     <Card>
+                    
                     <CardBody>
+                            
                             {currentPage === 1 && (
                                 <Form>
                                     <Form.Group>
-                                        <Form.Label>¿Cómo considerarías tu fortalecimiento de seguridad al exponer tus dudas?</Form.Label>
+                                    {rol == '1' ?
+                                        <Form.Label>¿Qué tan claro fue en sus explicaciones?</Form.Label>
+                                    : <Form.Label>¿Que tanto asistió a sus sesiones?</Form.Label>}
                                         <div>
                                             <Form.Check 
                                                 type="radio" 
@@ -370,6 +482,7 @@ const DetalleEmparejamiento = () => {
                                                 value={2}
                                                 checked={respuesta1 === 2} 
                                                 onChange={handleRespuesta1} 
+                                                onClick={() => handleRespuesta1({ target: { value: 0 } })} 
                                                 
                                             />
                                             <Form.Check 
@@ -378,6 +491,7 @@ const DetalleEmparejamiento = () => {
                                                 value={3} 
                                                 checked={respuesta1 === 3} 
                                                 onChange={handleRespuesta1} 
+                                                onClick={() => handleRespuesta1({ target: { value: 0 } })} 
                                                 
                                             />
                                             <Form.Check 
@@ -386,6 +500,7 @@ const DetalleEmparejamiento = () => {
                                                 value={4} 
                                                 checked={respuesta1 === 4} 
                                                 onChange={handleRespuesta1} 
+                                                onClick={() => handleRespuesta1({ target: { value: 0 } })} 
                                                
                                             />
                                         </div>
@@ -395,7 +510,9 @@ const DetalleEmparejamiento = () => {
                             {currentPage === 2 && (
                                 <Form>
                                 <Form.Group>
-                                    <Form.Label>¿Cómo consideras que fue la fluidez en la comunicación con tu pareja?</Form.Label>
+                                {rol == '1' ?
+                                        <Form.Label>¿Qué tanto te ayudó a aclarar las dudas que obtuviste?</Form.Label>
+                                : <Form.Label>¿Qué tanto consideras que tuvo una actitud positiva?</Form.Label>}
                                     <div>
                                         <Form.Check 
                                             type="radio" 
@@ -403,6 +520,7 @@ const DetalleEmparejamiento = () => {
                                             value={1} 
                                             checked={respuesta2 === 1} 
                                             onChange={handleRespuesta2} 
+                                            onClick={() => handleRespuesta2({ target: { value: 0 } })}
                                            
                                         />
                                         <Form.Check 
@@ -411,7 +529,7 @@ const DetalleEmparejamiento = () => {
                                             value={2} 
                                             checked={respuesta2 === 2} 
                                             onChange={handleRespuesta2} 
-                                            
+                                            onClick={() => handleRespuesta2({ target: { value: 0 } })}
                                         />
                                         <Form.Check 
                                             type="radio" 
@@ -419,7 +537,7 @@ const DetalleEmparejamiento = () => {
                                             value={3} 
                                             checked={respuesta2 === 3} 
                                             onChange={handleRespuesta2} 
-                                           
+                                            onClick={() => handleRespuesta2({ target: { value: 0 } })}
                                         />
                                         <Form.Check 
                                             type="radio" 
@@ -427,16 +545,19 @@ const DetalleEmparejamiento = () => {
                                             value={4} 
                                             checked={respuesta2 === 4} 
                                             onChange={handleRespuesta2} 
-                                           
+                                            onClick={() => handleRespuesta2({ target: { value: 0 } })}
                                         />
                                     </div>
                                 </Form.Group>
                             </Form>
                             )}
+                            
                             {currentPage === 3 && (
                                 <Form>
                                 <Form.Group>
-                                    <Form.Label>¿Cómo consideras que fue tu desempeño en tu rol?</Form.Label>
+                                {rol == '1' ?
+                                    <Form.Label>¿Qué tanto lo recomendarías?</Form.Label>
+                                : <Form.Label>¿Qué tanto cumplió con las actividades asignadas?</Form.Label>}
                                     <div>
                                         <Form.Check 
                                             type="radio" 
@@ -444,7 +565,7 @@ const DetalleEmparejamiento = () => {
                                             value={1} 
                                             checked={respuesta3 === 1} 
                                             onChange={handleRespuesta3} 
-                                           
+                                            onClick={() => handleRespuesta3({ target: { value: 0 } })}
                                         />
                                         <Form.Check 
                                             type="radio" 
@@ -452,7 +573,7 @@ const DetalleEmparejamiento = () => {
                                             value={2}
                                             checked={respuesta3 === 2} 
                                             onChange={handleRespuesta3} 
-                                           
+                                            onClick={() => handleRespuesta3({ target: { value: 0 } })}
                                         />
                                         <Form.Check 
                                             type="radio" 
@@ -460,7 +581,7 @@ const DetalleEmparejamiento = () => {
                                             value={3}
                                             checked={respuesta3 === 3} 
                                             onChange={handleRespuesta3} 
-                                           
+                                            onClick={() => handleRespuesta3({ target: { value: 0 } })}
                                         />
                                         <Form.Check 
                                             type="radio" 
@@ -468,89 +589,7 @@ const DetalleEmparejamiento = () => {
                                             value={4} 
                                             checked={respuesta3 === 4} 
                                             onChange={handleRespuesta3} 
-                                           
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </Form>
-                            )}
-                            {currentPage === 4 && (
-                                <Form>
-                                <Form.Group>
-                                    <Form.Label>¿Cómo evaluarías tu experiencia general en esta clase?</Form.Label>
-                                    <div>
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Mala" 
-                                            value={1} 
-                                            checked={respuesta4 === 1} 
-                                            onChange={handleRespuesta4} 
-                                            
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Regular" 
-                                            value={2}
-                                            checked={respuesta4 === 2} 
-                                            onChange={handleRespuesta4} 
-                                            
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Buena" 
-                                            value={3}
-                                            checked={respuesta4 === 3} 
-                                            onChange={handleRespuesta4} 
-                                           
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Muy buena" 
-                                            value={4}
-                                            checked={respuesta4 === 4} 
-                                            onChange={handleRespuesta4} 
-                                           
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </Form>
-                            )}
-                            {currentPage === 5 && (
-                                <Form>
-                                <Form.Group>
-                                    <Form.Label>¿Cómo te ha parecido la orientación que has recibido hasta ahora en la clase?</Form.Label>
-                                    <div>
-                                    <Form.Check 
-                                            type="radio" 
-                                            label="Mala" 
-                                            value={1}
-                                            checked={respuesta5 === 1} 
-                                            onChange={handleRespuesta5} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Regular" 
-                                            value={2}
-                                            checked={respuesta5 === 2} 
-                                            onChange={handleRespuesta5} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Buena" 
-                                            value={3}
-                                            checked={respuesta5 === 3} 
-                                            onChange={handleRespuesta5} 
-                                            name="rating"
-                                        />
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Muy buena" 
-                                            value={4}
-                                            checked={respuesta5 === 4} 
-                                            onChange={handleRespuesta5} 
-                                            name="rating"
+                                            onClick={() => handleRespuesta3({ target: { value: 0 } })}
                                         />
                                     </div>
                                 </Form.Group>
@@ -565,11 +604,8 @@ const DetalleEmparejamiento = () => {
                         <Pagination.Item active={currentPage === 1} onClick={() => setCurrentPage(1)}>1</Pagination.Item>
                         <Pagination.Item active={currentPage === 2} onClick={() => setCurrentPage(2)}>2</Pagination.Item>
                         <Pagination.Item active={currentPage === 3} onClick={() => setCurrentPage(3)}>3</Pagination.Item>
-                        <Pagination.Item active={currentPage === 4} onClick={() => setCurrentPage(4)}>4</Pagination.Item>
-                        <Pagination.Item active={currentPage === 5} onClick={() => setCurrentPage(5)}>5</Pagination.Item>
-                        <Pagination.Next onClick={nextPage} disabled={currentPage === 5} />
+                        <Pagination.Next onClick={nextPage} disabled={currentPage === 3} />
                     </Pagination>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>Cancelar</Button>
                     <Button variant="primary" onClick={enviarModal}>Enviar</Button>
                 </Modal.Footer>
             </Modal>

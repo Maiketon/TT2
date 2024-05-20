@@ -87,14 +87,19 @@ SELECT * FROM area;
 SELECT * FROM estatus;
 SELECT * FROM medallas;
 SELECT * FROM  controlmedallas;
+SELECT * FROM controlmedallas WHERE FK_USUARIOINFO =61;
 SELECT * FROM  informacionusuario;
-SELECT * FROM  informacionusuario WHERE PK_USUARIO=47;
+
+SELECT * FROM  informacionusuario WHERE FK_ESTATUSUSUARIO=5;
+SELECT * FROM  informacionusuario WHERE EMAIL='miguelangelmontoyabautista@gmail.com';
 SELECT * FROM estadosemparejamientos;
 SELECT * FROM emparejamiento;
 SELECT * FROM comunicacionzg;
 SELECT * FROM reportesusuarios;
+UPDATE `learnmatch`.`reportesusuarios` SET `VALIDO` = '0' WHERE (`PK_REPORTE` = '1');
+SELECT * FROM  informacionusuario WHERE PK_USUARIO=28;
 ALTER TABLE informacionusuario AUTO_INCREMENT = 1;
-SELECT COUNT(*) FROM informacionusuario;
+SELECT COUNT(*) FROM informacionusuario WHERE PK_USUARIO=28;
 SELECT COUNT(*) FROM emparejamiento;
 SELECT PK_CONTROLMEDALLAS,FK_MEDALLA, ESTADO FROM controlMedallas WHERE FK_USUARIOINFO = 8;
 SELECT
@@ -109,6 +114,20 @@ INSERT INTO medallas (PK_MEDALLAS,NOMBRE_MEDALLA) VALUES
 ('BUENA ESCUCHA'),
 ('COMUNICADOR ESTELAR'),
 ('GRAN CONEXIÓN COMUNITARIA');
+-- TABLAS PARA BORRAR SI ES NECESARIO VOLVER A METER NUEVOS REGISTROS --
+SELECT * FROM reportesusuarios;
+SELECT * FROM  controlmedallas;
+SELECT * FROM emparejamiento;
+SELECT * FROM reportesusuarios;
+SELECT * FROM  informacionusuario;
+ALTER TABLE informacionusuario AUTO_INCREMENT = 1;
+ALTER TABLE controlmedallas AUTO_INCREMENT = 1;
+ALTER TABLE reportesusuarios AUTO_INCREMENT = 1;
+ALTER TABLE emparejamiento AUTO_INCREMENT = 1;
+
+
+
+
 
 -- CATALOGO DE MATERIAS --
 INSERT INTO materia (NOMBRE_MATERIA, FK_AREA, DESCRIPCION) VALUES 
@@ -210,4 +229,87 @@ FOREIGN KEY (FK_AREA) REFERENCES area(PK_AREA);
 
 
 
+DELIMITER //
+
+CREATE PROCEDURE InsertTestData()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    DECLARE def1 INT;
+    DECLARE def2 INT;
+    DECLARE def3 INT;
+    DECLARE ens1 INT;
+    DECLARE ens2 INT;
+    DECLARE ens3 INT;
+    DECLARE last_insert_id INT;
+
+    WHILE i <= 100 DO
+        -- Generar valores únicos para FK_DEFICIENCIA y FK_ENSEÑANZA
+        SET def1 = FLOOR(1 + (RAND() * 11));
+        SET def2 = def1;
+        WHILE def2 = def1 DO
+            SET def2 = FLOOR(1 + (RAND() * 11));
+        END WHILE;
+        SET def3 = def1;
+        WHILE def3 = def1 OR def3 = def2 DO
+            SET def3 = FLOOR(1 + (RAND() * 11));
+        END WHILE;
+
+        SET ens1 = def1;
+        WHILE ens1 = def1 OR ens1 = def2 OR ens1 = def3 DO
+            SET ens1 = FLOOR(1 + (RAND() * 11));
+        END WHILE;
+        SET ens2 = ens1;
+        WHILE ens2 = ens1 OR ens2 = def1 OR ens2 = def2 OR ens2 = def3 DO
+            SET ens2 = FLOOR(1 + (RAND() * 11));
+        END WHILE;
+        SET ens3 = ens1;
+        WHILE ens3 = ens1 OR ens3 = ens2 OR ens3 = def1 OR ens3 = def2 OR ens3 = def3 DO
+            SET ens3 = FLOOR(1 + (RAND() * 11));
+        END WHILE;
+
+        INSERT INTO informacionusuario (
+            FK_ESTATUSUSUARIO, NOMBRE, APELLIDO_PATERNO, APELLIDO_MATERNO, EMAIL, PSW,
+            SANCIONES, CALIFICACION, FK_DEFICIENCIA1, FK_DEFICIENCIA2, FK_DEFICIENCIA3,
+            FK_ENSEÑANZA1, FK_ENSEÑANZA2, FK_ENSEÑANZA3, FECHA_CREACION, CARRERA,
+            SEMESTRE, RECHAZOS, CALIFICACION_MENTOR, CALIFICACION_APRENDIZ
+        ) VALUES (
+            4, 
+            CONCAT('PRUEBA', i),
+            CONCAT('PRUEBAAPELLIDOP', i),
+            CONCAT('PRUEBAPELLIEDOM', i),
+            CONCAT('correoprueba', i, '@gmail.com'),
+            '12345678',
+            0,
+            5.00,
+            def1,
+            def2,
+            def3,
+            ens1,
+            ens2,
+            ens3,
+            NOW(),
+            1,
+            IF(i MOD 2 = 0, 2, 1),
+            9,
+            5.00,
+            5.00
+        );
+
+        SET last_insert_id = LAST_INSERT_ID();
+
+        INSERT INTO controlmedallas (FK_USUARIOINFO, FK_MEDALLA, ESTADO) VALUES (last_insert_id, 1, 0);
+        INSERT INTO controlmedallas (FK_USUARIOINFO, FK_MEDALLA, ESTADO) VALUES (last_insert_id, 2, 0);
+        INSERT INTO controlmedallas (FK_USUARIOINFO, FK_MEDALLA, ESTADO) VALUES (last_insert_id, 3, 0);
+        INSERT INTO controlmedallas (FK_USUARIOINFO, FK_MEDALLA, ESTADO) VALUES (last_insert_id, 4, 0);
+        INSERT INTO controlmedallas (FK_USUARIOINFO, FK_MEDALLA, ESTADO) VALUES (last_insert_id, 5, 0);
+        INSERT INTO controlmedallas (FK_USUARIOINFO, FK_MEDALLA, ESTADO) VALUES (last_insert_id, 6, 0);
+
+        SET i = i + 1;
+    END WHILE;
+END //
+
+DELIMITER ;
+
+-- Ejecutar el procedimiento para insertar los datos
+CALL InsertTestData();
 

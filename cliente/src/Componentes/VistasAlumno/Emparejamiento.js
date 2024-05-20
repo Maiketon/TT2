@@ -22,9 +22,9 @@ const Emparejamiento = () => {
     //const bandera = sessionStorage.getItem("bandera");
     const numemparejamientos = Cookies.get('totalEmparejamientos');
     //const numemparejamientos = sessionStorage.getItem("totalEmparejamientos");
-    const total_aprendiz = Cookies.get('totalAprendiz');
+    let total_aprendiz = Cookies.get('totalAprendiz');
     //const total_aprendiz = parseInt(sessionStorage.getItem("totalAprendiz"));
-    const total_enseñante = Cookies.get('totalEnsenante');
+    let total_ensenante = Cookies.get('totalEnsenante');
     //const total_enseñante = parseInt(sessionStorage.getItem("totalEnseñante"));
     
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
@@ -81,8 +81,10 @@ useEffect(() => {
 }, [deleteAcceptPairmentCard]);
 
 const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
+    const bandera =  parseInt(Cookies.get('bandera'));
     console.log("Esta es bandera ");
     console.log(bandera);
+
     console.log("Este es el tipo de coincidencia");
     console.log(tipoCoincidencia);
     let total_aprendizDisponible = 0;
@@ -95,21 +97,26 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
     try {
         const totalEmparejamientos =  parseInt(Cookies.get('totalEmparejamientos'));
         //const totalEmparejamientos = parseInt(sessionStorage.getItem("totalEmparejamientos"));
-        let totalEmparejamientosActualizados = totalEmparejamientos + 1;
-        if (totalEmparejamientos === 4) {
+        console.log("Esta es la bandera Disponible");
+        console.log(banderaDisponible);
+        
+        if (totalEmparejamientos >= 4) {
             Swal.fire({
                 title: 'No puedes hacer más emparejamientos',
                 text: 'Revisa tus emparejamientos.',
                 icon: 'warning',
                 confirmButtonText: 'Aceptar'
             });
-        } else if(banderaDisponible == 1 && tipoCoincidencia === "Aprendiz") {
+            return;
+        }  
+        else if(banderaDisponible == 1 && tipoCoincidencia === "Aprendiz") {
             Swal.fire({
                 title: 'No puedes hacer más emparejamientos del rol de aprendiz',
                 text: 'Revisa tus emparejamientos.',
                 icon: 'warning',
                 confirmButtonText: 'Aceptar'
             });
+            return;
         } else if(banderaDisponible == 2 && tipoCoincidencia === "Mentor") {
             Swal.fire({
                 title: 'No puedes hacer más emparejamientos del rol de mentor',
@@ -117,6 +124,7 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
                 icon: 'warning',
                 confirmButtonText: 'Aceptar'
             });
+            return;
         }else
         {
            banderaColisiones = await verificarColision(pkUsuarioCandidato, tipoCoincidencia);
@@ -137,31 +145,49 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
         }
 
         else {
-            const response = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/insertarRegistros?usuarioPrincipalPK=${userPk}&tipoCoincidencia=${tipoCoincidencia}&usuarioCandidatoPK=${pkUsuarioCandidato}`);
+            const response = await axios.post(`http://localhost:3001/api/emparejamiento/insertarRegistros?usuarioPrincipalPK=${userPk}&tipoCoincidencia=${tipoCoincidencia}&usuarioCandidatoPK=${pkUsuarioCandidato}`);
+            let totalEmparejamientosActualizados = totalEmparejamientos + 1;
             Cookies.set('totalEmparejamientos', totalEmparejamientosActualizados, { expires: 1 });
             //sessionStorage.setItem('totalEmparejamientos',totalEmparejamientosActualizados );
             // Realizar cualquier otra acción necesaria después de insertar el registro
-        }
-        if(tipoCoincidencia === "Aprendiz"){
-            total_aprendizDisponible = total_aprendiz + 1;
+        
+        if(tipoCoincidencia == "Aprendiz"){
+            console.log("Entre a aprendiz");
+            total_aprendiz = Cookies.get('totalAprendiz');
+            console.log(total_aprendiz);
+            total_aprendizDisponible = parseInt(total_aprendiz) + 1;
+            Cookies.set('totalAprendiz', total_aprendizDisponible, { expires: 1 });
+            console.log(total_aprendizDisponible);
             if(total_aprendizDisponible == 2){
                 banderaDisponible = 1;
                 Cookies.set('bandera', banderaDisponible, { expires: 1 });
+                if(total_ensenante + total_aprendiz >= 4){
+                    banderaDisponible = 3;
+                    Cookies.set('bandera', banderaDisponible, { expires: 1 });
+                }
                 //sessionStorage.setItem('bandera',banderaDisponible );
             }
     
-        }else if(tipoCoincidencia === "Mentor"){
-            total_enseñanteDisponible = total_enseñante + 1;
-            console.log("Este es el total de enseñantes disponibles");
+        }else if(tipoCoincidencia == "Mentor"){
+            console.log("Entre a mentor");
+            total_ensenante = Cookies.get('totalEnsenante');
+            console.log(total_ensenante);
+            total_enseñanteDisponible = parseInt(total_ensenante) + 1;
+            Cookies.set('totalEnsenante', total_enseñanteDisponible, { expires: 1 });
             console.log(total_enseñanteDisponible);
+          
             if(total_enseñanteDisponible == 2){
                 banderaDisponible = 2;
                 Cookies.set('bandera', banderaDisponible, { expires: 1 });
-                
+                if(total_ensenante + total_aprendiz == 4){
+                    banderaDisponible = 3;
+                    Cookies.set('bandera', banderaDisponible, { expires: 1 });
+                }
                 //sessionStorage.setItem('bandera',banderaDisponible );
                 
             }
         }
+    }
     } catch (error) {
         console.error('Error al realizar la actualización de rechazos', error);
     }
@@ -224,6 +250,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
 
 //MANEJADOR DE LA BARRA DE CARGA
     const handleStartLoading = async () => {
+
         if (parseInt(bandera) !== 3) {
             handleShowModal();
             await obtenerAlumnosEmparejamiento();

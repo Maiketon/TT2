@@ -70,136 +70,133 @@ const SidebarAlumno = ({ setVista }) => {
       const medallaComuE = medallas.length > 0 ? medallas.find(medalla => medalla.FK_MEDALLA === 5) : null;
       const medallaGranC = medallas.length > 0 ? medallas.find(medalla => medalla.FK_MEDALLA === 6) : null;
 
-      // LOGICA PARA LAS PEQUEÑAS CARDS DE LOS EMPAREJAMIENTOS ACTIVOS DE MENTORIAS O AREAS DE OPORTUNIDAD //
-    //   const emparejamientos = [
-    //     { nombreUsuario: "Juan Pérez", iconoPerfil: "/path/to/juan.jpg", caducidad: "2024-12-31", token: "abcd1234", iconoEstado: "/path/to/estado1.jpg" },
-    //     // Otros emparejamientos
-    // ];
     return (
         <>
+    <div class="col">
         <Container>
             <div className="sb_styles">
                 <aside className="sb_styles">
                 <Container>
-    <Row>
-        <Col md={6}>
-            <img
-                className="img_perfil_m"
-                alt="imagen de perfil"
-                src={perfil_generico}
-            />  
-        </Col>
-
-        <Col md={6}>
-            <Container >
-                        <Row>
-                            <Col>
-                                <Row>
-                            {medallaPrimer ? (
-                            <img
-                                src={medalla_Primer}
-                                alt="Medalla de primer emparejamiento"
-                                className={`medalla ${medallaPrimer.ESTADO === 1 ? 'habilitada' : ''}`}
-                                title="Primer emparejamiento completo: Este logro se otorga cuando un usuario completa su primer emparejamiento, ya sea como enseñante o aprendiz."
-                            />
-                        ) : (
-                            <p>Medalla no encontrada o datos aún no cargados</p>
-                        )}
-                                </Row>
-                                <Row>
-                                            {medallaCincoE ? (
-                            <img
-                                src={medalla_Cinco}
-                                alt="Medalla de Ejemplo"
-                                className={`medalla ${medallaCincoE.ESTADO === 1 ? 'habilitada' : ''}`}
-                                title=" Cinco emparejamientos completos: Otorga este logro a los usuarios que han completado cinco emparejamientos, destacando su compromiso continuo con la plataforma."
-                            />
-                        ) : (
-                            <p>Medalla no encontrada o datos aún no cargados</p>
-                        )}
-                                </Row>
-                            </Col>
-                            <Col>
-                                <Row>
-                                {medallaBuenM ? (
-                            <img
-                                src={medalla_Maestro}
-                                alt="Medalla de buen mentor"
-                                className={`medalla ${medallaBuenM.ESTADO === 1 ? 'habilitada' : ''}`}
-                                title="Buen mentor: Reconoce a los usuarios que han completado al menos 10 emparejamientos como enseñante y han recibido una calificación de cinco estrellas en cada uno. Este logro destaca la calidad y efectividad de su enseñanza."
-                            />
-                        ) : (
-                            <p>Medalla no encontrada o datos aún no cargados</p>
-                        )}
-                                </Row>
-
-                                <Row>
-                                
-                            {medallaEscucha ? (
-                            <img
-                                src={medalla_Escucha}
-                                alt="Medalla de buena escucha"
-                                className={`medalla ${medallaEscucha.ESTADO === 1 ? 'habilitada' : ''}`}
-                                title="Buena escucha: Premia a los usuarios que, como aprendices, han completado 10 emparejamientos en sus áreas de oportunidad (donde más necesitan mejorar), recibiendo en cada uno una calificación de cinco estrellas. Este logro enfatiza su compromiso y capacidad para aprender y aplicar nuevas habilidades."
-                            />
-                        ) : (
-                            <p>Medalla no encontrada o datos aún no cargados</p>
-                                )}
-                                </Row>
-                            </Col>
-                            <Col>
-                                <Row>
-                                {medallaComuE ? (
-                            <img
-                                src={medalla_Comunicados}
-                                alt="Medalla de Ejemplo"
-                                className={`medalla ${medallaComuE.ESTADO === 1 ? 'habilitada' : ''}`}
-                                title="Comunicador estelar: Este logro se puede dar a aquellos usuarios que, en más de 15 emparejamientos, han recibido calificaciones positivas por su habilidad de comunicación, tanto en el rol de enseñante como de aprendiz. Este logro valora la habilidad de mantener una comunicación clara y efectiva, un aspecto crucial en cualquier proceso de enseñanza-aprendizaje."
-                            />
-                        ) : (
-                            <p>Medalla no encontrada o datos aún no cargados</p>
-                                )}
-                                </Row>
-                                <Row>
-                            {medallaGranC ? (
-                            <img
-                                src={medalla_Conex}
-                                alt="Medalla de Ejemplo"
-                                className={`medalla ${medallaGranC.ESTADO === 1 ? 'habilitada' : ''}`}
-                                title="Gran conexión comunitaria: Este logro se da a aquella persona que tiene 100 emparejamientos totales o más. Este logro tiene como objetivo valorar la participación de un alumno en LearnMatch."
-                            />
-                        ) : (
-                            <p>Medalla no encontrada o datos aún no cargados</p>
-                                )}
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Container>
+        <Row>
+            <Col md={6}>
+                <img
+                    className="img_perfil_m"
+                    alt="imagen de perfil"
+                    src={perfil_generico}
+                />  
             </Col>
-                        </Row>
-                </Container>
 
-                    <Menu> 
-                        <hr />
-                            <div className="menu_list">
-                                <MenuItem className="objeto-menu" icon={<i className="bi bi-book-half"></i>} onClick={() => setVista('inicio')}><span className="txt_hdn">Emparejamiento</span></MenuItem>
-                                <MenuItem className="objeto-menu" icon={<i className="bi bi-person-fill-check"></i>} onClick={() => setVista('empact')}><span className="txt_hdn">Emparejamientos activos</span></MenuItem>
-                                <MenuItem className="objeto-menu" icon={<i className="bi bi-clipboard2-pulse-fill"></i>} onClick={() => setVista('preferencias')}><span className="txt_hdn">Preferencias académicas</span></MenuItem>
-                                <MenuItem className="objeto-menu" icon={<i className="bi bi-camera-video-fill"></i>} onClick={() => setVista('comunicacion')}><span className="txt_hdn">Comunicación con usuarios</span></MenuItem>
-                                <MenuItem className="objeto-menu" icon={<i roomID="TT2024" className="bi bi-gear-wide"></i>} onClick={() => setVista('configuracion')}><span className="txt_hdn">Configuración</span></MenuItem>
-                            </div>
-                        </Menu>
-                        <hr />
-                    <Button className="btn-cerrar-sesion" onClick={handleLogout}>Cerrar Sesión</Button>
-                    <Container>
-           
-        </Container>
+            <Col md={6}>
+                <Container>
+                            <Row>
+                                <Col>
+                                    <Row>
+                                {medallaPrimer ? (
+                                <img
+                                    src={medalla_Primer}
+                                    alt="Medalla de primer emparejamiento"
+                                    className={`medalla ${medallaPrimer.ESTADO === 1 ? 'habilitada' : ''}`}
+                                    title="Primer emparejamiento completo: Este logro se otorga cuando un usuario completa su primer emparejamiento, ya sea como enseñante o aprendiz."
+                                />
+                            ) : (
+                                <p>Medalla no encontrada o datos aún no cargados</p>
+                            )}
+                                    </Row>
+                                    <Row>
+                                                {medallaCincoE ? (
+                                <img
+                                    src={medalla_Cinco}
+                                    alt="Medalla de Ejemplo"
+                                    className={`medalla ${medallaCincoE.ESTADO === 1 ? 'habilitada' : ''}`}
+                                    title=" Cinco emparejamientos completos: Otorga este logro a los usuarios que han completado cinco emparejamientos, destacando su compromiso continuo con la plataforma."
+                                />
+                            ) : (
+                                <p>Medalla no encontrada o datos aún no cargados</p>
+                            )}
+                                    </Row>
+                                </Col>
+                                <Col>
+                                    <Row>
+                                    {medallaBuenM ? (
+                                <img
+                                    src={medalla_Maestro}
+                                    alt="Medalla de buen mentor"
+                                    className={`medalla ${medallaBuenM.ESTADO === 1 ? 'habilitada' : ''}`}
+                                    title="Buen mentor: Reconoce a los usuarios que han completado al menos 10 emparejamientos como enseñante y han recibido una calificación de cinco estrellas en cada uno. Este logro destaca la calidad y efectividad de su enseñanza."
+                                />
+                            ) : (
+                                <p>Medalla no encontrada o datos aún no cargados</p>
+                            )}
+                                    </Row>
+
+                                    <Row>
+                                    
+                                {medallaEscucha ? (
+                                <img
+                                    src={medalla_Escucha}
+                                    alt="Medalla de buena escucha"
+                                    className={`medalla ${medallaEscucha.ESTADO === 1 ? 'habilitada' : ''}`}
+                                    title="Buena escucha: Premia a los usuarios que, como aprendices, han completado 10 emparejamientos en sus áreas de oportunidad (donde más necesitan mejorar), recibiendo en cada uno una calificación de cinco estrellas. Este logro enfatiza su compromiso y capacidad para aprender y aplicar nuevas habilidades."
+                                />
+                            ) : (
+                                <p>Medalla no encontrada o datos aún no cargados</p>
+                                    )}
+                                    </Row>
+                                </Col>
+                                <Col>
+                                    <Row>
+                                    {medallaComuE ? (
+                                <img
+                                    src={medalla_Comunicados}
+                                    alt="Medalla de Ejemplo"
+                                    className={`medalla ${medallaComuE.ESTADO === 1 ? 'habilitada' : ''}`}
+                                    title="Comunicador estelar: Este logro se puede dar a aquellos usuarios que, en más de 15 emparejamientos, han recibido calificaciones positivas por su habilidad de comunicación, tanto en el rol de enseñante como de aprendiz. Este logro valora la habilidad de mantener una comunicación clara y efectiva, un aspecto crucial en cualquier proceso de enseñanza-aprendizaje."
+                                />
+                            ) : (
+                                <p>Medalla no encontrada o datos aún no cargados</p>
+                                    )}
+                                    </Row>
+                                    <Row>
+                                {medallaGranC ? (
+                                <img
+                                    src={medalla_Conex}
+                                    alt="Medalla de Ejemplo"
+                                    className={`medalla ${medallaGranC.ESTADO === 1 ? 'habilitada' : ''}`}
+                                    title="Gran conexión comunitaria: Este logro se da a aquella persona que tiene 100 emparejamientos totales o más. Este logro tiene como objetivo valorar la participación de un alumno en LearnMatch."
+                                />
+                            ) : (
+                                <p>Medalla no encontrada o datos aún no cargados</p>
+                                    )}
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </Container>
+                </Col>
+                            </Row>
+                    </Container>
+
+                        <Menu> 
+                            <hr />
+                                <div className="menu_list">
+                                    <MenuItem className="objeto-menu" icon={<i className="bi bi-book-half"></i>} onClick={() => setVista('inicio')}><span className="txt_hdn">Emparejamiento</span></MenuItem>
+                                    <MenuItem className="objeto-menu" icon={<i className="bi bi-person-fill-check"></i>} onClick={() => setVista('empact')}><span className="txt_hdn">Emparejamientos activos</span></MenuItem>
+                                    <MenuItem className="objeto-menu" icon={<i className="bi bi-clipboard2-pulse-fill"></i>} onClick={() => setVista('preferencias')}><span className="txt_hdn">Preferencias académicas</span></MenuItem>
+                                    <MenuItem className="objeto-menu" icon={<i className="bi bi-camera-video-fill"></i>} onClick={() => setVista('comunicacion')}><span className="txt_hdn">Comunicación con usuarios</span></MenuItem>
+                                    <MenuItem className="objeto-menu" icon={<i roomID="TT2024" className="bi bi-gear-wide"></i>} onClick={() => setVista('configuracion')}><span className="txt_hdn">Configuración</span></MenuItem>
+                                </div>
+                            </Menu>
+                            <hr />
+                        <Button className="btn-cerrar-sesion" onClick={handleLogout}>Cerrar Sesión</Button>
+                        <Container>
+            
+            </Container>
+                            
                         
-                    
-                    
-                </aside>
-            </div>
-        </Container>
+                        
+                    </aside>
+                </div>
+            </Container>
+    </div>
         </>
     );
 }

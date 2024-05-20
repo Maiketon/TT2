@@ -22,4 +22,11 @@ router.post('/rechazarEmparejamiento', controlEmparejamiento.rechazarEmparejamie
 router.post('/preFinalizarEmparejamiento',controlEmparejamiento.preFinalizarEmparejamiento);
 router.post('/actualizarCalificacion',controlEmparejamiento.actualizarCalificacion);
 
+router.post('/comprobar2Calificaciones', controlEmparejamiento.comprobar2Calificaciones);
+router.post('/actualizarEstadoEmparejamiento', controlEmparejamiento.actualizarEstadoEmparejamiento);
+
+//ZEGO
+router.post('/hacerTokenSala', controlEmparejamiento.hacertoken);
+router.get('/obtenerToken',controlEmparejamiento.obtenerTokenC);
+
 module.exports = router;

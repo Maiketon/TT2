@@ -53,7 +53,7 @@ const ComunicacionUsuarios = ({ setVista }) => {
 
 
   return (
-    <div className="myCallContainer" ref={myMeeting} style={{height: '100vh' }}>
+    <div className="myCallContainer col" ref={myMeeting} style={{height: '100vh' }}>
   
     </div>
   );

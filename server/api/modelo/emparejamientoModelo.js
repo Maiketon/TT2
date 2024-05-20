@@ -71,14 +71,33 @@ class modeloEmparejamiento{
     
             // Realizar la consulta para obtener todos los registros asociados al usuario
             const [resultado1] = await promesadb.query(sql1, [userPk, userPk, userPk, userPk, userPk, userPk]);
-            
-            // Obtener los totales de enseñantes y aprendices del resultado de la consulta
-            const totalEnseñante = parseInt(resultado1[0].total_enseñante);
-            const totalAprendiz = parseInt(resultado1[0].total_aprendiz);
-            totalEmparejamientos = totalEnseñante + totalAprendiz;
+console.log("Estos son los totales");
+console.log("totalEnseñante: ", resultado1[0].total_enseñante);
+console.log("totalAprendiz: ", resultado1[0].total_aprendiz);
+
+// Declarar las variables fuera de los bloques if
+let totalEnseñante;
+let totalAprendiz;
+
+// Obtener los totales de enseñantes y aprendices del resultado de la consulta
+if (resultado1[0].total_enseñante !== null) {
+    totalEnseñante = parseInt(resultado1[0].total_enseñante);
+} else {
+    totalEnseñante = 0;
+}
+
+if (resultado1[0].total_aprendiz !== null) {
+    totalAprendiz = parseInt(resultado1[0].total_aprendiz);
+} else {
+    totalAprendiz = 0;
+}
+
+ totalEmparejamientos = totalEnseñante + totalAprendiz;
+
+console.log("Total emparejamientos: ", totalEmparejamientos);
     
             // Comprobar el rol según los totales obtenidos
-            if (totalEnseñante === 2 && totalAprendiz === 2) {
+            if (totalEnseñante >= 2 && totalAprendiz >= 2) {
                 console.log("CUATRO EMPAREJAMIENTOS COMPLETOS");
                 bandera = 3;
             } else if (totalEnseñante === 2) {
@@ -88,15 +107,16 @@ class modeloEmparejamiento{
                 console.log("APRENDIZ");
                 bandera = 1;
             } else if (
-                (totalEnseñante === 0 && totalAprendiz === 0) ||
-                (totalEnseñante === 0 && totalAprendiz === 1) ||
-                (totalEnseñante === 1 && totalAprendiz === 0) ||
-                (totalEnseñante === 1 && totalAprendiz === 1)
+                (totalEnseñante == 0 && totalAprendiz == 0) ||
+                (totalEnseñante == 0 && totalAprendiz == 1) ||
+                (totalEnseñante == 1 && totalAprendiz == 0) ||
+                (totalEnseñante == 1 && totalAprendiz == 1)
             ) {
                 console.log("AUN PUEDE EMPAREJAR");
                 bandera = 0;
             } else {
                 console.log("VARIABLE NO RECONOCIDA");
+                bandera = 0;
             }
             console.log("totalEns: ", totalEnseñante, "totalApr: ", totalAprendiz);
             console.log("bandera: ", bandera);
@@ -373,6 +393,105 @@ WHERE
             throw err;
         }
     }
+
+
+    async comprobar2Calificaciones(PK_EMPAREJAMIENTO) {
+        const sql = `
+        SELECT 
+            PK_EMPAREJAMIENTO, 
+            CALIFICACION_USUARIO1, 
+            CALIFICACION_USUARIO2
+        FROM 
+            learnmatch.emparejamiento
+        WHERE 
+            PK_EMPAREJAMIENTO = ? 
+            AND CALIFICACION_USUARIO1 IS NOT NULL
+            AND CALIFICACION_USUARIO2 IS NOT NULL;
+        `;
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [PK_EMPAREJAMIENTO]);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async actualizarEstadoEmparejamiento(PK_EMPAREJAMIENTO) {
+        const sql = `
+        UPDATE learnmatch.emparejamiento
+        SET FK_ESTADOEMPAREJAMIENTO = 2
+        WHERE PK_EMPAREJAMIENTO = ?;
+        `;
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [PK_EMPAREJAMIENTO]);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async generartokenzg(PK_EMPAREJAMIENTO, token)
+    {
+        const sqlSelect = `
+        SELECT FK_USUARIO1, FK_USUARIO2
+        FROM emparejamiento
+        WHERE PK_EMPAREJAMIENTO = ?
+    `;
+    const sqlInsert = `
+        INSERT INTO comunicacionzg (FK_EMPAREJAMIENTO, FK_USUARIO1, FK_USUARIO2, TOKEN)
+        VALUES (?, ?, ?, ?)
+    `;
+    try {
+        // Obtener FK_USUARIO1 y FK_USUARIO2
+        const promesadb = db.promise();
+        const [selectResult] = await promesadb.query(sqlSelect, [PK_EMPAREJAMIENTO]);
+
+        if (!selectResult || selectResult.length === 0) {
+            throw new Error('Emparejamiento no encontrado');
+        }
+
+        const { FK_USUARIO1, FK_USUARIO2 } = selectResult[0];
+
+        // Insertar en comunicacionzg
+        const [insertResult] = await promesadb.query(sqlInsert, [PK_EMPAREJAMIENTO, FK_USUARIO1, FK_USUARIO2, token]);
+        return insertResult;
+    } catch (error) {
+        console.error('Error al generar el token:', error);
+        throw error;
+    }
+    }
+
+    async obtenerTokenPorEmparejamiento(PK_EMPAREJAMIENTO)
+    {
+        const sqlSelect = `
+        SELECT TOKEN
+        FROM comunicacionzg
+        WHERE FK_EMPAREJAMIENTO = ?
+    `;
+
+    try {
+        const promesadb = db.promise();
+        console.log(`Ejecutando consulta: ${sqlSelect} con PK_EMPAREJAMIENTO: ${PK_EMPAREJAMIENTO}`);
+        const [result] = await promesadb.query(sqlSelect, [PK_EMPAREJAMIENTO]);
+
+        console.log('Resultado de la consulta:', result);
+
+        if (!result || result.length === 0) {
+            throw new Error('Token no encontrado');
+        }
+
+        const { TOKEN } = result[0];
+        return TOKEN;
+    } catch (error) {
+        console.error('Error al obtener el token:', error);
+        throw error;
+    }
+    }
+
 
 }
 

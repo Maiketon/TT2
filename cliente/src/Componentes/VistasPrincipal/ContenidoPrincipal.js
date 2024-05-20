@@ -18,7 +18,7 @@ const ContenidoPrincipal = () =>
         </Col>
         <Col>
         <div className='p-1' style={{ textAlign: "justify" }}>
-        ¡Hola a todos! Les presento nuestro último proyecto: una aplicación web diseñada especialmente para impulsar el desarrollo de habilidades blandas como la comunicación y el trabajo en equipo. Esto no es solo para el ámbito académico, sino también te servira para el laboral y personal.
+        ¡Hola a todos! Les presento nuestro último proyecto: una aplicación web diseñada especialmente para impulsar el desarrollo de habilidades blandas como la comunicación y el trabajo en equipo. Esto no es solo para el ámbito académico, sino también te servirá para el laboral y personal.
         </div>
         <div className='p-1' style={{ textAlign: "justify" }}>
         Utilizamos un enfoque súper interesante basado en los 13 tipos de aprendizaje, el modelo VAK y, por supuesto, la famosa Zona de Desarrollo Próximo (ZDP) de Vygotsky. Hablando de Vygotsky, su teoría realmente nos inspira, porque pone énfasis en cómo el aprendizaje social precede al desarrollo individual. Nuestra plataforma aprovecha esta idea para adaptar el material educativo a tu nivel actual, asegurando que siempre estés avanzando desde donde estás.
