@@ -204,6 +204,13 @@ const DetalleEmparejamiento = () => {
 
     const handleActivarEmparejamiento = async (PK_EMPAREJAMIENTO) => {
         try {
+
+               //Se inserta en la tabla en la tabla comunicacionzg un nuevo registro //
+               const generartoken = await axios.post('http://localhost:3001/api/emparejamiento/hacerTokenSala', {
+                PK_EMPAREJAMIENTO: PK_EMPAREJAMIENTO
+            });            
+            console.log('Este es el token generado', generartoken);
+            //Se cambia el estatus del emparejamiento//
             const response = await axios.post(`http://localhost:3001/api/emparejamiento/updateEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
             console.log('Emparejamiento activado exitosamente:', response.data);
             await Swal.fire({
@@ -216,6 +223,34 @@ const DetalleEmparejamiento = () => {
             console.error('Error al activar el emparejamiento:', error);
         }
     };
+
+    const obtenerToken = async(PK_EMPAREJAMIENTO)=>
+        {
+            try {
+                const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerToken?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                const { token } = response.data;
+
+                // Mostrar Sweet Alert
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Token de videochat copiado',
+                    text: 'Ve a tu módulo de Comunicación, coloca tu nombre y entra a la reunión.'
+                });
+
+                // Concatenar el token al final del URL
+                const newUrl = `http://localhost:3000/VistasAlumno/PrincipalAlumno?roomID=${token}`;
+                window.history.replaceState({}, '', newUrl);
+                // Recargar la pestaña actual
+                window.location.reload();
+            } catch (error) {
+                console.error('Error al obtener el token:', error);
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo obtener el token. Inténtalo de nuevo más tarde.'
+                });
+            }
+        }
 
     const handleRechazarEmparejamiento = async (PK_EMPAREJAMIENTO,rol) => {
         try {           
@@ -321,7 +356,7 @@ const DetalleEmparejamiento = () => {
                                         </div>
                                     ): null}
                                     </div>
-                                    <div className="col">TOKEN</div>
+                                    <div className="col">TOKEN<Container><Button onClick={() => obtenerToken(aprendiz.PK_EMPAREJAMIENTO)}>Copiar Token</Button></Container> </div>
                                 </div>
                                 {banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
                                     <div className="row">
@@ -396,7 +431,7 @@ const DetalleEmparejamiento = () => {
                                     </div>
                                     ): null}
                                     </div>
-                                    <div className="col">TOKEN</div>
+                                    <div className="col">TOKEN<Container><Button onClick={() => obtenerToken(mentor.PK_EMPAREJAMIENTO)}>Copiar Token</Button></Container> </div>
                                 </div>
                                 {banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
                                 <div className="row">

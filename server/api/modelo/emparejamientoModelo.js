@@ -434,6 +434,65 @@ WHERE
         }
     }
 
+    async generartokenzg(PK_EMPAREJAMIENTO, token)
+    {
+        const sqlSelect = `
+        SELECT FK_USUARIO1, FK_USUARIO2
+        FROM emparejamiento
+        WHERE PK_EMPAREJAMIENTO = ?
+    `;
+    const sqlInsert = `
+        INSERT INTO comunicacionzg (FK_EMPAREJAMIENTO, FK_USUARIO1, FK_USUARIO2, TOKEN)
+        VALUES (?, ?, ?, ?)
+    `;
+    try {
+        // Obtener FK_USUARIO1 y FK_USUARIO2
+        const promesadb = db.promise();
+        const [selectResult] = await promesadb.query(sqlSelect, [PK_EMPAREJAMIENTO]);
+
+        if (!selectResult || selectResult.length === 0) {
+            throw new Error('Emparejamiento no encontrado');
+        }
+
+        const { FK_USUARIO1, FK_USUARIO2 } = selectResult[0];
+
+        // Insertar en comunicacionzg
+        const [insertResult] = await promesadb.query(sqlInsert, [PK_EMPAREJAMIENTO, FK_USUARIO1, FK_USUARIO2, token]);
+        return insertResult;
+    } catch (error) {
+        console.error('Error al generar el token:', error);
+        throw error;
+    }
+    }
+
+    async obtenerTokenPorEmparejamiento(PK_EMPAREJAMIENTO)
+    {
+        const sqlSelect = `
+        SELECT TOKEN
+        FROM comunicacionzg
+        WHERE FK_EMPAREJAMIENTO = ?
+    `;
+
+    try {
+        const promesadb = db.promise();
+        console.log(`Ejecutando consulta: ${sqlSelect} con PK_EMPAREJAMIENTO: ${PK_EMPAREJAMIENTO}`);
+        const [result] = await promesadb.query(sqlSelect, [PK_EMPAREJAMIENTO]);
+
+        console.log('Resultado de la consulta:', result);
+
+        if (!result || result.length === 0) {
+            throw new Error('Token no encontrado');
+        }
+
+        const { TOKEN } = result[0];
+        return TOKEN;
+    } catch (error) {
+        console.error('Error al obtener el token:', error);
+        throw error;
+    }
+    }
+
+
 }
 
 

@@ -316,3 +316,46 @@ exports.actualizarEstadoEmparejamiento = async (req, res) => {
     }
 }
 
+exports.hacertoken = async (req,res) =>
+    {
+        const {PK_EMPAREJAMIENTO}=req.body;
+        console.log(PK_EMPAREJAMIENTO);
+        try {
+            const roomID = randomID(5);
+            const response = await modeloEmparejamiento.generartokenzg(PK_EMPAREJAMIENTO, roomID);
+            res.json({
+                message: 'Token generado y comunicación creada exitosamente',
+                data: response
+            });
+        } catch (error) {
+            console.error('Error al generar el token:', error);
+            res.status(500).json({ message: 'Error al generar el token' });
+        }
+
+    };
+
+    exports.obtenerTokenC = async (req, res) => {
+        const { PK_EMPAREJAMIENTO } = req.query;
+        try {
+            const token = await modeloEmparejamiento.obtenerTokenPorEmparejamiento(PK_EMPAREJAMIENTO);
+            res.json({ token });
+        } catch (error) {
+            console.error('Error al obtener el token:', error);
+            res.status(500).json({ message: 'Error al obtener el token' });
+        }
+    };
+
+
+
+function randomID(len) {
+  let result = '';
+  if (result) return result;
+  var chars = '12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP',
+    maxPos = chars.length,
+    i;
+  len = len || 5;
+  for (i = 0; i < len; i++) {
+    result += chars.charAt(Math.floor(Math.random() * maxPos));
+  }
+  return result;
+}
