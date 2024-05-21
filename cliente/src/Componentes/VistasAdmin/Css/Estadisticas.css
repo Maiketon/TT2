@@ -22,18 +22,18 @@
 
     
 .container-bg {
-    background-color: var(--Soft-Violet-Hover);
+    background-color: var(--ghots-white);
     min-height: 100vh; /* Asegura que cubra toda la pantalla */
     padding: 20px;
     color: white; /* Ajusta el color del texto */
 }
 
 .card-bg {
-    background-color: var(--Soft-Violet-Hover);
+    background-color: var(--guinda);
     color: white; /* Ajusta el color del texto */
 }
 
 .button-bg {
-    background-color: var(--Soft-Violet-F);
+    background-color:#332f2c;
     color: white; /* Ajusta el color del texto */
 }
