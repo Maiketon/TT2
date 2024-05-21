@@ -89,7 +89,6 @@ SELECT * FROM medallas;
 SELECT * FROM  controlmedallas;
 SELECT * FROM controlmedallas WHERE FK_USUARIOINFO =61;
 SELECT * FROM  informacionusuario;
-
 SELECT * FROM  informacionusuario WHERE FK_ESTATUSUSUARIO=5;
 SELECT * FROM  informacionusuario WHERE EMAIL='miguelangelmontoyabautista@gmail.com';
 SELECT * FROM estadosemparejamientos;
@@ -98,6 +97,8 @@ SELECT * FROM comunicacionzg;
 SELECT * FROM reportesusuarios;
 UPDATE `learnmatch`.`reportesusuarios` SET `VALIDO` = '0' WHERE (`PK_REPORTE` = '1');
 SELECT * FROM  informacionusuario WHERE PK_USUARIO=28;
+SELECT * FROM  informacionusuario WHERE PK_USUARIO=93;
+SELECT * FROM  informacionusuario WHERE PK_USUARIO=67;
 ALTER TABLE informacionusuario AUTO_INCREMENT = 1;
 SELECT COUNT(*) FROM informacionusuario WHERE PK_USUARIO=28;
 SELECT COUNT(*) FROM emparejamiento;
