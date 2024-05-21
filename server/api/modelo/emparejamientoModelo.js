@@ -346,8 +346,8 @@ WHERE
         const sql = `
             UPDATE emparejamiento
             SET 
-                CALIFICACION_USUARIO1 = CASE WHEN FK_USUARIO1 = ? THEN ? ELSE CALIFICACION_USUARIO1 END,
-                CALIFICACION_USUARIO2 = CASE WHEN FK_USUARIO2 = ? THEN ? ELSE CALIFICACION_USUARIO2 END
+                CALIFICACION_USUARIO1 = CASE WHEN FK_USUARIO2 = ? THEN ? ELSE CALIFICACION_USUARIO1 END,
+                CALIFICACION_USUARIO2 = CASE WHEN FK_USUARIO1 = ? THEN ? ELSE CALIFICACION_USUARIO2 END
             WHERE 
                 PK_EMPAREJAMIENTO = ?
             
@@ -368,15 +368,15 @@ WHERE
         CASE 
             WHEN FK_USUARIO1 = ? THEN
                 CASE 
-                    WHEN CALIFICACION_USUARIO2 IS NOT NULL THEN 4
-                    ELSE 5
+                    WHEN CALIFICACION_USUARIO2 IS NOT NULL THEN 5
+                    ELSE 4
                 END
             WHEN FK_USUARIO2 = ? THEN
                 CASE 
-                    WHEN CALIFICACION_USUARIO1 IS NOT NULL THEN 4
-                    ELSE 5
+                    WHEN CALIFICACION_USUARIO1 IS NOT NULL THEN 5
+                    ELSE 4
                 END
-            ELSE 5
+            ELSE 4
         END AS bandera
     FROM emparejamiento
     WHERE PK_EMPAREJAMIENTO = ? AND FK_ESTADOEMPAREJAMIENTO = 5;
@@ -387,8 +387,13 @@ WHERE
             const result = await promesadb.query(sql, [pkuserPaired, pkuserPaired, pkemparejamiento]);
             console.log("esta es desde el backend ",result);
 
-            const bandera = result[0][0].bandera;     
-            return bandera;
+            if(result[0].length === 0){
+                return 0;
+            }else{
+                const bandera = result[0][0].bandera;     
+                return bandera;
+            }
+           
         } catch (err) {
             throw err;
         }
@@ -490,6 +495,79 @@ WHERE
         console.error('Error al obtener el token:', error);
         throw error;
     }
+    }
+
+    async actualizarCalfAlumnoGeneral(userPk){
+        const sql = `
+        SELECT 
+    SUM(CASE
+        WHEN FK_USUARIO1 = ? AND ROL_USUARIO1 = 1 THEN CALIFICACION_USUARIO1
+        WHEN FK_USUARIO2 = ? AND ROL_USUARIO2 = 1 THEN CALIFICACION_USUARIO2
+        ELSE 0
+    END) AS total_calificacion_rol_1,
+    COUNT(CASE
+        WHEN (FK_USUARIO1 = ? AND ROL_USUARIO1 = 1 AND CALIFICACION_USUARIO1 IS NOT NULL)
+        OR (FK_USUARIO2 = ? AND ROL_USUARIO2 = 1 AND CALIFICACION_USUARIO2 IS NOT NULL)
+        THEN 1
+        ELSE NULL
+    END) AS count_calificacion_rol_1,
+    SUM(CASE
+        WHEN FK_USUARIO1 = ? AND ROL_USUARIO1 = 2 THEN CALIFICACION_USUARIO1
+        WHEN FK_USUARIO2 = ? AND ROL_USUARIO2 = 2 THEN CALIFICACION_USUARIO2
+        ELSE 0
+    END) AS total_calificacion_rol_2,
+    COUNT(CASE
+        WHEN (FK_USUARIO1 = ? AND ROL_USUARIO1 = 2 AND CALIFICACION_USUARIO1 IS NOT NULL)
+        OR (FK_USUARIO2 = ? AND ROL_USUARIO2 = 2 AND CALIFICACION_USUARIO2 IS NOT NULL)
+        THEN 1
+        ELSE NULL
+    END) AS count_calificacion_rol_2
+FROM 
+    learnmatch.emparejamiento
+WHERE 
+    (FK_USUARIO1 = ? OR FK_USUARIO2 = ?)
+    AND FK_ESTADOEMPAREJAMIENTO = 2;
+        `;
+
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk,userPk,userPk,userPk,userPk,userPk,userPk,userPk,userPk,userPk]);
+            console.log("resultado de la consulta de acutualizar calificacion ",result);
+            return result[0];
+        } catch (err) {
+            throw err;
+        }
+    }
+    
+    async updatearCalificacion(userPk, promedio_rol_1, promedio_rol_2, promedioGeneral) {
+        // Construimos la parte SET de la consulta de manera condicional
+        let sql = `
+            UPDATE learnmatch.informacionusuario
+            SET CALIFICACION = ?
+        `;
+        
+        // Array de parámetros para la consulta
+        const params = [promedioGeneral, userPk];
+    
+        if (promedio_rol_1 !== 0) {
+            sql += `, CALIFICACION_MENTOR = ?`;
+            params.unshift(promedio_rol_1); // Añadimos al inicio
+        }
+    
+        if (promedio_rol_2 !== 0) {
+            sql += `, CALIFICACION_APRENDIZ = ?`;
+            params.unshift(promedio_rol_2); // Añadimos al inicio
+        }
+    
+        sql += ` WHERE PK_USUARIO = ?`;
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, params);
+            return result;
+        } catch (err) {
+            throw err;
+        }
     }
 
 

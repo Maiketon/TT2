@@ -359,3 +359,46 @@ function randomID(len) {
   }
   return result;
 }
+
+exports.actualizarCalfAlumnoGeneral = async (req, res) => {
+    const {userPk } = req.query;
+    try {
+        console.log(userPk);
+        const response = await modeloEmparejamiento.actualizarCalfAlumnoGeneral(userPk);
+        console.log("Esta es la respuesta");
+        console.log("Total calificación rol 1:", response.total_calificacion_rol_1);
+        console.log("Count calificación rol 1:", response.count_calificacion_rol_1);
+        console.log("Total calificación rol 2:", response.total_calificacion_rol_2);
+        console.log("Count calificación rol 2:", response.count_calificacion_rol_2);
+
+        
+        if(count_calificacion_rol_1 == 0){
+            const promedio_rol_2 = response.total_calificacion_rol_2 / response.count_calificacion_rol_2;
+            const promedio_rol_1 = 0;
+            res.json({promedio_rol_1, promedio_rol_2});
+        }else if(count_calificacion_rol_2 == 0){
+            const promedio_rol_1 = response.total_calificacion_rol_1 / response.count_calificacion_rol_1;
+            const promedio_rol_2 = 0;
+            res.json({promedio_rol_1, promedio_rol_2});
+        }else{
+            const promedio_rol_1 = response.total_calificacion_rol_1 / response.count_calificacion_rol_1;
+            const promedio_rol_2 = response.total_calificacion_rol_2 / response.count_calificacion_rol_2;
+            res.json({ promedio_rol_1, promedio_rol_2 });
+        }
+        
+    } catch (error) {
+        console.error('Error realizando la consulta:', error);
+        res.status(500).send('Error en el servidor al actualizar la calificacion del usuario');
+    }
+}
+
+exports.updatearCalificacion = async (req, res) => {
+    const {userPk,promedio_rol_1,promedio_rol_2, promedioGeneral} = req.query;
+    try {
+        const response = await modeloEmparejamiento.updatearCalificacion(userPk,promedio_rol_1,promedio_rol_2, promedioGeneral);
+        res.json(response);
+    } catch (error) {
+        console.error('Error realizando la consulta:', error);
+        res.status(500).send('Error en el servidor al actualizar la calificacion del usuario');
+    }
+}

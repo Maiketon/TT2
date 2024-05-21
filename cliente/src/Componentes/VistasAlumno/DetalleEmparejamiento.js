@@ -120,7 +120,23 @@ const DetalleEmparejamiento = () => {
                 });
 
             const response3 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarEstadoEmparejamiento?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
-             }    
+            const response4 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalfAlumnoGeneral?userPk=${userPk}`);
+            console.log(response4);
+            console.log(response4.data.promedio_rol_1);
+
+           if(response4.data.promedio_rol_1 != null && response4.data.promedio_rol_2 != null){
+            if(response4.data.promedio_rol_1 == 0){
+                const promedioGeneral = response4.data.promedio_rol_2;
+            } else if(response4.data.promedio_rol_2 == 0){
+                const promedioGeneral = response4.data.promedio_rol_1;
+            } else {
+                const promedioGeneral = (response4.data.promedio_rol_1 + response4.data.promedio_rol_2) / 2;
+                const response5 = await axios.post(`http://localhost:3001/api/emparejamiento/updatearCalificacion?userPk=${userPk}&promedio_rol_1=${response4.data.promedio_rol_1}&promedio_rol_2=${response4.data.promedio_rol_2}&promedioGeneral=${promedioGeneral}`);
+                console.log(response5);
+            }
+         }
+
+        }    
             window.location.reload();
             //verificar si si se inserto calificacion
             //Falta hacer una funcion para comprobar si ya estan las 2 calificaciones
@@ -135,7 +151,7 @@ const DetalleEmparejamiento = () => {
     
     const sumarRespuestas = () => {
         const sumaTotal = respuesta1 + respuesta2 + respuesta3;
-        const promedio = sumaTotal / 5;
+        const promedio = (sumaTotal*5) / 12;
         console.log(promedio);
         return promedio;
     };
