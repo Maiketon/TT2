@@ -120,7 +120,7 @@ const DetalleEmparejamiento = () => {
                 });
 
             const response3 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarEstadoEmparejamiento?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
-            const response4 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalfAlumnoGeneral?userPk=${userPk}`);
+            /*const response4 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalfAlumnoGeneral?userPk=${userPk}`);
             console.log(response4);
             console.log(response4.data.promedio_rol_1);
 
@@ -135,6 +135,7 @@ const DetalleEmparejamiento = () => {
                 console.log(response5);
             }
          }
+         */
 
         }    
             window.location.reload();
