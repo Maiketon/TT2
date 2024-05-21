@@ -102,26 +102,20 @@ const RegistroUsuarios = () => {
     }
   };
 
-  const containerStyle = {
-    backgroundColor: '#8065a6', // Color morado
-    minHeight: '100vh', // Asegura que cubra toda la pantalla
-    padding: '20px', // Opcional, para espaciado interno
-    color: 'white' // Ajusta el color del texto
-};
 
 const tituloStyle = {
-    color: 'white' // Ajusta el color del título
+    color: 'black' // Ajusta el color del título
 };
 
 const formLabelStyle = {
-    color: 'white' // Ajusta el color de las etiquetas de los formularios
+    color: 'black' // Ajusta el color de las etiquetas de los formularios
 };
   
 
   return (
     <>
-       <Container style={containerStyle} fluid>
-            <Container className="mt-4" style={containerStyle}>
+       <Container fluid>
+            <Container className="mt-4">
                 <h2 style={tituloStyle}>Filtrar Usuarios</h2>
                 <Form>
                     <Row>
@@ -209,7 +203,7 @@ const formLabelStyle = {
                     </Container>
 
                     <Container>
-                        <UsuarioComponent usuarios={usuarios} />
+                        <UsuarioComponent className='' usuarios={usuarios} />
                     </Container>
 
                 </Form>
