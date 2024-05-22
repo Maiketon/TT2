@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import {Button, Card, Modal,Container, CardTitle, CardBody,Form,Pagination } from 'react-bootstrap';
+import {Button, Card, Modal,Container, CardTitle, CardBody,Form,Pagination,Col } from 'react-bootstrap';
 import perfil_generico from './Utils/perfil.png';
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -26,6 +26,8 @@ const DetalleEmparejamiento = () => {
     const [respuesta1, setRespuesta1] = useState(0);
     const [respuesta2, setRespuesta2] = useState(0);
     const [respuesta3, setRespuesta3] = useState(0);
+    const [showModalReporte, setShowModalReporte] = useState(false);
+    const [reportText, setReportText] = useState('');
     
      const [currentPage, setCurrentPage] = useState(1);
      const [deletedCardIndex, setDeletedCardIndex] = useState(null); 
@@ -83,6 +85,61 @@ const DetalleEmparejamiento = () => {
             setRol(rol);
 
     };
+
+    const confirmarReporte =async() => {
+        try {
+            const pkemparejamiento = Cookies.get('pkEmparejamiento');
+            const userPk = Cookies.get('userPk');
+            console.log(pkemparejamiento);
+            console.log(userPk);
+            console.log(reportText);
+            const response = await axios.post('http://localhost:3001/api/emparejamiento/reportarUsuario', {
+                pkEmparejamiento: pkemparejamiento,
+                pkUsuarioQueReporta: userPk,
+                mensaje: reportText,
+            });
+            if (response.status===201)
+                {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Usuario reportado con éxito.",
+                        message: "Lamentamos la mala experiencia que has tenido, este reporte no repercutira en tus calificaciones",
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
+                    setShowModalReporte(false);
+                }
+            
+        } catch (error) {
+            console.log("Error al reportar al usuario");
+        }
+        
+    };
+    const handleAccept = () => {
+        setShowModalReporte(true);
+    };
+
+    const handleCancelModal = () => {
+        setShowModalReporte(false);
+    };
+
+    const reportarUsuario = async () => 
+    {
+        Swal.fire({
+            title: '¿Estás seguro en reportar a este alumno?',
+            text: "No podrás revertir esta acción!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Rechazar',
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setShowModal(false);
+                handleAccept();
+            }
+        });
+    }
     
     const enviarModal = async () => { 
         if (respuesta1 === 0 || respuesta2 === 0 || respuesta3 === 0) {
@@ -102,7 +159,7 @@ const DetalleEmparejamiento = () => {
             setShowModal(false);
             const promedio = sumarRespuestas();
             const pkemparejamiento = Cookies.get('pkEmparejamiento');
-            const userPk = Cookies.get('userPk');
+            const l = Cookies.get('userPk');
             console.log(pkemparejamiento);
             console.log(userPk);
             console.log(promedio);
@@ -320,6 +377,37 @@ const DetalleEmparejamiento = () => {
   
     return (
         <div className='margen_superior'>
+            <Modal show={showModalReporte} onHide={handleCancelModal}>
+                <Modal.Header>
+                    <Modal.Title>Redacta tu reporte</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group controlId="formReportText">
+                            <Form.Label>Reporte</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={4}
+                                placeholder="Escribe tu reporte a 50 caracteres"
+                                maxLength="50"
+                                value={reportText}
+                                onChange={(e) => setReportText(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCancelModal}>
+                        Cancelar
+                    </Button>
+                    <Button variant="primary" onClick={confirmarReporte}>
+                        Aceptar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+
             <Card>
                 <Card.Body>
                     <Card.Title>Mis mentorias </Card.Title>
@@ -630,14 +718,16 @@ const DetalleEmparejamiento = () => {
                     </Card>
                 </Modal.Body>
                 <Modal.Footer>
+                    <Col><Button variant="danger" onClick={reportarUsuario}>Reportar</Button></Col>
                     <Pagination>
                         <Pagination.Prev onClick={prevPage} disabled={currentPage === 1} />
                         <Pagination.Item active={currentPage === 1} onClick={() => setCurrentPage(1)}>1</Pagination.Item>
                         <Pagination.Item active={currentPage === 2} onClick={() => setCurrentPage(2)}>2</Pagination.Item>
                         <Pagination.Item active={currentPage === 3} onClick={() => setCurrentPage(3)}>3</Pagination.Item>
                         <Pagination.Next onClick={nextPage} disabled={currentPage === 3} />
+                        <Button variant="primary" onClick={enviarModal}>Enviar</Button>
                     </Pagination>
-                    <Button variant="primary" onClick={enviarModal}>Enviar</Button>
+                    
                 </Modal.Footer>
             </Modal>
         </div>

@@ -26,8 +26,9 @@ router.post('/comprobar2Calificaciones', controlEmparejamiento.comprobar2Calific
 router.post('/actualizarEstadoEmparejamiento', controlEmparejamiento.actualizarEstadoEmparejamiento);
 router.post('/actualizarCalfAlumnoGeneral', controlEmparejamiento.actualizarCalfAlumnoGeneral);
 router.post('/updatearCalificacion', controlEmparejamiento.updatearCalificacion);
+router.post('/reportarUsuario',controlEmparejamiento.reportarUsuario);
 //ZEGO
 router.post('/hacerTokenSala', controlEmparejamiento.hacertoken);
-router.get('/obtenerToken',controlEmparejamiento.obtenerTokenC);
+router.get('/obtenerTokenC',controlEmparejamiento.obtenerTokenC);
 
 module.exports = router;

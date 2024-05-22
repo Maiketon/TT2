@@ -358,7 +358,7 @@ function randomID(len) {
     result += chars.charAt(Math.floor(Math.random() * maxPos));
   }
   return result;
-}
+};
 
 exports.actualizarCalfAlumnoGeneral = async (req, res) => {
     const {userPk } = req.query;
@@ -390,7 +390,7 @@ exports.actualizarCalfAlumnoGeneral = async (req, res) => {
         console.error('Error realizando la consulta:', error);
         res.status(500).send('Error en el servidor al actualizar la calificacion del usuario');
     }
-}
+};
 
 exports.updatearCalificacion = async (req, res) => {
     const {userPk,promedio_rol_1,promedio_rol_2, promedioGeneral} = req.query;
@@ -401,4 +401,20 @@ exports.updatearCalificacion = async (req, res) => {
         console.error('Error realizando la consulta:', error);
         res.status(500).send('Error en el servidor al actualizar la calificacion del usuario');
     }
-}
+};
+
+exports.reportarUsuario = async(req,res) =>
+    {
+        const {pkEmparejamiento,pkUsuarioQueReporta,mensaje} = req.body;
+        try {
+            const obtenerPkUsuarioReporte = await modeloEmparejamiento.obtenerUsuarioReportar(pkEmparejamiento,pkUsuarioQueReporta);
+            console.log("PK USUARIO AL QUE SE VA A REPORTAR",obtenerPkUsuarioReporte);
+            const realizarReporte= await modeloEmparejamiento.mandarReporte(pkEmparejamiento,pkUsuarioQueReporta,obtenerPkUsuarioReporte,mensaje);
+            if (realizarReporte.success) {
+                res.status(201).send("Reporte realizado con éxito");
+            } 
+        } catch (error) {
+            console.error('Error realizando al reportar usuario:', error);
+            res.status(500).send('Error en el servidor al reportar al usuario del emparejamiento',error);
+        }
+    }

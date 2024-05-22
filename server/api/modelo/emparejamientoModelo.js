@@ -37,7 +37,7 @@ class modeloEmparejamiento{
     async obtenerStrikes(userPk){
         const sql = `
             SELECT
-	            COALESCE(REPORTADO, 0) AS REPORTADO
+	            COALESCE(SANCIONES, 0) AS REPORTADO
             FROM
 	            informacionusuario
             WHERE
@@ -569,6 +569,62 @@ WHERE
             throw err;
         }
     }
+
+    async  obtenerUsuarioReportar(pkEmparejamiento, pkUsuarioQueReporta) {
+        const query = `
+            SELECT 
+                CASE 
+                    WHEN FK_USUARIO1 = ? THEN FK_USUARIO2
+                    WHEN FK_USUARIO2 = ? THEN FK_USUARIO1
+                END AS pkUsuarioReportado
+            FROM emparejamiento
+            WHERE PK_EMPAREJAMIENTO = ?
+            AND (? IN (FK_USUARIO1, FK_USUARIO2));
+        `;
+        const params = [pkUsuarioQueReporta, pkUsuarioQueReporta, pkEmparejamiento, pkUsuarioQueReporta];
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(query, params);
+            return result.length ? result[0].pkUsuarioReportado : null;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async mandarReporte(pkEmparejamiento, pkUsuarioQueReporta, obtenerPkUsuarioReporte, mensaje) {
+        const updateEmparejamientoQuery = `
+            UPDATE emparejamiento
+            SET FK_ESTADOEMPAREJAMIENTO = 6
+            WHERE PK_EMPAREJAMIENTO = ?;
+        `;
+    
+        const insertReporteQuery = `
+            INSERT INTO reportesusuarios (FK_USUARIO, DESCRIPCION, FK_USUARIO_REPORTA, VALIDO)
+            VALUES (?, ?, ?, 0);
+        `;
+    
+        const connection = db.promise();
+    
+        try {
+            await connection.beginTransaction();
+    
+            const [cambioEstadoEmp] = await connection.query(updateEmparejamientoQuery, [pkEmparejamiento]);
+            const [insertarReporte] = await connection.query(insertReporteQuery, [obtenerPkUsuarioReporte, mensaje, pkUsuarioQueReporta]);
+    
+            await connection.commit();
+    
+            return { success: true, message: "Reporte enviado y emparejamiento actualizado correctamente" };
+        } catch (error) {
+            try {
+                await connection.rollback();
+            } catch (rollbackError) {
+                console.error("Error al hacer rollback", rollbackError);
+            }
+            throw error;
+        }
+    }
+    
 
 
 }
