@@ -406,8 +406,6 @@ const DetalleEmparejamiento = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-
-
             <Card>
                 <Card.Body>
                     <Card.Title>Mis mentorias </Card.Title>
