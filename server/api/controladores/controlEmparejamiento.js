@@ -1,4 +1,5 @@
 //IMPORTACIONES DEL MODELO//
+const e = require('express');
 const modeloEmparejamiento = require('../modelo/emparejamientoModelo');
 exports.obtenerNombresFortalezasDeficiencias = async (req,res) => {
     const { userPk } = req.query;
@@ -361,41 +362,47 @@ function randomID(len) {
 };
 
 exports.actualizarCalfAlumnoGeneral = async (req, res) => {
-    const {userPk } = req.query;
+    const { userPk } = req.query;
     try {
         console.log(userPk);
         const response = await modeloEmparejamiento.actualizarCalfAlumnoGeneral(userPk);
-        console.log("Esta es la respuesta");
-        console.log("Total calificación rol 1:", response.total_calificacion_rol_1);
-        console.log("Count calificación rol 1:", response.count_calificacion_rol_1);
-        console.log("Total calificación rol 2:", response.total_calificacion_rol_2);
-        console.log("Count calificación rol 2:", response.count_calificacion_rol_2);
+        console.log("Esta es la respuesta", response);
 
-        
-        if(count_calificacion_rol_1 == 0){
-            const promedio_rol_2 = response.total_calificacion_rol_2 / response.count_calificacion_rol_2;
-            const promedio_rol_1 = 0;
-            res.json({promedio_rol_1, promedio_rol_2});
-        }else if(count_calificacion_rol_2 == 0){
-            const promedio_rol_1 = response.total_calificacion_rol_1 / response.count_calificacion_rol_1;
-            const promedio_rol_2 = 0;
-            res.json({promedio_rol_1, promedio_rol_2});
-        }else{
-            const promedio_rol_1 = response.total_calificacion_rol_1 / response.count_calificacion_rol_1;
-            const promedio_rol_2 = response.total_calificacion_rol_2 / response.count_calificacion_rol_2;
-            res.json({ promedio_rol_1, promedio_rol_2 });
+        const { total_calificacion_rol_1, count_calificacion_rol_1, total_calificacion_rol_2, count_calificacion_rol_2 } = response;
+
+        console.log("Total calificación rol 1:", total_calificacion_rol_1);
+        console.log("Count calificación rol 1:", count_calificacion_rol_1);
+        console.log("Total calificación rol 2:", total_calificacion_rol_2);
+        console.log("Count calificación rol 2:", count_calificacion_rol_2);
+
+        let promedio_rol_1 = 0;
+        let promedio_rol_2 = 0;
+
+        if (count_calificacion_rol_1 !== 0) {
+            promedio_rol_1 = total_calificacion_rol_1 / count_calificacion_rol_1;
         }
-        
+
+        if (count_calificacion_rol_2 !== 0) {
+            promedio_rol_2 = total_calificacion_rol_2 / count_calificacion_rol_2;
+        }
+        console.log("Promedio rol 1:", promedio_rol_1);
+        console.log("Promedio rol 2:", promedio_rol_2);
+        res.json({ promedio_rol_1, promedio_rol_2 });
     } catch (error) {
         console.error('Error realizando la consulta:', error);
-        res.status(500).send('Error en el servidor al actualizar la calificacion del usuario');
+        res.status(500).send('Error en el servidor al actualizar la calificación del usuario');
     }
 };
 
 exports.updatearCalificacion = async (req, res) => {
-    const {userPk,promedio_rol_1,promedio_rol_2, promedioGeneral} = req.query;
+    const { userPk, promedio_rol_1, promedio_rol_2, promedioGeneral } = req.body; // Accede a los datos del cuerpo de la solicitud
     try {
-        const response = await modeloEmparejamiento.updatearCalificacion(userPk,promedio_rol_1,promedio_rol_2, promedioGeneral);
+        console.log("Estos son los datos que se van a actualizar");
+        console.log(userPk);
+        console.log(promedio_rol_1);
+        console.log(promedio_rol_2);
+        console.log(promedioGeneral);
+        const response = await modeloEmparejamiento.updatearCalificacion(userPk, promedio_rol_1, promedio_rol_2, promedioGeneral);
         res.json(response);
     } catch (error) {
         console.error('Error realizando la consulta:', error);
@@ -418,3 +425,279 @@ exports.reportarUsuario = async(req,res) =>
             res.status(500).send('Error en el servidor al reportar al usuario del emparejamiento',error);
         }
     }
+
+    exports.obtenerEmparejados = async(req,res) =>
+    {
+        const {PK_EMPAREJAMIENTO} = req.query;
+        try {
+            console.log("Este es el pkemparejamiento");
+            console.log(PK_EMPAREJAMIENTO);
+            const obtenerEmparejados = await modeloEmparejamiento.obtenerEmparejados(PK_EMPAREJAMIENTO);
+            console.log("Estos son los emparejados desde control");
+            console.log(obtenerEmparejados);
+            res.json(obtenerEmparejados);
+        } catch (error) {
+            console.error('Error realizando la consulta:', error);
+            res.status(500).send('Error en el servidor al obtener los emparejados');
+        }
+    }
+    
+    exports.medalla1 = async (req, res) => {
+        const { userPk } = req.query;
+        try {
+            const response = await modeloEmparejamiento.verificarMedalla1(userPk);
+            console.log("Esta es la respuesta de la medalla");
+            console.log(response.MEDALLA1);
+            if (response && response.MEDALLA1 === 1) { // Verifica correctamente el valor de MEDALLA1
+                console.log('Medalla obtenida');
+                res.json("ya la tiene");
+            } else {
+                const response2 = await modeloEmparejamiento.obtenerMedalla1(userPk);
+                res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+            }
+            
+        } catch (error) {
+            console.error('Error realizando la consulta:', error);
+            res.status(500).send('Error en el servidor al obtener la medalla');
+        }
+    }
+
+    exports.medalla2 = async (req, res) => {
+        const { userPk } = req.query;
+        try {
+            const response = await modeloEmparejamiento.verificarMedalla2(userPk);
+            console.log("Esta es la respuesta de la medalla 2");
+            console.log(response.MEDALLA2);
+            if (response && response.MEDALLA2 == 1) { // Verifica correctamente el valor de MEDALLA2
+                console.log('Medalla obtenida');
+                res.json("ya la tiene");
+            } else {
+                const response2 = await modeloEmparejamiento.saberProgresoMedalla2(userPk);
+                let progreso= 0;
+                let estado = 0;
+                if(response2 == 1){
+                    progreso = 20;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }else  if(response2 == 2){
+                    progreso = 40;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }else  if(response2 == 3){
+                    progreso = 60;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla   
+                }else if(response2 == 4){
+                    progreso = 80;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }else if(response2 >= 5){
+                    progreso = 100;
+                    estado = 1;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }
+                console.log("Este es el progreso");
+                console.log(progreso);
+                console.log("Este es el estado");
+                console.log(estado);
+                response3 = await modeloEmparejamiento.obtenerMedalla2(userPk,progreso,estado);
+                res.json(response3); // Asegúrate de retornar algo significativo después de obtener la medalla
+         }
+            
+        } catch (error) {
+            console.error('Error realizando la consulta:', error);
+            res.status(500).send('Error en el servidor al obtener la medalla');
+        }
+    }
+
+    exports.medalla3 = async (req, res) => {
+        const { userPk } = req.query;
+        try {
+            const response = await modeloEmparejamiento.verificarMedalla3(userPk);
+            console.log("Esta es la respuesta de la medalla 3");
+            console.log(response.MEDALLA3);
+            if (response && response.MEDALLA3 == 1) { // Verifica correctamente el valor de MEDALLA3
+                console.log('Medalla obtenida');
+                res.json("ya la tiene");
+            } else {
+                const response2 = await modeloEmparejamiento.saberProgresoMedalla3(userPk);
+                let progreso= 0;
+                let estado = 0;
+                if(response2 == 1){
+                    progreso = 10;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }else  if(response2 == 2){
+                    progreso = 20;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }else  if(response2 == 3){
+                    progreso = 30;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla   
+                }else if(response2 == 4){
+                    progreso = 40;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }else if(response2 == 5){
+                    progreso = 50;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }
+                else if(response2 == 6){
+                    progreso = 60;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }
+                else if(response2 == 7){
+                    progreso = 70;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }
+                else if(response2 == 8){
+                    progreso = 80;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }
+                else if(response2 == 9){
+                    progreso = 90;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }
+                else if(response2 >= 10){
+                    progreso = 100;
+                    estado = 1;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }
+                console.log("Este es el progreso");
+                console.log(progreso);
+                console.log("Este es el estado");
+                console.log(estado);
+                response3 = await modeloEmparejamiento.obtenerMedalla3(userPk,progreso,estado);
+                res.json(response3); // Asegúrate de retornar algo significativo después de obtener la medalla
+         }
+            
+        } catch (error) {
+            console.error('Error realizando la consulta:', error);
+            res.status(500).send('Error en el servidor al obtener la medalla');
+        }
+    }
+
+    exports.medalla4 = async (req, res) => {
+        const { userPk } = req.query;
+        try {
+            const response = await modeloEmparejamiento.verificarMedalla4(userPk);
+            console.log("Esta es la respuesta de la medalla 4");
+            console.log(response.MEDALLA4);
+            if (response && response.MEDALLA4 == 1) { // Verifica correctamente el valor de MEDALLA4
+                console.log('Medalla obtenida');
+                res.json("ya la tiene");
+            } else {
+                const response2 = await modeloEmparejamiento.saberProgresoMedalla4(userPk);
+                let progreso= 0;
+                let estado = 0;
+                if(response2 == 1){
+                    progreso = 10;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }else  if(response2 == 2){
+                    progreso = 20;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }else  if(response2 == 3){
+                    progreso = 30;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla   
+                }else if(response2 == 4){
+                    progreso = 40;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }else if(response2 == 5){
+                    progreso = 50;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }
+                else if(response2 == 6){
+                    progreso = 60;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }
+                else if(response2 == 7){
+                    progreso = 70;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }
+                else if(response2 == 8){
+                    progreso = 80;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }
+                else if(response2 == 9){
+                    progreso = 90;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }
+                else if(response2 >= 10){
+                    progreso = 100;
+                    estado = 1;
+                    //res.json(response2); // Asegúrate de retornar algo significativo después de obtener la medalla
+                }
+                response4 = await modeloEmparejamiento.obtenerMedalla4(userPk,progreso,estado);
+                res.json(response3); // Asegúrate de retornar algo significativo después de obtener la medalla
+             }
+                
+            } catch (error) {
+                console.error('Error realizando la consulta:', error);
+                res.status(500).send('Error en el servidor al obtener la medalla');
+            }
+        }
+
+        exports.medalla5 = async (req, res) => {
+            const { userPk } = req.query;
+            try {
+                const response = await modeloEmparejamiento.verificarMedalla5(userPk);
+                console.log("Esta es la respuesta de la medalla 5");
+                console.log(response.MEDALLA5);
+        
+                if (response && response.MEDALLA5 == 1) {
+                    console.log('Medalla obtenida');
+                    return res.json("ya la tiene");
+                }
+        
+                const response2 = await modeloEmparejamiento.saberProgresoMedalla5(userPk);
+                let progreso = (response2 / 15) * 100;
+                let estado = 0;
+        
+                if (response2 >= 15) {
+                    progreso = 100;
+                    estado = 1;
+                }
+        
+                const response3 = await modeloEmparejamiento.obtenerMedalla5(userPk, progreso, estado);
+                res.json(response3); // Asegúrate de retornar algo significativo después de obtener la medalla
+            } catch (error) {
+                console.error('Error realizando la consulta:', error);
+                res.status(500).send('Error en el servidor al obtener la medalla');
+            }
+        }
+
+        exports.medalla6 = async (req, res) => {
+            const { userPk } = req.query;
+            try {
+                // Verifica si el usuario ya ha obtenido la medalla 6
+                const response = await modeloEmparejamiento.verificarMedalla6(userPk);
+                console.log("Esta es la respuesta de la medalla 6");
+                console.log(response.MEDALLA6);
+        
+                if (response && response.MEDALLA6 == 1) {
+                    console.log('Medalla obtenida');
+                    return res.json("ya la tiene");
+                }
+        
+                // Obtiene el progreso actual de la medalla 6
+                const response2 = await modeloEmparejamiento.saberProgresoMedalla6(userPk);
+                console.log("Progreso actual para la medalla 6:", response2);
+        
+                // Calcula el progreso como un porcentaje (0-100%)
+                let progreso = (response2 / 100) * 100;
+                let estado = 0;
+        
+                // Si el progreso es igual o superior a 100, se establece el progreso al máximo y el estado a 1
+                if (response2 >= 100) {
+                    progreso = 100;
+                    estado = 1;
+                }
+        
+                // Actualiza el estado y progreso de la medalla 6 para el usuario
+                const response3 = await modeloEmparejamiento.obtenerMedalla6(userPk, progreso, estado);
+                res.json(response3); // Retorna la respuesta significativa después de actualizar la medalla
+            } catch (error) {
+                console.error('Error realizando la consulta:', error);
+                res.status(500).send('Error en el servidor al obtener la medalla');
+            }
+        }
+        
+
+
+
+
+    
+//FIN DE IMPORTACIONES DEL MODELO//

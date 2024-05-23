@@ -27,6 +27,13 @@ router.post('/actualizarEstadoEmparejamiento', controlEmparejamiento.actualizarE
 router.post('/actualizarCalfAlumnoGeneral', controlEmparejamiento.actualizarCalfAlumnoGeneral);
 router.post('/updatearCalificacion', controlEmparejamiento.updatearCalificacion);
 router.post('/reportarUsuario',controlEmparejamiento.reportarUsuario);
+router.post('/obtenerEmparejados', controlEmparejamiento.obtenerEmparejados);
+router.post('/medalla1', controlEmparejamiento.medalla1);
+router.post('/medalla2', controlEmparejamiento.medalla2);
+router.post('/medalla3', controlEmparejamiento.medalla3);
+router.post('/medalla4', controlEmparejamiento.medalla4);
+router.post('/medalla5', controlEmparejamiento.medalla5);
+router.post('/medalla6', controlEmparejamiento.medalla6);
 //ZEGO
 router.post('/hacerTokenSala', controlEmparejamiento.hacertoken);
 router.get('/obtenerTokenC',controlEmparejamiento.obtenerTokenC);

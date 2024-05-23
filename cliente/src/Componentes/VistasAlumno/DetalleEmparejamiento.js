@@ -85,7 +85,7 @@ const DetalleEmparejamiento = () => {
             setRol(rol);
 
     };
-
+    
     const confirmarReporte =async() => {
         try {
             const pkemparejamiento = Cookies.get('pkEmparejamiento');
@@ -159,7 +159,7 @@ const DetalleEmparejamiento = () => {
             setShowModal(false);
             const promedio = sumarRespuestas();
             const pkemparejamiento = Cookies.get('pkEmparejamiento');
-            const l = Cookies.get('userPk');
+            const userPk = Cookies.get('userPk');
             console.log(pkemparejamiento);
             console.log(userPk);
             console.log(promedio);
@@ -177,25 +177,74 @@ const DetalleEmparejamiento = () => {
                 });
 
             const response3 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarEstadoEmparejamiento?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
-            /*const response4 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalfAlumnoGeneral?userPk=${userPk}`);
-            console.log(response4);
-            console.log(response4.data.promedio_rol_1);
+            //consulta que me traiga el pk del emparejado
+            console.log("Aqui empieza el insertar califiacion");
+            const emparejadosResponse= await axios.post(`http://localhost:3001/api/emparejamiento/obtenerEmparejados?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
 
-           if(response4.data.promedio_rol_1 != null && response4.data.promedio_rol_2 != null){
-            if(response4.data.promedio_rol_1 == 0){
-                const promedioGeneral = response4.data.promedio_rol_2;
-            } else if(response4.data.promedio_rol_2 == 0){
-                const promedioGeneral = response4.data.promedio_rol_1;
-            } else {
-                const promedioGeneral = (response4.data.promedio_rol_1 + response4.data.promedio_rol_2) / 2;
-                const response5 = await axios.post(`http://localhost:3001/api/emparejamiento/updatearCalificacion?userPk=${userPk}&promedio_rol_1=${response4.data.promedio_rol_1}&promedio_rol_2=${response4.data.promedio_rol_2}&promedioGeneral=${promedioGeneral}`);
-                console.log(response5);
+
+         const emparejados = emparejadosResponse.data;
+         console.log("Estos son los emparejados");
+        console.log(emparejados);
+
+        // Iterar sobre los emparejados y actualizar calificaciones para cada uno
+        for (const emparejado of emparejados) {
+            const userPks = [emparejado.PK_USER1, emparejado.PK_USER2];
+
+            for (const userPk of userPks) {
+                console.log(`Actualizando calificaciones para el usuario con PK ${userPk}`);
+                const response4 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalfAlumnoGeneral?userPk=${userPk}`);
+                console.log(response4.data);
+
+                const { promedio_rol_1, promedio_rol_2 } = response4.data;
+                
+                    console.log(`Promedio rol 1: ${promedio_rol_1}`);
+                    console.log(`Promedio rol 2: ${promedio_rol_2}`);
+                    let promedioGeneral;
+                    if (promedio_rol_1 === 0) {
+                        promedioGeneral = (5 + promedio_rol_2) / 2
+                    } else if (promedio_rol_2 === 0) {
+                        promedioGeneral = (promedio_rol_1 + 5) / 2
+                    } else {
+                        promedioGeneral = (promedio_rol_1 + promedio_rol_2) / 2;
+                    }
+
+                    const response5 = await axios.post(`http://localhost:3001/api/emparejamiento/updatearCalificacion`, {
+                        userPk,
+                        promedio_rol_1,
+                        promedio_rol_2,
+                        promedioGeneral
+                    });
+                    console.log(response5.data);
+                
+
+                //logica medallas
+                //medalla 1
+                const medalla1 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla1?userPk=${userPk}`);
+                console.log(medalla1);
+
+                //medalla 2
+                const medalla2 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla2?userPk=${userPk}`);
+            
+                //medalla 3
+                const medalla3 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla3?userPk=${userPk}`);
+
+                //medalla 4
+                const medalla4 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla4?userPk=${userPk}`);
+
+                //medalla 5
+                const medalla5 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla5?userPk=${userPk}`);
+
+                //medalla 6
+                const medalla6 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla6?userPk=${userPk}`);
+            
             }
-         }
-         */
+
+        }
+
+         
 
         }    
-            window.location.reload();
+            //window.location.reload();
             //verificar si si se inserto calificacion
             //Falta hacer una funcion para comprobar si ya estan las 2 calificaciones
             //Falta hacer una actualizacion en la tabla de alumnos, para actualizar su calificacion
