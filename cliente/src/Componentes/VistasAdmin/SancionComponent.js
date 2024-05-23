@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Row, Col, Button, Image, Modal } from 'react-bootstrap';
+import { Row, Col, Button, Image, Card,Container } from 'react-bootstrap';
 import { BsStarFill, BsStar } from 'react-icons/bs';
 import Avatar1 from "./Utils/Avatar1Login.jpg"; // Asegúrate de tener la imagen en tu proyecto
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import './Css/SancionesC.css';
 
 const Sancion = ({ usuario, onRemoveUser }) => {
    const omitirReporte = async () => {
@@ -114,52 +115,58 @@ const getStarCount = (calificacion) => {
 };
     return (
         <>
+        <Card className="user-info-card">
+        <Card.Header>
+            <h2>Nombre de usuario: {usuario.NOMBRE} {usuario.APELLIDO_PATERNO} {usuario.APELLIDO_MATERNO}</h2>
+        </Card.Header>
+        <Card.Body>
             <Row>
-                <Col className="border">Nombre de usuario: {usuario.NOMBRE} {usuario.APELLIDO_PATERNO} {usuario.APELLIDO_MATERNO}</Col>
-            </Row>
-            <Row className="border">
-                <Col>
-                    <Row>
-                    <div className="usuario-info">
-                        <div className="usuario-icon">
-                            <Image src={Avatar1} alt="Logo usuario" width={100} height={100} roundedCircle style={{ borderRadius: "50%" }} />
-                        </div>
-                        <div className="usuario-rating">
+                <Col md={4} className="text-center">
+                    <Image src={Avatar1} alt="Logo usuario" width={100} height={100} roundedCircle />
+                    <Container className="ratings mt-3">
                         {[...Array(5)].map((star, i) => (
-                                        <span key={i} title={`Calificación: ${usuario.CALIFICACION || '0'}`}>
-                                            {i < getStarCount(usuario.CALIFICACION) ? <BsStarFill /> : <BsStar />}
-                                        </span>
-                                    ))}
-                        </div>
-                    </div>
-                    </Row>
-                    <Row>
-                    <p>ID del reporte: {usuario.PK_REPORTE}</p>
-                    <p>Reportado por el usuario: {usuario.FK_USUARIO_REPORTA}</p>
-                    </Row>
+                            <span key={i} title={`Calificación: ${usuario.CALIFICACION || '0'}`}>
+                                {i < getStarCount(usuario.CALIFICACION) ? <BsStarFill /> : <BsStar />}
+                            </span>
+                        ))}
+                    </Container>
                 </Col>
-                <Col>
-                    <Row>
-                    
-                        <p>Correo del usuario: {usuario.EMAIL}</p>
-                        <p>Sanciones del Usuario: {usuario.SANCIONES}</p>
-                        <p>Calificaion general: {usuario.CALIFICACION}</p>
-                    </Row>
-                    <Row>
-                        <div className="usuario-description">
-                        <p>{usuario.DESCRIPCION}</p>
-                    </div>
-                    </Row>
-                </Col>
-            </Row>
-            <Row style={{ marginBottom: '10px', marginTop: '10px' }}>
-                <Col>
-                    <Button variant="primary" style={{ marginRight: '10px', padding: '10px' }} onClick={sancionar}>Sancionar</Button>
-                    <Button variant="warning" style={{ padding: '10px' } } onClick={omitirReporte}>Omitir</Button>
-                    <Button variant="danger" style={{ padding: '10px' }} onClick={vetarAlumno}>Vetar Usuario</Button>
+                <Col md={8}>
+                    <Container>
+                        <Row>
+                            <Col>
+                                <h4>Información del reporte</h4>
+                                <p>ID del reporte: {usuario.PK_REPORTE}</p>
+                                <p>Reportado por el usuario: {usuario.FK_USUARIO_REPORTA}</p>
+                                <p>Correo del usuario: {usuario.EMAIL}</p>
+                                <p>Sanciones del Usuario: {usuario.SANCIONES}</p>
+                                <p>Calificación general: {usuario.CALIFICACION}</p>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <h4>Descripción del reporte</h4>
+                                <p>{usuario.DESCRIPCION}</p>
+                            </Col>
+                        </Row>
+                    </Container>
                 </Col>
             </Row>
-
+        </Card.Body>
+        <Card.Footer>
+            <Row>
+                <Col className="text-center">
+                    <Button variant="primary" className="mr-3 mb-2" onClick={sancionar}>Sancionar</Button>
+                </Col>
+                <Col>
+                <Button variant="warning" className="mr-3 mb-2" onClick={omitirReporte}>Omitir</Button> 
+                </Col>
+                <Col>
+                <Button variant="danger" className="mb-2" onClick={vetarAlumno}>Vetar Usuario</Button>
+                </Col>
+            </Row>
+        </Card.Footer>
+    </Card>
         </>
     );
 };

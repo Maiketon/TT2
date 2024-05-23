@@ -6,6 +6,10 @@
     --negro-absoluto: #000000;
     --gris-oscuro: #333333;
     --gris-tenue:#f5ecec;
+    --guinda:#8B0000;
+    --guinda-tenue:#7c3030;
+    --ghots-white: #f8f8ff;
+    --sea-shell: #fff5ee;
     --Brighter-Green: #76B947;
     --Soft-Violet: #6A4C93;
     --Soft-Violet-Hover:#8065a6;
@@ -15,28 +19,28 @@
     --dark-color: #343a40;
     }
 .principal {
-    background-color:var(--Soft-Violet-Hover); /* Color morado */
+   
     min-height: 100vh; /* Asegura que cubra toda la pantalla */
-    color: white; /* Ajusta el color del texto si es necesario */
+    color: black; /* Ajusta el color del texto si es necesario */
 }
 
 .titulo {
-    color: white; /* Ajusta el color del título */
+    color: black; /* Ajusta el color del título */
 }
 
 .form-label-pe-none {
-    color: white; /* Ajusta el color de las etiquetas de los formularios */
+    color: black; /* Ajusta el color de las etiquetas de los formularios */
 }
 
 
 .titulo, .form-label-pe-none {
-    color: white; /* Ajusta el color del texto si es necesario */
+    color: black; /* Ajusta el color del texto si es necesario */
 }
 
 /* Asegurémonos de que los formularios y otros contenedores también tengan el fondo morado */
 .container-fluid, .container, .form-group, .row, .col {
-    background-color: #6a1b9a !important; /* Color morado */
-    color: white; /* Ajusta el color del texto si es necesario */
+    background-color: var(--grey-color) !important; /* Color morado */
+    color: black; /* Ajusta el color del texto si es necesario */
 }
 
 button {

@@ -5,7 +5,11 @@
     --azul-armonia : #3c6dae;
     --negro-absoluto: #000000;
     --gris-oscuro: #333333;
-    --gris-tenue:#f5ecec;
+    --gris-tenue:#c4bebe;
+    --guinda:#8B0000;
+    --guinda-tenue:#7c3030;
+    --ghots-white: #f8f8ff;
+    --sea-shell: #fff5ee;
     --Brighter-Green: #76B947;
     --Soft-Violet: #6A4C93;
     --Soft-Violet-Hover:#8065a6;
@@ -16,5 +20,114 @@
     }
 .principal
 {
-    background-color: var(--Soft-Violet-Hover);
+    background-color: var(--ghots-white);
+}
+
+/*CLASES USUARIO INFORMACION*/
+
+.user-info-container {
+    background-color: var(--ghots-white);
+    border: 1px solid var(--gris-oscuro);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px; /* Aumentado el ancho máximo */
+    margin: 0 auto 20px auto;
+}
+
+.bordered-container {
+    border: 1px solid var(--gris-oscuro);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.user-info-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+.bordered-row {
+    border: 1px solid var(--gris-oscuro);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.user-info-header h2 {
+    font-size: 1.5em;
+    color: var(--azul-profundo);
+}
+
+.user-info-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.usuario-icon img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.ratings {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.ratings span {
+    color: var(--azul-armonia);
+    margin: 0 5px;
+}
+
+.user-info-details {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.user-info-details div {
+    width: 45%;
+    margin-bottom: 20px;
+}
+
+.user-info-details h3 {
+    color: var(--azul-oceano);
+    border-bottom: 2px solid var(--azul-oceano);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.user-info-details p {
+    color: var(--gris-oscuro);
+}
+
+.user-info-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.user-info-footer button {
+    background-color: var(--danger-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.user-info-footer button:hover {
+    background-color: var(--Soft-Violet);
 }

@@ -1,0 +1,60 @@
+:root {
+    --azul-oceano: #007aa3;
+    --azul-profundo: #00475f;
+    --azul-cielo-hover: #0073a0;
+    --azul-armonia : #3c6dae;
+    --negro-absoluto: #000000;
+    --gris-oscuro: #333333;
+    --gris-tenue:#f5ecec;
+    --guinda:#8B0000;
+    --guinda-tenue:#7c3030;
+    --ghots-white: #f8f8ff;
+    --sea-shell: #fff5ee;
+    --Brighter-Green: #76B947;
+    --Soft-Violet: #6A4C93;
+    --Soft-Violet-Hover:#8065a6;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --grey-color: #a9acb0;
+    --dark-color: #343a40;
+}
+
+.user-info-card {
+    background-color: var(--ghots-white);
+    border: 1px solid var(--gris-oscuro);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px; /* Ajusta el tamaño máximo si es necesario */
+}
+
+.user-info-card h2 {
+    font-size: 1.5em;
+    color: var(--azul-profundo);
+    margin: 0;
+}
+
+.ratings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.ratings span {
+    color: var(--azul-armonia);
+    margin: 0 5px;
+}
+
+h4 {
+    color: var(--azul-oceano);
+    border-bottom: 2px solid var(--azul-oceano);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+p {
+    color: var(--gris-oscuro);
+    margin: 5px 0;
+}

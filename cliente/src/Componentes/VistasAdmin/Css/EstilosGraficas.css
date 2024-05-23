@@ -5,10 +5,15 @@
   --azul-armonia : #3c6dae;
   --negro-absoluto: #000000;
   --gris-oscuro: #333333;
-  --gris-tenue:#cbc7c7;
+  --gris-tenue:#f5ecec;
+  --guinda:#8B0000;
+  --guinda-tenue:#7c3030;
+  --ghots-white: #f8f8ff;
+  --sea-shell: #fff5ee;
   --Brighter-Green: #76B947;
   --Soft-Violet: #6A4C93;
   --Soft-Violet-Hover:#8065a6;
+  --Soft-Violet-F:#533c72;
   --danger-color: #dc3545;
   --light-color: #f8f9fa;
   --grey-color: #a9acb0;
@@ -21,5 +26,5 @@
   padding: 20px;
   display: flex;
   justify-content: center;
-  background-color: var(--gris-tenue);
+  background-color: var(--sea-shell);
 }

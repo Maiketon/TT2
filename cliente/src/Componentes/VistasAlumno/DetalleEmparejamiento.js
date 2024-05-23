@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import {Button, Card, Modal,Container, CardTitle, CardBody,Form,Pagination } from 'react-bootstrap';
+import {Button, Card, Modal,Container, CardTitle, CardBody,Form,Pagination,Col } from 'react-bootstrap';
 import perfil_generico from './Utils/perfil.png';
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -26,6 +26,8 @@ const DetalleEmparejamiento = () => {
     const [respuesta1, setRespuesta1] = useState(0);
     const [respuesta2, setRespuesta2] = useState(0);
     const [respuesta3, setRespuesta3] = useState(0);
+    const [showModalReporte, setShowModalReporte] = useState(false);
+    const [reportText, setReportText] = useState('');
     
      const [currentPage, setCurrentPage] = useState(1);
      const [deletedCardIndex, setDeletedCardIndex] = useState(null); 
@@ -84,6 +86,61 @@ const DetalleEmparejamiento = () => {
 
     };
     
+    const confirmarReporte =async() => {
+        try {
+            const pkemparejamiento = Cookies.get('pkEmparejamiento');
+            const userPk = Cookies.get('userPk');
+            console.log(pkemparejamiento);
+            console.log(userPk);
+            console.log(reportText);
+            const response = await axios.post('http://localhost:3001/api/emparejamiento/reportarUsuario', {
+                pkEmparejamiento: pkemparejamiento,
+                pkUsuarioQueReporta: userPk,
+                mensaje: reportText,
+            });
+            if (response.status===201)
+                {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Usuario reportado con éxito.",
+                        message: "Lamentamos la mala experiencia que has tenido, este reporte no repercutira en tus calificaciones",
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
+                    setShowModalReporte(false);
+                }
+            
+        } catch (error) {
+            console.log("Error al reportar al usuario");
+        }
+        
+    };
+    const handleAccept = () => {
+        setShowModalReporte(true);
+    };
+
+    const handleCancelModal = () => {
+        setShowModalReporte(false);
+    };
+
+    const reportarUsuario = async () => 
+    {
+        Swal.fire({
+            title: '¿Estás seguro en reportar a este alumno?',
+            text: "No podrás revertir esta acción!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Rechazar',
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setShowModal(false);
+                handleAccept();
+            }
+        });
+    }
+    
     const enviarModal = async () => { 
         if (respuesta1 === 0 || respuesta2 === 0 || respuesta3 === 0) {
             await Swal.fire({
@@ -119,9 +176,75 @@ const DetalleEmparejamiento = () => {
                     text: 'Ya puedes hacer mas emparejamientos.',
                 });
 
-            const response3 = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/actualizarEstadoEmparejamiento?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
-             }    
-            window.location.reload();
+            const response3 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarEstadoEmparejamiento?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
+            //consulta que me traiga el pk del emparejado
+            console.log("Aqui empieza el insertar califiacion");
+            const emparejadosResponse= await axios.post(`http://localhost:3001/api/emparejamiento/obtenerEmparejados?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
+
+
+         const emparejados = emparejadosResponse.data;
+         console.log("Estos son los emparejados");
+        console.log(emparejados);
+
+        // Iterar sobre los emparejados y actualizar calificaciones para cada uno
+        for (const emparejado of emparejados) {
+            const userPks = [emparejado.PK_USER1, emparejado.PK_USER2];
+
+            for (const userPk of userPks) {
+                console.log(`Actualizando calificaciones para el usuario con PK ${userPk}`);
+                const response4 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalfAlumnoGeneral?userPk=${userPk}`);
+                console.log(response4.data);
+
+                const { promedio_rol_1, promedio_rol_2 } = response4.data;
+                
+                    console.log(`Promedio rol 1: ${promedio_rol_1}`);
+                    console.log(`Promedio rol 2: ${promedio_rol_2}`);
+                    let promedioGeneral;
+                    if (promedio_rol_1 === 0) {
+                        promedioGeneral = (5 + promedio_rol_2) / 2
+                    } else if (promedio_rol_2 === 0) {
+                        promedioGeneral = (promedio_rol_1 + 5) / 2
+                    } else {
+                        promedioGeneral = (promedio_rol_1 + promedio_rol_2) / 2;
+                    }
+
+                    const response5 = await axios.post(`http://localhost:3001/api/emparejamiento/updatearCalificacion`, {
+                        userPk,
+                        promedio_rol_1,
+                        promedio_rol_2,
+                        promedioGeneral
+                    });
+                    console.log(response5.data);
+                
+
+                //logica medallas
+                //medalla 1
+                const medalla1 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla1?userPk=${userPk}`);
+                console.log(medalla1);
+
+                //medalla 2
+                const medalla2 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla2?userPk=${userPk}`);
+            
+                //medalla 3
+                const medalla3 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla3?userPk=${userPk}`);
+
+                //medalla 4
+                const medalla4 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla4?userPk=${userPk}`);
+
+                //medalla 5
+                const medalla5 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla5?userPk=${userPk}`);
+
+                //medalla 6
+                const medalla6 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla6?userPk=${userPk}`);
+            
+            }
+
+        }
+
+         
+
+        }    
+            //window.location.reload();
             //verificar si si se inserto calificacion
             //Falta hacer una funcion para comprobar si ya estan las 2 calificaciones
             //Falta hacer una actualizacion en la tabla de alumnos, para actualizar su calificacion
@@ -135,7 +258,7 @@ const DetalleEmparejamiento = () => {
     
     const sumarRespuestas = () => {
         const sumaTotal = respuesta1 + respuesta2 + respuesta3;
-        const promedio = sumaTotal / 5;
+        const promedio = (sumaTotal*5) / 12;
         console.log(promedio);
         return promedio;
     };
@@ -227,7 +350,7 @@ const DetalleEmparejamiento = () => {
     const obtenerToken = async(PK_EMPAREJAMIENTO)=>
         {
             try {
-                const response = await axios.get(`https://201.124.154.2:3001/api/emparejamiento/obtenerToken?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerTokenC?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                 const { token } = response.data;
 
                 // Mostrar Sweet Alert
@@ -303,6 +426,35 @@ const DetalleEmparejamiento = () => {
   
     return (
         <div className='margen_superior'>
+            <Modal show={showModalReporte} onHide={handleCancelModal}>
+                <Modal.Header>
+                    <Modal.Title>Redacta tu reporte</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group controlId="formReportText">
+                            <Form.Label>Reporte</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={4}
+                                placeholder="Escribe tu reporte a 50 caracteres"
+                                maxLength="50"
+                                value={reportText}
+                                onChange={(e) => setReportText(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCancelModal}>
+                        Cancelar
+                    </Button>
+                    <Button variant="primary" onClick={confirmarReporte}>
+                        Aceptar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <Card>
                 <Card.Body>
                     <Card.Title>Mis mentorias </Card.Title>
@@ -356,7 +508,14 @@ const DetalleEmparejamiento = () => {
                                         </div>
                                     ): null}
                                     </div>
-                                    <div className="col">TOKEN<Container><Button onClick={() => obtenerToken(aprendiz.PK_EMPAREJAMIENTO)}>Copiar Token</Button></Container> </div>
+                                    {aprendiz.estado == 3 ? (
+                                    <div className="col">
+                                        TOKEN
+                                        <Container>
+                                            <Button onClick={() => obtenerToken(aprendiz.PK_EMPAREJAMIENTO)}>Copiar Token</Button>
+                                        </Container> 
+                                    </div>
+                                    ):null}
                                 </div>
                                 {banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
                                     <div className="row">
@@ -431,7 +590,14 @@ const DetalleEmparejamiento = () => {
                                     </div>
                                     ): null}
                                     </div>
-                                    <div className="col">TOKEN<Container><Button onClick={() => obtenerToken(mentor.PK_EMPAREJAMIENTO)}>Copiar Token</Button></Container> </div>
+                                    {mentor.estado == 3 ? (
+                                    <div className="col">
+                                        TOKEN
+                                        <Container>
+                                            <Button onClick={() => obtenerToken(mentor.PK_EMPAREJAMIENTO)}>Copiar Token</Button>
+                                        </Container> 
+                                    </div>
+                                    ):null}
                                 </div>
                                 {banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
                                 <div className="row">
@@ -599,14 +765,16 @@ const DetalleEmparejamiento = () => {
                     </Card>
                 </Modal.Body>
                 <Modal.Footer>
+                    <Col><Button variant="danger" onClick={reportarUsuario}>Reportar</Button></Col>
                     <Pagination>
                         <Pagination.Prev onClick={prevPage} disabled={currentPage === 1} />
                         <Pagination.Item active={currentPage === 1} onClick={() => setCurrentPage(1)}>1</Pagination.Item>
                         <Pagination.Item active={currentPage === 2} onClick={() => setCurrentPage(2)}>2</Pagination.Item>
                         <Pagination.Item active={currentPage === 3} onClick={() => setCurrentPage(3)}>3</Pagination.Item>
                         <Pagination.Next onClick={nextPage} disabled={currentPage === 3} />
+                        <Button variant="primary" onClick={enviarModal}>Enviar</Button>
                     </Pagination>
-                    <Button variant="primary" onClick={enviarModal}>Enviar</Button>
+                    
                 </Modal.Footer>
             </Modal>
         </div>

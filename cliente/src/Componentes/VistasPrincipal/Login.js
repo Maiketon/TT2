@@ -454,12 +454,12 @@ const FormLogin = ()=>
     </Modal.Footer>
   </Modal>
 
-  <Row className="justify-content-md-center">
+  <Row className="justify-content-md-center m-0" style={{ minHeight: '79vh' }}>
     <Col>
-      <Card className="d-flex flex-column" style={{ minHeight: '60vh', flex: 1 }}>
+      <Card className="d-flex flex-column" style={{ minHeight: '100%', flex: 1 }}>
         <Card.Body className="d-flex flex-column justify-content-between">
           <Row>
-            <Col className="d-flex justify-content-center">
+            <Col className="d-flex justify-content-center d-none d-md-block"> {/* Ocultar en pantallas pequeñas */}
               <img
                 src={Avatar1}
                 width={100}
@@ -471,10 +471,10 @@ const FormLogin = ()=>
             <Col className="d-flex flex-column align-items-center">
               <Card.Title>Bienvenido a LearnMatch</Card.Title>
               <Card.Text>
-                Para Iniciar Sesión en nuestro sistema, por favor accede con tu correo electrónico y tu contraseña.
+                Para iniciar sesión en nuestro sistema, por favor accede con tu correo electrónico y tu contraseña.
               </Card.Text>
             </Col>
-            <Col className="d-flex justify-content-center">
+            <Col className="d-flex justify-content-center d-none d-md-block"> {/* Ocultar en pantallas pequeñas */}
               <img
                 src={Avatar2}
                 width={100}
@@ -485,22 +485,22 @@ const FormLogin = ()=>
             </Col>
           </Row>
           <Form>
-            <Form.Group as={Row} className="mb-3" controlId="email">
+            <Form.Group as={Row} className="mb-1" controlId="email"> {/* Reducir márgenes aún más */}
               <Form.Label className="text-md-right text-start form-label-pe-none">Correo electrónico:</Form.Label>
               <Form.Control type="email" placeholder="Ingresa tu correo electrónico" value={datosUsuario.username} onChange={inputChange} name='username' />
             </Form.Group>
-            <Form.Group as={Row} className="mb-3" controlId="password">
+            <Form.Group as={Row} className="mb-1" controlId="password"> {/* Reducir márgenes aún más */}
               <Form.Label className="text-md-right text-start form-label-pe-none">Contraseña:</Form.Label>
-              <Form.Control type="password" placeholder="Ingresa tu contraseña." value={datosUsuario.password} onChange={inputChange} name='password' />
+              <Form.Control type="password" placeholder="Ingresa tu contraseña" value={datosUsuario.password} onChange={inputChange} name='password' />
             </Form.Group>
           </Form>
-          <Container className="d-flex justify-content-center">
+          <Container className="d-flex justify-content-center mt-1"> {/* Reducir espacio superior */}
             <Button variant="outline-primary" type="submit" className="ms-2 btn-iniciar-sesion" onClick={enviarValores}>
               Iniciar Sesión
             </Button>
           </Container>
-          <Container className="d-flex justify-content-center mt-3">
-            <p>Si olvidaste tu contraseña, no te preocupes :</p>
+          <Container className="d-flex justify-content-center mt-2">
+            <p>Si olvidaste tu contraseña, no te preocupes:</p>
             <Button onClick={handleRecuperacion} variant="outline-primary" className="ms-2 btn-recuperar">
               <strong>Recuperar Contraseña</strong>
             </Button>
@@ -509,7 +509,6 @@ const FormLogin = ()=>
       </Card>
     </Col>
   </Row>
-  <Row className="d-flex flex-column" style={{ minHeight: '21vh', flex: 1 }}> <br /></Row>
 </Container>
         </>
     );

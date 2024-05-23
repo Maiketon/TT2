@@ -37,7 +37,7 @@ class modeloEmparejamiento{
     async obtenerStrikes(userPk){
         const sql = `
             SELECT
-	            COALESCE(REPORTADO, 0) AS REPORTADO
+	            COALESCE(SANCIONES, 0) AS REPORTADO
             FROM
 	            informacionusuario
             WHERE
@@ -144,6 +144,7 @@ WHERE
     AND emp.FK_USUARIO2 = ?
     AND emp.FK_ESTADOEMPAREJAMIENTO != 2
         AND emp.FK_ESTADOEMPAREJAMIENTO != 4 -- Aquí se excluyen los registros con FK_ESTADOEMPAREJAMIENTO igual a 3
+        AND emp.FK_ESTADOEMPAREJAMIENTO != 6
 UNION
 SELECT
     CONCAT(inf.NOMBRE, " ", inf.APELLIDO_PATERNO, " ", inf.APELLIDO_MATERNO) AS nombreCompleto,
@@ -159,7 +160,8 @@ WHERE
     AND emp.ROL_USUARIO1 = 2
     AND emp.FK_USUARIO1 = ?
     AND emp.FK_ESTADOEMPAREJAMIENTO != 2
-        AND emp.FK_ESTADOEMPAREJAMIENTO != 4;
+        AND emp.FK_ESTADOEMPAREJAMIENTO != 4
+        AND emp.FK_ESTADOEMPAREJAMIENTO != 6;
         `;
 
         try {
@@ -186,6 +188,7 @@ WHERE
         emp.ROL_USUARIO1 = 1
         AND emp.FK_USUARIO1 = ?
         AND emp.FK_ESTADOEMPAREJAMIENTO != 2
+        AND emp.FK_ESTADOEMPAREJAMIENTO != 6
         AND emp.FK_ESTADOEMPAREJAMIENTO != 4 -- Aquí se excluyen los registros con FK_ESTADOEMPAREJAMIENTO igual a 3
     UNION
     SELECT
@@ -201,7 +204,8 @@ WHERE
         emp.ROL_USUARIO2 = 1
         AND emp.FK_USUARIO2 = ?
         AND emp.FK_ESTADOEMPAREJAMIENTO != 2
-        AND emp.FK_ESTADOEMPAREJAMIENTO != 4;
+        AND emp.FK_ESTADOEMPAREJAMIENTO != 4
+        AND emp.FK_ESTADOEMPAREJAMIENTO != 6;
         `;
 
         try {
@@ -346,8 +350,8 @@ WHERE
         const sql = `
             UPDATE emparejamiento
             SET 
-                CALIFICACION_USUARIO1 = CASE WHEN FK_USUARIO1 = ? THEN ? ELSE CALIFICACION_USUARIO1 END,
-                CALIFICACION_USUARIO2 = CASE WHEN FK_USUARIO2 = ? THEN ? ELSE CALIFICACION_USUARIO2 END
+                CALIFICACION_USUARIO1 = CASE WHEN FK_USUARIO2 = ? THEN ? ELSE CALIFICACION_USUARIO1 END,
+                CALIFICACION_USUARIO2 = CASE WHEN FK_USUARIO1 = ? THEN ? ELSE CALIFICACION_USUARIO2 END
             WHERE 
                 PK_EMPAREJAMIENTO = ?
             
@@ -368,12 +372,12 @@ WHERE
         CASE 
             WHEN FK_USUARIO1 = ? THEN
                 CASE 
-                    WHEN CALIFICACION_USUARIO2 IS NOT NULL THEN 4
+                    WHEN CALIFICACION_USUARIO1 IS NOT NULL THEN 4
                     ELSE 5
                 END
             WHEN FK_USUARIO2 = ? THEN
                 CASE 
-                    WHEN CALIFICACION_USUARIO1 IS NOT NULL THEN 4
+                    WHEN CALIFICACION_USUARIO2 IS NOT NULL THEN 4
                     ELSE 5
                 END
             ELSE 5
@@ -387,8 +391,13 @@ WHERE
             const result = await promesadb.query(sql, [pkuserPaired, pkuserPaired, pkemparejamiento]);
             console.log("esta es desde el backend ",result);
 
-            const bandera = result[0][0].bandera;     
-            return bandera;
+            if(result[0].length === 0){
+                return 0;
+            }else{
+                const bandera = result[0][0].bandera;     
+                return bandera;
+            }
+           
         } catch (err) {
             throw err;
         }
@@ -492,6 +501,540 @@ WHERE
     }
     }
 
+    async actualizarCalfAlumnoGeneral(userPk){
+        const sql = `
+        SELECT 
+    SUM(CASE
+        WHEN FK_USUARIO1 = ? AND ROL_USUARIO1 = 1 THEN CALIFICACION_USUARIO1
+        WHEN FK_USUARIO2 = ? AND ROL_USUARIO2 = 1 THEN CALIFICACION_USUARIO2
+        ELSE 0
+    END) AS total_calificacion_rol_1,
+    COUNT(CASE
+        WHEN (FK_USUARIO1 = ? AND ROL_USUARIO1 = 1 AND CALIFICACION_USUARIO1 IS NOT NULL)
+        OR (FK_USUARIO2 = ? AND ROL_USUARIO2 = 1 AND CALIFICACION_USUARIO2 IS NOT NULL)
+        THEN 1
+        ELSE NULL
+    END) AS count_calificacion_rol_1,
+    SUM(CASE
+        WHEN FK_USUARIO1 = ? AND ROL_USUARIO1 = 2 THEN CALIFICACION_USUARIO1
+        WHEN FK_USUARIO2 = ? AND ROL_USUARIO2 = 2 THEN CALIFICACION_USUARIO2
+        ELSE 0
+    END) AS total_calificacion_rol_2,
+    COUNT(CASE
+        WHEN (FK_USUARIO1 = ? AND ROL_USUARIO1 = 2 AND CALIFICACION_USUARIO1 IS NOT NULL)
+        OR (FK_USUARIO2 = ? AND ROL_USUARIO2 = 2 AND CALIFICACION_USUARIO2 IS NOT NULL)
+        THEN 1
+        ELSE NULL
+    END) AS count_calificacion_rol_2
+FROM 
+    learnmatch.emparejamiento
+WHERE 
+    (FK_USUARIO1 = ? OR FK_USUARIO2 = ?)
+    AND FK_ESTADOEMPAREJAMIENTO = 2;
+        `;
+
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk,userPk,userPk,userPk,userPk,userPk,userPk,userPk,userPk,userPk]);
+            console.log("resultado de la consulta de acutualizar calificacion ",result);
+            return result[0];
+        } catch (err) {
+            throw err;
+        }
+    }
+    
+    async updatearCalificacion(userPk, promedio_rol_1, promedio_rol_2, promedioGeneral) {
+        // Construimos la parte SET de la consulta de manera condicional
+        let sql = `
+            UPDATE learnmatch.informacionusuario
+            SET CALIFICACION = ?
+        `;
+        
+        // Array de parámetros para la consulta
+        const params = [promedioGeneral, userPk];
+    
+        if (promedio_rol_1 !== 0) {
+            sql += `, CALIFICACION_MENTOR = ?`;
+            params.unshift(promedio_rol_1); // Añadimos al inicio
+        }
+    
+        if (promedio_rol_2 !== 0) {
+            sql += `, CALIFICACION_APRENDIZ = ?`;
+            params.unshift(promedio_rol_2); // Añadimos al inicio
+        }
+    
+        sql += ` WHERE PK_USUARIO = ?`;
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, params);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async  obtenerUsuarioReportar(pkEmparejamiento, pkUsuarioQueReporta) {
+        const query = `
+            SELECT 
+                CASE 
+                    WHEN FK_USUARIO1 = ? THEN FK_USUARIO2
+                    WHEN FK_USUARIO2 = ? THEN FK_USUARIO1
+                END AS pkUsuarioReportado
+            FROM emparejamiento
+            WHERE PK_EMPAREJAMIENTO = ?
+            AND (? IN (FK_USUARIO1, FK_USUARIO2));
+        `;
+        const params = [pkUsuarioQueReporta, pkUsuarioQueReporta, pkEmparejamiento, pkUsuarioQueReporta];
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(query, params);
+            return result.length ? result[0].pkUsuarioReportado : null;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async mandarReporte(pkEmparejamiento, pkUsuarioQueReporta, obtenerPkUsuarioReporte, mensaje) {
+        const updateEmparejamientoQuery = `
+            UPDATE emparejamiento
+            SET FK_ESTADOEMPAREJAMIENTO = 6
+            WHERE PK_EMPAREJAMIENTO = ?;
+        `;
+    
+        const insertReporteQuery = `
+            INSERT INTO reportesusuarios (FK_USUARIO, DESCRIPCION, FK_USUARIO_REPORTA, VALIDO)
+            VALUES (?, ?, ?, 0);
+        `;
+    
+        const connection = db.promise();
+    
+        try {
+            await connection.beginTransaction();
+    
+            const [cambioEstadoEmp] = await connection.query(updateEmparejamientoQuery, [pkEmparejamiento]);
+            const [insertarReporte] = await connection.query(insertReporteQuery, [obtenerPkUsuarioReporte, mensaje, pkUsuarioQueReporta]);
+    
+            await connection.commit();
+    
+            return { success: true, message: "Reporte enviado y emparejamiento actualizado correctamente" };
+        } catch (error) {
+            try {
+                await connection.rollback();
+            } catch (rollbackError) {
+                console.error("Error al hacer rollback", rollbackError);
+            }
+            throw error;
+        }
+    }
+
+    async obtenerEmparejados(pkemparejamiento){
+        const sql = `
+        SELECT
+        FK_USUARIO1 AS PK_USER1,
+        FK_USUARIO2 AS PK_USER2
+        FROM
+        learnmatch.emparejamiento
+        WHERE
+        PK_EMPAREJAMIENTO = ?
+        `;
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [pkemparejamiento]);
+            console.log("Desde modelo");
+            console.log(result);
+            return result; // Accede al primer (y en este caso único) elemento del resultado
+        } catch (err) {
+            throw err;
+        }
+}
+
+async verificarMedalla1(userPk){
+    const sql = `
+    SELECT 
+    ESTADO AS MEDALLA1
+    FROM controlmedallas
+    WHERE FK_USUARIOINFO = ?
+    AND FK_MEDALLA = 1
+    ;
+    `;
+
+    try {
+        const promesadb = db.promise();
+        const [result] = await promesadb.query(sql, [userPk]);
+        console.log("Desde modelo");
+        console.log(result);
+        return result;
+    } catch (err) {
+        throw err;
+    }
+
+}
+
+
+    async obtenerMedalla1(userPk){
+        const sql = `
+        UPDATE controlmedallas
+        SET ESTADO = 1
+        WHERE FK_USUARIOINFO = ?
+        AND FK_MEDALLA = 1;
+
+        `; 
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk]);
+            
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    async verificarMedalla2(userPk){
+        const sql = `
+        SELECT 
+        ESTADO AS MEDALLA2
+        FROM controlmedallas
+        WHERE FK_USUARIOINFO = ?
+        AND FK_MEDALLA = 2
+        ;
+        `;
+
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk]);
+            console.log("Desde modelo");
+            console.log(result);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async saberProgresoMedalla2(userPk){
+        const sql = `
+        SELECT 
+        COUNT(*) AS TOTAL
+        FROM emparejamiento
+        WHERE (FK_USUARIO1 = ? OR FK_USUARIO2 = ?)
+        AND FK_ESTADOEMPAREJAMIENTO = 2;
+        `;
+
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk,userPk]);
+            console.log("Desde modelo");
+
+            console.log(result[0].TOTAL);
+            return result[0].TOTAL;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async obtenerMedalla2(userPk, progreso, estado){
+        console.log("Desde modelo");
+        console.log(userPk);
+        console.log(progreso);
+        console.log(estado);
+        const sql = `
+        UPDATE controlmedallas
+        SET
+        PROGRESO = ?,
+        ESTADO = ?
+        WHERE FK_USUARIOINFO = ?
+        AND FK_MEDALLA = 2;
+
+        `; 
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [progreso, estado, userPk,]);
+            
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async verificarMedalla3(userPk){
+        const sql = `
+        SELECT 
+        ESTADO AS MEDALLA3
+        FROM controlmedallas
+        WHERE FK_USUARIOINFO = ?
+        AND FK_MEDALLA = 3
+        ;
+        `;
+
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk]);
+            console.log("Desde modelo");
+            console.log(result);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async saberProgresoMedalla3(userPk){
+        const sql = `
+        SELECT 
+    COUNT(*) AS total_emparejamientos
+FROM 
+    learnmatch.emparejamiento
+WHERE 
+    FK_ESTADOEMPAREJAMIENTO = 2
+    AND (
+        (FK_USUARIO1 = ? AND ROL_USUARIO1 = 2 AND CALIFICACION_USUARIO1 = 5.00)
+        OR (FK_USUARIO2 = ? AND ROL_USUARIO2 = 2 AND CALIFICACION_USUARIO2 = 5.00)
+    );
+        `;
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk, userPk]);
+            console.log("Resultado de la consulta de emparejamientos con calificación máxima:", result);
+            return result[0].total_emparejamientos;
+        } catch (err) {
+            throw err;
+        }
+     }
+
+     async obtenerMedalla3(userPk, progreso, estado){
+        console.log("Desde modelo");
+        console.log(userPk);
+        console.log(progreso);
+        console.log(estado);
+        const sql = `
+        UPDATE controlmedallas
+        SET
+        PROGRESO = ?,
+        ESTADO = ?
+        WHERE FK_USUARIOINFO = ?
+        AND FK_MEDALLA = 3;
+
+        `; 
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [progreso, estado, userPk,]);
+            
+            return result;
+        } catch (err) {
+            throw err;
+        }
+     }
+
+        async verificarMedalla4(userPk){
+            const sql = `
+            SELECT 
+            ESTADO AS MEDALLA4
+            FROM controlmedallas
+            WHERE FK_USUARIOINFO = ?
+            AND FK_MEDALLA = 4
+            ;
+            `;
+    
+            try {
+                const promesadb = db.promise();
+                const [result] = await promesadb.query(sql, [userPk]);
+                console.log("Desde modelo");
+                console.log(result);
+                return result;
+            } catch (err) {
+                throw err;
+            }
+         }
+
+            async saberProgresoMedalla4(userPk){
+                const sql = `
+                SELECT 
+                COUNT(*) AS total_emparejamientos
+            FROM
+                learnmatch.emparejamiento
+            WHERE 
+                FK_ESTADOEMPAREJAMIENTO = 2
+                AND (
+                    (FK_USUARIO1 = ? AND ROL_USUARIO1 = 1 AND CALIFICACION_USUARIO1 = 5.00)
+                    OR (FK_USUARIO2 = ? AND ROL_USUARIO2 = 1 AND CALIFICACION_USUARIO2 = 5.00)
+                );
+                `;
+            
+                try {
+                    const promesadb = db.promise();
+                    const [result] = await promesadb.query(sql, [userPk, userPk]);
+                    console.log("Resultado de la consulta de emparejamientos con calificación máxima:", result);
+                    return result[0].total_emparejamientos;
+                } catch (err) {
+                    throw err;
+                }
+            }
+
+    async obtenerMedalla4(userPk, progreso, estado){
+        console.log("Desde modelo");
+        console.log(userPk);
+        console.log(progreso);
+        console.log(estado);
+        const sql = `
+        UPDATE controlmedallas
+        SET
+        PROGRESO = ?,
+        ESTADO = ?
+        WHERE FK_USUARIOINFO = ?
+        AND FK_MEDALLA = 4;
+        
+        `; 
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [progreso, estado, userPk,]);
+                    
+            return result;
+        } catch (err) {
+            throw err;
+        }
+        }
+
+    async verificarMedalla5(userPk){
+        const sql = `
+        SELECT 
+        ESTADO AS MEDALLA5
+        FROM controlmedallas
+        WHERE FK_USUARIOINFO = ?
+        AND FK_MEDALLA = 5
+        ;
+        `;
+
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk]);
+            console.log("Desde modelo");
+            console.log(result);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    async saberProgresoMedalla5(userPk){
+        const sql = `
+        SELECT 
+        COUNT(*) AS total_emparejamientos
+    FROM
+        learnmatch.emparejamiento
+    WHERE 
+        FK_ESTADOEMPAREJAMIENTO = 2
+        AND (
+            (FK_USUARIO1 = ? AND CALIFICACION_USUARIO1 BETWEEN 4.00 AND 5.00)
+            OR (FK_USUARIO2 = ? AND CALIFICACION_USUARIO2 BETWEEN 4.00 AND 5.00)
+        );
+        `;
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk, userPk]);
+            console.log("Resultado de la consulta de emparejamientos con calificación máxima:", result);
+            return result[0].total_emparejamientos;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    async obtenerMedalla5(userPk, progreso, estado){
+        console.log("Desde modelo");
+        console.log(userPk);
+        console.log(progreso);
+        console.log(estado);
+        const sql = `
+        UPDATE controlmedallas
+        SET
+        PROGRESO = ?,
+        ESTADO = ?
+        WHERE FK_USUARIOINFO = ?
+        AND FK_MEDALLA = 5;
+        
+        `; 
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [progreso, estado, userPk,]);
+                    
+            return result;
+        } catch (err) {
+            throw err;
+        }
+        }
+
+    async verificarMedalla6(userPk){
+        const sql = `
+        SELECT 
+        ESTADO AS MEDALLA6
+        FROM controlmedallas
+        WHERE FK_USUARIOINFO = ?
+        AND FK_MEDALLA = 6
+        ;
+        `;
+
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk]);
+            console.log("Desde modelo");
+            console.log(result);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async saberProgresoMedalla6(userPk){
+        const sql = `
+        SELECT 
+        COUNT(*) AS total_emparejamientos
+    FROM
+        learnmatch.emparejamiento
+    WHERE 
+        FK_ESTADOEMPAREJAMIENTO = 2
+        AND (
+            (FK_USUARIO1 = ? )
+            OR (FK_USUARIO2 = ? )
+        );
+        `;
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [userPk, userPk]);
+            console.log("Resultado de la consulta de emparejamientos con calificación máxima:", result);
+            return result[0].total_emparejamientos;
+        } catch (err) {
+            throw err;
+        }
+     }
+
+     async obtenerMedalla6(userPk, progreso, estado){
+        console.log("Desde modelo");
+        console.log(userPk);
+        console.log(progreso);
+        console.log(estado);
+        const sql = `
+        UPDATE controlmedallas
+        SET
+        PROGRESO = ?,
+        ESTADO = ?
+        WHERE FK_USUARIOINFO = ?
+        AND FK_MEDALLA = 6;
+        
+        `; 
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sql, [progreso, estado, userPk,]);
+                    
+            return result;
+        } catch (err) {
+            throw err;
+        }
+        }
 
 }
 
