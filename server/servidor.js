@@ -8,6 +8,17 @@ const http = require('http');
 
 const app = express();
 
+// Contador de solicitudes
+let requestCounter = 0;
+
+// Middleware para registrar las solicitudes
+app.use((req, res, next) => {
+  requestCounter++;
+  const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  console.log(`[Solicitud ${requestCounter}] Método: ${req.method}, URL: ${req.url}, IP del Cliente: ${clientIp}, Hora: ${new Date().toISOString()}`);
+  next();
+});
+
 // Configuración de CORS para permitir solicitudes desde Netlify
 const corsOptions = {
   origin: ['https://learnmatch.netlify.app'],
