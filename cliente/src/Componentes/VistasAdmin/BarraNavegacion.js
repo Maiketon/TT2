@@ -35,7 +35,7 @@ const BarraNavegacion = ({ setVista }) => {
         <h3 className="titulo">Administrador</h3>
         <div className="botones">
           <button className="elemento" onClick={() => setVista('registro')}>
-            Registros de usuarios
+            Filtrar usuarios
           </button>
           <button className="elemento" onClick={() => setVista('estadistica')}>
             Estadisticas y reportes del algoritmo
