@@ -13,7 +13,7 @@ import {useCarga} from "./ContextoCarga";
 
 const Estadisticas = () => {
 
-  const [vista, setGrafica] = useState('');
+  const [vista, setGrafica] = useState('usoAplicacion');
   const {setEstaCargando} = useCarga();
 
 
