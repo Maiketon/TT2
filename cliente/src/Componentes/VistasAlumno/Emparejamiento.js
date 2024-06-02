@@ -274,7 +274,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
             const numRechazos = Cookies.get('numRechazos');
             //const numRechazos = parseInt(sessionStorage.getItem("numRechazos"));
     
-            if (numRechazos === 0) {
+            if (numRechazos == 0) {
                 Swal.fire({
                     title: 'No puedes hacer más rechazos',
                     text: 'Has agotado tus rechazos disponibles.',
@@ -319,7 +319,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
                 <Container>
                     {showImage && <img className="medida_matchimg" src={MatchUser} alt="Emparejamiento" />}
                 </Container>
-                {!loadingCompleted && <Button onClick={handleStartLoading}>Iniciar emparejamiento</Button>}
+                {!loadingCompleted && <Button onClick={handleStartLoading}>Iniciar busqueda de candidatos</Button>}
                 {!loadingCompleted && <Button className="btn btn-danger" onClick={Strikes}>Consulta tus strikes</Button>}
                 {/* Modal */}
                 <Modal show={showModal} onHide={handleCloseModal} centered closeButton={false}>
@@ -336,10 +336,10 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
                 {/* Muestra "Hola cards" después de que se complete la carga */}
                 {loadingCompleted && (
                     <div style={{ backgroundColor: 'white' }}>
-                        <p>Resultados del emparejamiento</p>
+                        <p>Candidatos disponibles</p>
                         <div class="row">
                         <div class="col">Rechazos disponibles:  {  Cookies.get('numRechazos')  /*sessionStorage.getItem('numRechazos')*/}</div>
-                        <div class="col">Emparejamientos que tienes:  { Cookies.get('totalEmparejamientos') /*sessionStorage.getItem('totalEmparejamientos')*/}</div>
+                        <div class="col">Emparejamientos activos/pendientes/prefinalizados que tienes:  { Cookies.get('totalEmparejamientos') /*sessionStorage.getItem('totalEmparejamientos')*/}</div>
                         </div>
                         {datosAlumno.map((alumno, index) => (
                             <Card key={index} className={index === deletedCardIndex ? 'fadeOutAnimation' : ''}>
@@ -380,11 +380,11 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
                                 </Card.Body>
                                 <div className="conocimientos_deficiencias">
                                     <div className="columna">
-                                    <button className="btn_rechazo" onClick={() => { handleDeleteCard(index); actualizarRechazos();  }}>X</button>
-
+                                    <Button variant="danger"onClick={() => { handleDeleteCard(index); actualizarRechazos();  }}>Rechazar candidato</Button>
+                                   
                                     </div>
                                     <div className="columna">
-                                        <button href="#" className="btn btn-primary" onClick={() => { handleDeleteAcceptCard(index,alumno.candidato.PK_USUARIO, alumno.tipoCoincidencia);  }}>Aceptar emparejamento</button>
+                                        <button href="#" className="btn btn-primary" onClick={() => { handleDeleteAcceptCard(index,alumno.candidato.PK_USUARIO, alumno.tipoCoincidencia); actualizarEmparejamientosDisponibles(); }}>Aceptar Premparejamento</button>
                                     </div>
                                 </div>
                             </Card>

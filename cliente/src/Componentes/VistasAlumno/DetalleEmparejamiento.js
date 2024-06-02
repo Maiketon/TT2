@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import "./Css/DetallesEmparejamiento.css";
 import { Await } from "react-router";
 import Cookies from 'js-cookie';
 
@@ -404,7 +405,14 @@ const DetalleEmparejamiento = () => {
                 console.log("dio 1");
                 await axios.post(`http://localhost:3001/api/emparejamiento/rechazarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                 //handleDeleteCard(index,dato);
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Emparejamiento rechazado',
+                    text: 'El emparejamiento ha sido rechazado exitosamente.',
+                });
+                window.location.reload();
             }
+
         } catch (error) {
            
             console.error('Error al rechazar el emparejamiento:', error);
@@ -455,168 +463,174 @@ const DetalleEmparejamiento = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <Card>
-                <Card.Body>
-                    <Card.Title>Mis mentorias </Card.Title>
-                    {Aprendiz.map((aprendiz, index) => (
-                        <div className="card" key={index}>
-                            <div>
-                                <div className="row">
-                                    <div className="col">
-                                        <img
-                                            className="img_perfil_m"
-                                            alt="imagen de perfil"
-                                            src={perfil_generico}
-                                        />
-                                    </div>
-                                    <div className="col">{aprendiz.nombreCompleto}</div>
-                                    <div className="col">Fecha</div>
-                                </div>
-                                <div className="row">
-                                    <div className="col">
-                                        <button className="btn_rechazo" onClick={() => handleRechazarEmparejamiento(aprendiz.PK_EMPAREJAMIENTO,aprendiz.rol)}>
-                                            X
-                                        </button>
-                                    </div>
-                                    <div className="col">
-                                    {aprendiz.estado == 1 ? (
-                                    // Aquí va tu condición y lo que deseas renderizar si se cumple la primera condición
-                                        <div class="col">
-                                            <p>Pendiente</p>
-                                            <i className="bi bi-clock-fill fs-1 text-primary"></i>
-                                        </div>
-                                    ) : aprendiz.estado == 2 ? (
-                                        <div class="col">
-                                            <p>Finalizado</p>
-                                            <i className="bi bi-person-badge-fill fs-1 text-danger"></i>
-                                        </div>
-                                    ) : aprendiz.estado == 3 ? (
-                                        <div class="col">
-                                            <p>Activo</p>
-                                            <i className="bi bi-person-fill-check fs-1 text-success"></i>
-                                        </div>
-                                    ) : aprendiz.estado == 4 ? (
-                                        <div class="col">
-                                            <p>Rechazado</p>
-                                            <i className="bi bi-person-fill-x fs-1 text-danger"></i>
-                                        </div>
-                                    ) : aprendiz.estado == 5 ? (
-                                        // Aquí va tu condición y lo que deseas renderizar si se cumple la segunda condición
-                                        <div class="col">
-                                            <p>Finalizado parcialmente</p>
-                                            <i className="bi bi-person-fill-down fs-1 text-success"></i>
-                                        </div>
-                                    ): null}
-                                    </div>
-                                    {aprendiz.estado == 3 ? (
-                                    <div className="col">
-                                        TOKEN
-                                        <Container>
-                                            <Button onClick={() => obtenerToken(aprendiz.PK_EMPAREJAMIENTO)}>Copiar Token</Button>
-                                        </Container> 
-                                    </div>
-                                    ):null}
-                                </div>
-                                {banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
-                                    <div className="row">
-                                        <div className="col">
-                                            <Button onClick={() => handleActivarEmparejamiento(aprendiz.PK_EMPAREJAMIENTO)}>Activar emparejamiento</Button>
-                                        </div>
-                                    </div>
-                                ) :banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 5) ? (
-                                    <div className="row">
-                                        <div className="col">
-                                        <Button onClick={() => abrirModalParaEvaluar(aprendiz.PK_EMPAREJAMIENTO,aprendiz.rol)}>Hacer evaluación</Button>
-                                        </div>
-                                    </div>
-                                ) : null}
+            <Card className="custom-card">
+        <div className="custom-card-header-mentorias">
+            <Card.Title className="custom-card-title">Emparejamientos donde eres Mentor</Card.Title>
+        </div>
+        <Card.Body>
+            {Aprendiz.map((aprendiz, index) => (
+                <div className="inner-card mb-3" key={index}>
+                    <div className="row no-gutters align-items-center">
+                        <div className="col-md-2 text-center">
+                            <img
+                                className="img_perfil_m"
+                                alt="imagen de perfil"
+                                src={perfil_generico}
+                            />
+                        </div>
+                        <div className="col-md-7">
+                            <div className="card-body">
+                                <h5 className="card-title">{aprendiz.nombreCompleto}</h5>
+                                
                             </div>
                         </div>
-                    ))}
-                </Card.Body>
-            </Card>
+                        <div className="col-md-3 text-center">
+                            <button className="btn btn-danger btn-sm" onClick={() => handleRechazarEmparejamiento(aprendiz.PK_EMPAREJAMIENTO, aprendiz.rol)}>
+                                Rechazar/Finalizar emparejamiento
+                            </button>
+                        </div>
+                    </div>
+                    <div className="row no-gutters mt-2 text-center">
+                        <div className="col-md-12">
+                            {aprendiz.estado == 1 ? (
+                                <div>
+                                    <p>Pendiente</p>
+                                    <i className="bi bi-clock-fill fs-1 text-primary"></i>
+                                </div>
+                            ) : aprendiz.estado == 2 ? (
+                                <div>
+                                    <p>Finalizado</p>
+                                    <i className="bi bi-person-badge-fill fs-1 text-danger"></i>
+                                </div>
+                            ) : aprendiz.estado == 3 ? (
+                                <div>
+                                    <p>Activo</p>
+                                    <i className="bi bi-person-fill-check fs-1 text-success"></i>
+                                </div>
+                            ) : aprendiz.estado == 4 ? (
+                                <div>
+                                    <p>Rechazado</p>
+                                    <i className="bi bi-person-fill-x fs-1 text-danger"></i>
+                                </div>
+                            ) : aprendiz.estado == 5 ? (
+                                <div>
+                                    <p>Finalizado parcialmente</p>
+                                    <i className="bi bi-person-fill-down fs-1 text-success"></i>
+                                </div>
+                            ) : null}
+                        </div>
+                    </div>
+                    {aprendiz.estado == 3 && (
+                        <div className="row no-gutters mt-2 text-center">
+                            <div className="col-md-12">
+                                <Container>
+                                    <Button onClick={() => obtenerToken(aprendiz.PK_EMPAREJAMIENTO)}>Copiar Token</Button>
+                                </Container>
+                            </div>
+                        </div>
+                    )}
+                    {banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
+                        <div className="row no-gutters mt-2 text-center">
+                            <div className="col-md-12">
+                                <Button onClick={() => handleActivarEmparejamiento(aprendiz.PK_EMPAREJAMIENTO)}>Activar emparejamiento</Button>
+                            </div>
+                        </div>
+                    ) : banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 5) ? (
+                        <div className="row no-gutters mt-2 text-center">
+                            <div className="col-md-12">
+                                <Button onClick={() => abrirModalParaEvaluar(aprendiz.PK_EMPAREJAMIENTO, aprendiz.rol)}>Hacer evaluación</Button>
+                            </div>
+                        </div>
+                    ) : null}
+                </div>
+            ))}
+        </Card.Body>
+    </Card>
             <p>&emsp;</p>
            
-            <Card>
-                <Card.Body>
-                    <Card.Title>Mis áreas de oportunidad </Card.Title>
-                    {Mentor.map((mentor, index) => (
-                        <div className="card" key={index}>
-                            <div>
-                                <div className="row">
-                                    <div className="col">
-                                        <img
-                                            className="img_perfil_m"
-                                            alt="imagen de perfil"
-                                            src={perfil_generico}
-                                        />
-                                    </div>
-                                    <div className="col">{mentor.nombreCompleto}</div>
-                                    <div className="col">Fecha</div>
-                                </div>
-                                <div className="row">
-                                    <div className="col">
-                                        <button className="btn_rechazo" onClick={() => handleRechazarEmparejamiento(mentor.PK_EMPAREJAMIENTO,mentor.rol)}>
-                                            X
-                                        </button>
-                                    </div>
-                                    <div className="col">
-                                    {mentor.estado == 1 ? (
-                                    // Aquí va tu condición y lo que deseas renderizar si se cumple la primera condición
-                                        <div class="col">
-                                            <p>Pendiente</p>
-                                            <i className="bi bi-clock-fill fs-1 text-primary"></i>
-                                        </div>
-                                    ) : mentor.estado == 2 ? (
-                                    // Aquí va tu condición y lo que deseas renderizar si se cumple la segunda condición
-                                        <div class="col">
-                                            <p>Finalizado</p>
-                                            <i className="bi bi-person-badge-fill fs-1 text-danger"></i>
-                                        </div>
-                                    ) : mentor.estado == 3 ? (
-                                        <div class="col">
-                                            <p>Activo</p>
-                                            <i className="bi bi-person-fill-check fs-1 text-success"></i>
-                                        </div>
-                                    ) : mentor.estado == 4 ? (
-                                        <div class="col">
-                                            <p>Rechazado</p>
-                                            <i className="bi bi-person-fill-x fs-1 text-danger"></i>
-                                        </div>
-                                    ) : mentor.estado == 5 ? (
-                                        <div class="col">
-                                            <p>Finalizado parcialmente</p>
-                                            <i className="bi bi-person-fill-down fs-1 text-success"></i>
-                                    </div>
-                                    ): null}
-                                    </div>
-                                    {mentor.estado == 3 ? (
-                                    <div className="col">
-                                        TOKEN
-                                        <Container>
-                                            <Button onClick={() => obtenerToken(mentor.PK_EMPAREJAMIENTO)}>Copiar Token</Button>
-                                        </Container> 
-                                    </div>
-                                    ):null}
-                                </div>
-                                {banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
-                                <div className="row">
-                                    <div className="col">
-                                        <Button onClick={() => handleActivarEmparejamiento(mentor.PK_EMPAREJAMIENTO)}>Activar emparejamiento</Button>
-                                    </div>
-                                </div>
-                                ) : banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 5) ? (
-                                    <div className="row">
-                                        <div className="col">
-                                        <Button onClick={() => abrirModalParaEvaluar(mentor.PK_EMPAREJAMIENTO,mentor.rol)}>Hacer evaluación</Button>
-                                        </div>
-                                    </div>
-                                ) : null}
+            <Card className="custom-card">
+        <div className="custom-card-header-oportunidad">
+            <Card.Title className="custom-card-title">Emparejamientos donde eres Aprendiz</Card.Title>
+        </div>
+        <Card.Body>
+            {Mentor.map((mentor, index) => (
+                <div className="inner-card mb-3" key={index}>
+                    <div className="row no-gutters align-items-center">
+                        <div className="col-md-2 text-center">
+                            <img
+                                className="img_perfil_m"
+                                alt="imagen de perfil"
+                                src={perfil_generico}
+                            />
+                        </div>
+                        <div className="col-md-7">
+                            <div className="card-body">
+                                <h5 className="card-title">{mentor.nombreCompleto}</h5>
+                                
                             </div>
                         </div>
-                    ))}
-                </Card.Body>
-                </Card>
+                        <div className="col-md-3 text-center">
+                            <button className="btn btn-danger btn-sm" onClick={() => handleRechazarEmparejamiento(mentor.PK_EMPAREJAMIENTO, mentor.rol)}>
+                                Rechazar/Finalizar emparejamiento
+                            </button>
+                        </div>
+                    </div>
+                    <div className="row no-gutters mt-2 text-center">
+                        <div className="col-md-12">
+                            {mentor.estado == 1 ? (
+                                <div>
+                                    <p>Pendiente</p>
+                                    <i className="bi bi-clock-fill fs-1 text-primary"></i>
+                                </div>
+                            ) : mentor.estado == 2 ? (
+                                <div>
+                                    <p>Finalizado</p>
+                                    <i className="bi bi-person-badge-fill fs-1 text-danger"></i>
+                                </div>
+                            ) : mentor.estado == 3 ? (
+                                <div>
+                                    <p>Activo</p>
+                                    <i className="bi bi-person-fill-check fs-1 text-success"></i>
+                                </div>
+                            ) : mentor.estado == 4 ? (
+                                <div>
+                                    <p>Rechazado</p>
+                                    <i className="bi bi-person-fill-x fs-1 text-danger"></i>
+                                </div>
+                            ) : mentor.estado == 5 ? (
+                                <div>
+                                    <p>Finalizado parcialmente</p>
+                                    <i className="bi bi-person-fill-down fs-1 text-success"></i>
+                                </div>
+                            ) : null}
+                        </div>
+                    </div>
+                    {mentor.estado == 3 && (
+                        <div className="row no-gutters mt-2 text-center">
+                            <div className="col-md-12">
+                                <Container>
+                                    <Button onClick={() => obtenerToken(mentor.PK_EMPAREJAMIENTO)}>Copiar Token</Button>
+                                </Container>
+                            </div>
+                        </div>
+                    )}
+                    {banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
+                        <div className="row no-gutters mt-2 text-center">
+                            <div className="col-md-12">
+                                <Button onClick={() => handleActivarEmparejamiento(mentor.PK_EMPAREJAMIENTO)}>Activar emparejamiento</Button>
+                            </div>
+                        </div>
+                    ) : banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 5) ? (
+                        <div className="row no-gutters mt-2 text-center">
+                            <div className="col-md-12">
+                                <Button onClick={() => abrirModalParaEvaluar(mentor.PK_EMPAREJAMIENTO, mentor.rol)}>Hacer evaluación</Button>
+                            </div>
+                        </div>
+                    ) : null}
+                </div>
+            ))}
+        </Card.Body>
+    </Card>
             <Modal show={showModal} onHide={() => {}} backdrop="static" keyboard={false} size="xl">
                 <Modal.Header>
                     <Modal.Title>Califica a tu {rol == '1' ? "mentor" : "aprendiz"}</Modal.Title>
