@@ -1,0 +1,81 @@
+:root {
+    --azul-oceano: #007aa3;
+    --azul-profundo: #00475f;
+    --azul-cielo-hover: #0073a0;
+    --azul-armonia: #3c6dae;
+    --negro-absoluto: #000000;
+    --gris-oscuro: #333333;
+    --gris-tenue: #f5ecec;
+    --guinda: #8B0000;
+    --guinda-tenue: #7c3030;
+    --ghots-white: #f8f8ff;
+    --sea-shell: #fff5ee;
+    --Brighter-Green: #76B947;
+    --Soft-Violet: #6A4C93;
+    --Soft-Violet-Hover: #8065a6;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --grey-color: #a9acb0;
+    --dark-color: #343a40;
+    --strong-green: #228B22; /* Verde fuerte que se utilizó en el componente anterior */
+}
+
+.custom-card {
+    background-color: var(--ghots-white);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Para asegurar que los bordes redondeados se apliquen a todos los elementos dentro de la tarjeta */
+    margin-bottom: 20px; /* Espacio entre tarjetas */
+}
+
+.custom-card-header-mentorias {
+    background-color: var(--strong-green); 
+    padding: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    text-align: center;
+}
+
+.custom-card-header-oportunidad {
+    background-color: var(--Soft-Violet); /* Soft Violet */
+    padding: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    text-align: center;
+}
+
+.custom-card-title {
+    color: var(--negro-absoluto); /* Negro */
+    margin: 0;
+    font-size: 1.5rem; /* Tamaño de fuente más grande */
+}
+
+.inner-card {
+    background-color: var(--ghots-white);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+}
+
+.img_perfil_m {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.btn {
+    margin: 0 auto;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-title {
+    margin-bottom: 0;
+}
+
+.card-text {
+    margin-top: 0;
+}
