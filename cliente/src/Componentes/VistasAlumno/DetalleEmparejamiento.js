@@ -474,7 +474,7 @@ const DetalleEmparejamiento = () => {
                         <div className="col-md-7">
                             <div className="card-body">
                                 <h5 className="card-title">{aprendiz.nombreCompleto}</h5>
-                                <p className="card-text">Fecha</p>
+                                
                             </div>
                         </div>
                         <div className="col-md-3 text-center">
@@ -559,7 +559,7 @@ const DetalleEmparejamiento = () => {
                         <div className="col-md-7">
                             <div className="card-body">
                                 <h5 className="card-title">{mentor.nombreCompleto}</h5>
-                                <p className="card-text">Fecha</p>
+                                
                             </div>
                         </div>
                         <div className="col-md-3 text-center">

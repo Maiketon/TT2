@@ -1,11 +1,9 @@
-import React, {useEffect,use} from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import './Css/SalaComunicacion.css';
-//import { set } from '../../../../server/configuracion/emailConfig';
 
 function randomID(len) {
   let result = '';
-  if (result) return result;
   var chars = '12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP',
     maxPos = chars.length,
     i;
@@ -16,27 +14,28 @@ function randomID(len) {
   return result;
 }
 
-export function getUrlParams(
-  url = window.location.href
-) {
+export function getUrlParams(url = window.location.href) {
   let urlStr = url.split('?')[1];
   return new URLSearchParams(urlStr);
 }
 
 const ComunicacionUsuarios = ({ setVista }) => {
   const roomID = getUrlParams().get('roomID') || randomID(5);
-  let zp;
-  let myMeeting = async (element) => {
-    // generate Kit Token
+  const myCallContainerRef = useRef(null);
+  const zp = useRef(null);
+  
+  useEffect(() => {
+    console.log("Component mounted, initializing ZegoUIKitPrebuilt...");
+
     const appID = 615825585;
     const serverSecret = "cef6fb2904ea3a9cc07c9f60d5e91367";
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID, randomID(5), randomID(5));
 
     // Create instance object from Kit Token.
-    zp = ZegoUIKitPrebuilt.create(kitToken);
+    zp.current = ZegoUIKitPrebuilt.create(kitToken);
     // start the call
-    zp.joinRoom({
-      container: element,
+    zp.current.joinRoom({
+      container: myCallContainerRef.current,
       maxUsers: 2,
       sharedLinks: [
         {
@@ -48,13 +47,25 @@ const ComunicacionUsuarios = ({ setVista }) => {
         mode: ZegoUIKitPrebuilt.VideoConference,
       },
     });
-  };
 
+    console.log("ZegoUIKitPrebuilt initialized");
 
+    // Clean up function to leave the room when the component unmounts
+    return () => {
+      console.log("Component unmounted, cleaning up...");
+      if (zp.current) {
+        if (zp.current.destroy) {
+          zp.current.destroy();  // Using destroy method if available
+        }
+        zp.current = null;
+        console.log("ZegoUIKitPrebuilt instance destroyed");
+      }
+    };
+  }, [roomID]);
 
   return (
-    <div className="myCallContainer col" ref={myMeeting} style={{height: '100vh' }}>
-  
+    <div className="myCallContainer col" ref={myCallContainerRef} style={{ height: '100vh' }}>
+      {/* This div will be used as the container for the ZegoUIKitPrebuilt instance */}
     </div>
   );
 }
