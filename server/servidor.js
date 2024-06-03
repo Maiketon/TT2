@@ -67,7 +67,7 @@ app.use((err, req, res, next) => {
 // Configuración del certificado SSL autofirmado
 const sslOptions = {
   key: fs.readFileSync('C:\\Users\\Anonymous\\Desktop\\TT2\\server\\CertificadosSSL\\private.key'),
-  cert: fs.readFileSync('C:\\Users\\Anonymous\\Desktop\\TT2\\server\\CertificadosSSL\\server.crt')
+  cert: fs.readFileSync('C:\\Users\\Anonymous\\Desktop\\TT2\\server\\CertificadosSSL\\certificate.crt')
 };
 
 // Puerto HTTPS
