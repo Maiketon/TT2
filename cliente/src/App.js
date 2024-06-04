@@ -1,46 +1,39 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+ //SE IMPORTA BOOSTRAP DENTRO DE REACT//
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Cookies from 'js-cookie';
-// COMPONENTES DE LA VISTA PRINCIPAL
+//COMPONENTES D ELA VISTA PRINCIPAL//
 import VistaPrincipal from './Componentes/Principal';
+
 import PrincipalAdmin from './Componentes/VistasAdmin/PrincipalAdmin';
 import PrincipalAlumno from './Componentes/VistasAlumno/PrincipalAlumno';
+//import Swal from 'sweetalert2'
+//import withReactContent from 'sweetalert2-react-content'
+
 
 function App() {
   const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
+    // Verificar el rol de usuario al cargar la aplicación
+    //const storedRole = sessionStorage.getItem('userRole');
     const storedRole = Cookies.get('userRole'); 
     if (storedRole) {
+      // Si hay un rol almacenado en la sesión, establecerlo en el estado
       setUserRole(parseInt(storedRole));
     }
-  }, []);
+    // No devuelvas nada en el useEffect
+  }, []); // Se ejecuta solo una vez al cargar la aplicación
 
-  console.log("UserRole en App:", userRole);
+  console.log("UserRole en App:", userRole); // Verifica el valor de userRole
 
   return (
     <div className="App">
       <Router>
         <Routes>
-          {/* Si el usuario ya está autenticado, redirigir fuera de la página principal */}
-          <Route 
-            path="/" 
-            element={
-              userRole ? (
-                userRole === 8 ? (
-                  <Navigate to="/VistasAdmin" />
-                ) : userRole === 4 ? (
-                  <Navigate to="/VistasAlumno/PrincipalAlumno" />
-                ) : (
-                  <VistaPrincipal />
-                )
-              ) : (
-                <VistaPrincipal />
-              )
-            } 
-          />
+          <Route path="/" element={<VistaPrincipal />} />
           <Route path="/VistasAdmin/*" element={<PrivateRoute allowedRoles={[8]} redirectTo="/" component={PrincipalAdmin} />} />
           <Route path="/VistasAlumno/*" element={<PrivateRoute allowedRoles={[4]} redirectTo="/" component={PrincipalAlumno} />} />
         </Routes>
@@ -50,12 +43,16 @@ function App() {
 }
 
 function PrivateRoute({ allowedRoles, redirectTo, component: Component, ...props }) {
+  // Obtener el rol de usuario de la sesión
+  //const userRole = parseInt(sessionStorage.getItem('userRole'));
   const userRole = parseInt(Cookies.get('userRole'));
 
   if (!userRole || !allowedRoles.includes(userRole)) {
+    // Si el usuario no tiene un rol permitido, redirige
     return <Navigate to={redirectTo} />;
   }
 
+  // Si el usuario tiene un rol permitido, muestra el componente de la ruta protegida
   return <Component {...props} />;
 }
 

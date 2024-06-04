@@ -40,20 +40,20 @@ const GuardarDatosHook = (e) => {
   const { name, value } = e.target;
 
     switch (name) {
-        case 'nombres':
-          setUsuario(prev => ({
+      case 'nombres':
+        setUsuario(prev => ({
             ...prev,
-            [name]: value.replace(/[^a-zA-Z\s]/g, '').toUpperCase().slice(0, 30)
+            [name]: value.replace(/[^a-zA-ZÑñ\s]/g, '').toUpperCase().slice(0, 30)
         }));
         break;
-        case 'apellidoP':
-        case 'apellidoM':
-            // Transformación específica para campos de texto
-            setUsuario(prev => ({
-                ...prev,
-                [name]: value.replace(/[^a-zA-Z\s]/g, '').toUpperCase().slice(0, 20)
-            }));
-            break;
+    case 'apellidoP':
+    case 'apellidoM':
+        // Transformación específica para campos de texto
+        setUsuario(prev => ({
+            ...prev,
+            [name]: value.replace(/[^a-zA-ZÑñ\s]/g, '').toUpperCase().slice(0, 20)
+        }));
+        break;
         case 'correo':
           setUsuario(prev => ({
             ...prev,

@@ -42,7 +42,14 @@ const Emparejamiento = () => {
         const numRechazos = Cookies.get('numRechazos');
         //const numRechazos = parseInt(sessionStorage.getItem("numRechazos"));
         
-        if (numRechazos > 0) {
+        if (numRechazos <= 0) {
+            Swal.fire({
+                title: 'No puedes hacer más rechazos',
+                text: 'Has agotado tus rechazos disponibles.',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+        } else {
             setDeletedCardIndex(index); // Establecer el índice de la tarjeta eliminada
             await actualizarRechazos();
         }
@@ -274,7 +281,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
             const numRechazos = Cookies.get('numRechazos');
             //const numRechazos = parseInt(sessionStorage.getItem("numRechazos"));
     
-            if (numRechazos == 0) {
+            if (numRechazos <= 0) {
                 Swal.fire({
                     title: 'No puedes hacer más rechazos',
                     text: 'Has agotado tus rechazos disponibles.',
