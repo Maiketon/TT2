@@ -93,7 +93,7 @@ const DetalleEmparejamiento = () => {
             console.log(pkemparejamiento);
             console.log(userPk);
             console.log(reportText);
-            const response = await axios.post('http://localhost:3001/api/emparejamiento/reportarUsuario', {
+            const response = await axios.post('https://201.124.154.2:3001/api/emparejamiento/reportarUsuario', {
                 pkEmparejamiento: pkemparejamiento,
                 pkUsuarioQueReporta: userPk,
                 mensaje: reportText,
@@ -176,10 +176,10 @@ const DetalleEmparejamiento = () => {
                     text: 'Ya puedes hacer mas emparejamientos.',
                 });
 
-            const response3 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarEstadoEmparejamiento?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
+            const response3 = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/actualizarEstadoEmparejamiento?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
             //consulta que me traiga el pk del emparejado
             console.log("Aqui empieza el insertar califiacion");
-            const emparejadosResponse= await axios.post(`http://localhost:3001/api/emparejamiento/obtenerEmparejados?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
+            const emparejadosResponse= await axios.post(`https://201.124.154.2:3001/api/emparejamiento/obtenerEmparejados?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
 
 
          const emparejados = emparejadosResponse.data;
@@ -192,7 +192,7 @@ const DetalleEmparejamiento = () => {
 
             for (const userPk of userPks) {
                 console.log(`Actualizando calificaciones para el usuario con PK ${userPk}`);
-                const response4 = await axios.post(`http://localhost:3001/api/emparejamiento/actualizarCalfAlumnoGeneral?userPk=${userPk}`);
+                const response4 = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/actualizarCalfAlumnoGeneral?userPk=${userPk}`);
                 console.log(response4.data);
 
                 const { promedio_rol_1, promedio_rol_2 } = response4.data;
@@ -208,7 +208,7 @@ const DetalleEmparejamiento = () => {
                         promedioGeneral = (promedio_rol_1 + promedio_rol_2) / 2;
                     }
 
-                    const response5 = await axios.post(`http://localhost:3001/api/emparejamiento/updatearCalificacion`, {
+                    const response5 = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/updatearCalificacion`, {
                         userPk,
                         promedio_rol_1,
                         promedio_rol_2,
@@ -219,23 +219,23 @@ const DetalleEmparejamiento = () => {
 
                 //logica medallas
                 //medalla 1
-                const medalla1 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla1?userPk=${userPk}`);
+                const medalla1 = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/medalla1?userPk=${userPk}`);
                 console.log(medalla1);
 
                 //medalla 2
-                const medalla2 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla2?userPk=${userPk}`);
+                const medalla2 = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/medalla2?userPk=${userPk}`);
             
                 //medalla 3
-                const medalla3 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla3?userPk=${userPk}`);
+                const medalla3 = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/medalla3?userPk=${userPk}`);
 
                 //medalla 4
-                const medalla4 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla4?userPk=${userPk}`);
+                const medalla4 = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/medalla4?userPk=${userPk}`);
 
                 //medalla 5
-                const medalla5 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla5?userPk=${userPk}`);
+                const medalla5 = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/medalla5?userPk=${userPk}`);
 
                 //medalla 6
-                const medalla6 = await axios.post(`http://localhost:3001/api/emparejamiento/medalla6?userPk=${userPk}`);
+                const medalla6 = await axios.post(`https://201.124.154.2:3001/api/emparejamiento/medalla6?userPk=${userPk}`);
             
             }
 
@@ -350,7 +350,7 @@ const DetalleEmparejamiento = () => {
     const obtenerToken = async(PK_EMPAREJAMIENTO)=>
         {
             try {
-                const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerTokenC?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                const response = await axios.get(`https://201.124.154.2:3001/api/emparejamiento/obtenerTokenC?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                 const { token } = response.data;
 
                 // Mostrar Sweet Alert
