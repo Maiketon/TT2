@@ -3,6 +3,8 @@ import './Css/Sidebar.css';
 import logo from '../VistasAdmin/Utils/usuario.png';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const BarraNavegacion = ({ setVista }) => {
   const navigate = useNavigate(); // Utiliza useNavigate para redireccionar en React Router v6
@@ -35,13 +37,16 @@ const BarraNavegacion = ({ setVista }) => {
         <h3 className="titulo">Administrador</h3>
         <div className="botones">
           <button className="elemento" onClick={() => setVista('registro')}>
-            Filtrar usuarios
+            <i className="bi bi-people-fill"></i>
+             <span className='d_texto'>Estad&iacute;sticas de usuarios</span>
           </button>
           <button className="elemento" onClick={() => setVista('estadistica')}>
-            Estadisticas y reportes del algoritmo
+          <i className="bi bi-activity"></i>
+            <span className='d_texto'>Estad&iacute;sticas y reportes del algoritmo</span>
           </button>
           <button className="elemento" onClick={() => setVista('sanciones')}>
-            Reportes de cada usuario
+          <i className="bi bi-person-bounding-box"></i>
+            <span className='d_texto'>Reportes de cada usuario</span>
           </button>
         </div>
       </div>

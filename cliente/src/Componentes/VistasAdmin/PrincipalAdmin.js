@@ -43,23 +43,22 @@ const SpinnerGlobal = () =>
   
   return (
     <>
-     <CargarProvider>
-    <Container className='principal' fluid>
-      <Row>
+    <CargarProvider>
+      
         
-        <Col xs lg="3">
-          <BarraNavegacion setVista={setVista} />
-          <SpinnerGlobal/>
-        </Col>
-        
-        <Col {...getContentColumnSize()}>
-          {vista === 'registro' && <RegistroUsuarios />} 
-          {vista === 'estadistica' && <Estadisticas/>} 
-          {vista === 'sanciones' && <Sanciones />} 
-          {vista === 'inscribirse' && <FormularioInscribirse />}
-        </Col>
-      </Row>
-    </Container>
+          
+          <div className='divide_secciones'>
+            <section className='columna_sidebar'> 
+              <BarraNavegacion setVista={setVista} />
+              <SpinnerGlobal/>
+            </section>
+            <section {...getContentColumnSize()} className='margen_vistas'>
+              {vista === 'registro' && <RegistroUsuarios />} 
+              {vista === 'estadistica' && <Estadisticas/>} 
+              {vista === 'sanciones' && <Sanciones />} 
+              {vista === 'inscribirse' && <FormularioInscribirse />}
+            </section>
+          </div>
     </CargarProvider>
     </>
   );
