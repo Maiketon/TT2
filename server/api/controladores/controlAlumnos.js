@@ -247,6 +247,17 @@ exports.eliminarCuenta = async (req, res) => {
     }
 }
 
+exports.obtenerNombreCompleto = async (req,res) => {
+    const {userPk} = req.query;
+    try {
+        const respuesta = await modeloAlumnos.obtenerNombreCompleto(userPk);
+        res.json(respuesta);
+    } catch (error) {
+        console.error('Error realizando la consulta:', error);
+        res.status(500).send('Error en el servidor al obtener el nombre completo');
+    }
+}
+
 
 
 //CONTENIDO HTML QUE REDIRIGE EL BACK AL FRONT//

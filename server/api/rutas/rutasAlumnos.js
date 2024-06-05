@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controlAlumnos = require('../controladores/controlAlumnos');
+const { route } = require('./rutasAlumnos');
 
 //ENDPOINTS PARA ALUMNOS//
 //GETS//
@@ -10,7 +11,7 @@ router.get('/obtenerMedallas',controlAlumnos.obtenerMedallas);
 router.post('/registro', controlAlumnos.guardarAlumno);
 //router.post('/verificar/:correo', controlAlumnos.verificarAlumno);
 router.get('/verificar/:token', controlAlumnos.verificarAlumno);
-
+router.get('/obtenerNombreCompleto', controlAlumnos.obtenerNombreCompleto);
 router.post('/recuperacion', controlAlumnos.recuperarContra);
 
 router.post('/enviarPreferencias', controlAlumnos.guardarPreferenciasAcademicas);

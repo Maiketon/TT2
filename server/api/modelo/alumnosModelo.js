@@ -189,6 +189,24 @@ class modeloAlumnos {
     }
 }
 
+  async obtenerNombreCompleto(userPk) {
+    const sql = `
+      SELECT
+        CONCAT(NOMBRE, " ", APELLIDO_PATERNO, " ", APELLIDO_MATERNO) AS nombreCompleto
+      FROM
+        informacionusuario
+      WHERE
+        PK_USUARIO = ?
+    `;
+    try {
+        const promesadb = db.promise();
+        const [nombre] = await promesadb.query(sql, [userPk]);
+        return nombre;
+    } catch (error) {
+        throw error;
+    }
+  }
+
 
   }
 

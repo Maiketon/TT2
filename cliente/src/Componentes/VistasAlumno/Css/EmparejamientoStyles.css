@@ -53,8 +53,7 @@
 
 
 .btn_rechazo{
-  border-radius: 50px;
-  width: 50px;
+  width: 100px;
   height: 50px;
   background-color: red;
 }

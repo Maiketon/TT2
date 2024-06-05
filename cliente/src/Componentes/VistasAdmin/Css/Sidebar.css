@@ -8,7 +8,7 @@
     --gris-tenue:#f5ecec;
     --guinda:#8B0000;
     --guinda-tenue:#7c3030;
-    --ghots-white: #f8f8ff;
+    --ghots-white: #131314;
     --sea-shell: #fff5ee;
     --Brighter-Green: #76B947;
     --Soft-Violet: #6A4C93;
@@ -21,7 +21,7 @@
 
 /* Estilos CSS para el barra lateral */
 .sidebar {
-    width: 330px; /* Ancho fijo */
+    width: 300px; /* Ancho fijo */
     min-height: 95vh; /* Altura mínima igual al 100% del viewport */
     background-color: var(--guinda);
     border: 2px solid #000; /* Borde sólido */
@@ -99,5 +99,38 @@
 /* Estilos CSS para el contenedor principal */
 .sidebar {
     border: 2px solid #000; /* Establecemos el borde alrededor del contenedor */
-    
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+}
+
+.divide_secciones{
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    column-gap: 5rem;
+    height: 100vh;
+}
+
+.columna_sidebar{
+    display: flex;
+    flex-direction: column;
+    max-width: 330px;
+}
+
+.margen_vistas{
+    margin-right: 2rem;
   }
+
+.d_texto{
+    padding-left: 10px;
+}
+
+.particles-container{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px; /* ajusta el alto según sea necesario */
+    z-index: -1;
+}

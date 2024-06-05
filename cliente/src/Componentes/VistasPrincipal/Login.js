@@ -188,7 +188,11 @@ const FormLogin = ()=>
         .catch((error) => {
           console.log(error.response.data);
           setEstaCargando(false);
-          alert(error.response.data);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "El usuario no existe, te invitamos a registrarte !!",
+          });
         });
     };
 

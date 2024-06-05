@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useMemo } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Css/Dropdown.css';
 import './Css/PrincipalAdm.css';
 import axios from 'axios';
+//import Particles from "react-tsparticles"; 
+//import { loadFull } from "tsparticles"; 
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 import UsuarioComponent from './UsuarioInformacion';
 import {useCarga} from "./ContextoCarga";
 const RegistroUsuarios = () => {
   const {setEstaCargando} = useCarga();
-
+  
+  const [init, setInit] = useState(false);
   const [estatus, setEstatus] = useState([]);
   const [medallas, setMedallas] = useState([]);
   const [selectedEstatus, setSelectedEstatus] = useState('0'); // Estado para controlar el estatus seleccionado
@@ -110,10 +115,107 @@ const tituloStyle = {
 const formLabelStyle = {
     color: 'black' // Ajusta el color de las etiquetas de los formularios
 };
-  
+
+useEffect(() => {
+  initParticlesEngine(async (engine) => {
+    // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
+    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+    // starting from v2 you can add only the features you need reducing the bundle size
+    //await loadAll(engine);
+    //await loadFull(engine);
+    await loadSlim(engine);
+    //await loadBasic(engine);
+  }).then(() => {
+    setInit(true);
+  });
+}, []);
+
+const particlesLoaded = (container) => {
+  console.log(container);
+};
+
+const options = useMemo(
+  () => ({
+    background: {
+      color: {
+        value: "#0d47a1",
+      },
+    },
+    fpsLimit: 120,
+    interactivity: {
+      events: {
+        onClick: {
+          enable: true,
+          mode: "push",
+        },
+        onHover: {
+          enable: true,
+          mode: "repulse",
+        },
+      },
+      modes: {
+        push: {
+          quantity: 4,
+        },
+        repulse: {
+          distance: 200,
+          duration: 0.4,
+        },
+      },
+    },
+    particles: {
+      color: {
+        value: "#ffffff",
+      },
+      links: {
+        color: "#ffffff",
+        distance: 150,
+        enable: true,
+        opacity: 0.5,
+        width: 0.5,
+      },
+      move: {
+        direction: "none",
+        enable: true,
+        outModes: {
+          default: "bounce",
+        },
+        random: false,
+        speed: 6,
+        straight: false,
+      },
+      number: {
+        density: {
+          enable: true,
+        },
+        value: 80,
+      },
+      opacity: {
+        value: 0.5,
+      },
+      shape: {
+        type: "circle",
+      },
+      size: {
+        value: { min: 1, max: 5 },
+      },
+    },
+    detectRetina: true,
+  }),
+  [],
+);
+
+
 
   return (
     <>
+    <div className='particles-container'>
+    <Particles
+        id="tsparticles"
+        particlesLoaded={particlesLoaded}
+        options={options}/>
+    </div>
+     
        <Container fluid>
             <Container className="mt-4">
                 <h2 style={tituloStyle}>Filtrar Usuarios</h2>
@@ -209,6 +311,7 @@ const formLabelStyle = {
                 </Form>
             </Container>
         </Container>
+     
     </>
   );
 }
