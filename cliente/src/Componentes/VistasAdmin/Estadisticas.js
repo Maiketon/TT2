@@ -14,7 +14,7 @@ import './Css/Estadisticas.css';
 const Estadisticas = () => {
 
   const [vista, setGrafica] = useState('usoAplicacion');
-  const {setEstaCargando} = useCarga();
+//  const {setEstaCargando} = useCarga();
 
 
   return (
