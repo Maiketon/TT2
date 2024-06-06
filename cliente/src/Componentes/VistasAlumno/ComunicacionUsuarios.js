@@ -6,7 +6,11 @@ import axios from "axios";
 import Logo from '../VistasPrincipal/Utils/LearnMatchCerebro.png';
 
 
-const userPk = Cookies.get('userPk');
+let userPk = Cookies.get('userPk');
+
+function obtener_cookie(){
+  userPk = Cookies.get('userPk');
+}
 
 function randomID(len) {
   let result = '';
@@ -35,6 +39,7 @@ export function getUrlParams(url = window.location.href) {
 }
 
 const ComunicacionUsuarios = ({ setVista }) => {
+  obtener_cookie();
   const roomID = getUrlParams().get('roomID') || randomID(5);
   const myCallContainerRef = useRef(null);
   const zp = useRef(null);
@@ -70,17 +75,13 @@ const ComunicacionUsuarios = ({ setVista }) => {
         showRoomTimer: true,
         showLeavingView: true, // Whether to display the leaving view. Displayed by default.
         showLeaveRoomConfirmDialog: true, // When leaving the room, whether to display a confirmation pop-up window, the default is true 
-        onJoinRoom: () => {
-          /*console.log("AQUI EN EL CUARTO");
-          const entrada = new Date();
-          //setStartTime(now);
-          const formattedDuration = formatDuration(entrada);
-          console.log(formattedDuration);*/
+        /*onJoinRoom: () => {
+          
         },
         onLeaveRoom: () => {
           
           
-        },
+        },*/
       });
 
       console.log("ZegoUIKitPrebuilt initialized");
