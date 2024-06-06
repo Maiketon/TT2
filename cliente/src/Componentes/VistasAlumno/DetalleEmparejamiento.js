@@ -350,8 +350,9 @@ const DetalleEmparejamiento = () => {
 
     const obtenerToken = async(PK_EMPAREJAMIENTO)=>
         {
+            const userPk = Cookies.get('userPk');
             try {
-                const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerTokenC?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerTokenC?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&userPk=${userPk}`);
                 const { token } = response.data;
 
                 // Mostrar Sweet Alert

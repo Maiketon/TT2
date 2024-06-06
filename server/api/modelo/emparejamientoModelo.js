@@ -511,7 +511,7 @@ WHERE
         console.log(`Ejecutando consulta: ${sqlSelect} con PK_EMPAREJAMIENTO: ${PK_EMPAREJAMIENTO}`);
         const [result] = await promesadb.query(sqlSelect, [PK_EMPAREJAMIENTO]);
 
-        console.log('Resultado de la consulta:', result);
+        //console.log('Resultado de la consulta:', result);
 
         if (!result || result.length === 0) {
             throw new Error('Token no encontrado');
@@ -524,6 +524,54 @@ WHERE
         throw error;
     }
     }
+
+    async obtenerCorreoOtroUsuario(userPk, PK_EMPAREJAMIENTO) {
+        
+        const sqlSelect = `
+            SELECT i.EMAIL, i.NOMBRE,i.APELLIDO_PATERNO
+            FROM emparejamiento e
+            JOIN informacionusuario i ON i.PK_USUARIO = 
+                CASE
+                    WHEN e.FK_USUARIO1 = ? THEN e.FK_USUARIO2
+                    ELSE e.FK_USUARIO1
+                END
+            WHERE e.PK_EMPAREJAMIENTO = ?
+                AND (e.FK_USUARIO1 = ? OR e.FK_USUARIO2 = ?);
+        `;
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sqlSelect, [userPk, PK_EMPAREJAMIENTO, userPk, userPk]);
+            if (result.length > 0) {
+                return result; 
+            } else {
+                throw new Error('No se encontró el email del otro usuario.');
+            }
+        } catch (error) {
+            console.error('Error al obtener el correo del otro usuario para generar token:', error);
+            throw error;
+        }
+    }
+
+    async obtenerNombreCompleto(userPk) {
+        const sql = `
+          SELECT
+            CONCAT(NOMBRE, " ", APELLIDO_PATERNO, " ", APELLIDO_MATERNO) AS nombreCompleto
+          FROM
+            informacionusuario
+          WHERE
+            PK_USUARIO = ?
+        `;
+        try {
+            const promesadb = db.promise();
+            const [nombre] = await promesadb.query(sql, [userPk]);
+            return nombre[0];
+        } catch (error) {
+            throw error;
+        }
+      }
+    
+
 
     async actualizarCalfAlumnoGeneral(userPk){
         const sql = `
