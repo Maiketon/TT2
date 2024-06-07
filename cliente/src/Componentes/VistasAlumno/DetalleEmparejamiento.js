@@ -354,7 +354,7 @@ const DetalleEmparejamiento = () => {
             const userPk = Cookies.get('userPk');
             try {
                 setEstaCargando(true);
-                const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerTokenC?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&userPk=${userPk}`);
+                const response = await axios.get(`https://201.124.162.192:3001/api/emparejamiento/obtenerTokenC?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&userPk=${userPk}`);
                 const { token } = response.data;
 
                 // Mostrar Sweet Alert
@@ -365,7 +365,7 @@ const DetalleEmparejamiento = () => {
                 });
                 
                 // Concatenar el token al final del URL
-                const newUrl = `http://localhost:3000/VistasAlumno/PrincipalAlumno?roomID=${token}`;
+                const newUrl = `https://201.124.162.192:3001/VistasAlumno/PrincipalAlumno?roomID=${token}`;
                 setEstaCargando(false);
                 window.history.replaceState({}, '', newUrl);
                 // Recargar la pestaña actual
