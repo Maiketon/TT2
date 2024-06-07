@@ -178,8 +178,8 @@ const SidebarAlumno = ({ setVista }) => {
                         <Menu> 
                             <hr />
                                 <div className="menu_list">
-                                    <MenuItem className="objeto-menu" icon={<i className="bi bi-book-half"></i>} onClick={() => setVista('inicio')}><span className="txt_hdn">Emparejamiento</span></MenuItem>
-                                    <MenuItem className="objeto-menu" icon={<i className="bi bi-person-fill-check"></i>} onClick={() => setVista('empact')}><span className="txt_hdn">Emparejamientos activos</span></MenuItem>
+                                    <MenuItem className="objeto-menu" icon={<i className="bi bi-book-half"></i>} onClick={() => setVista('inicio')}><span className="txt_hdn">Busqueda de candidatos</span></MenuItem>
+                                    <MenuItem className="objeto-menu" icon={<i className="bi bi-person-fill-check"></i>} onClick={() => setVista('empact')}><span className="txt_hdn">Emparejamientos</span></MenuItem>
                                     <MenuItem className="objeto-menu" icon={<i className="bi bi-clipboard2-pulse-fill"></i>} onClick={() => setVista('preferencias')}><span className="txt_hdn">Preferencias académicas</span></MenuItem>
                                     <MenuItem className="objeto-menu" icon={<i className="bi bi-camera-video-fill"></i>} onClick={() => setVista('comunicacion')}><span className="txt_hdn">Comunicación con usuarios</span></MenuItem>
                                     <MenuItem className="objeto-menu" icon={<i roomID="TT2024" className="bi bi-gear-wide"></i>} onClick={() => setVista('configuracion')}><span className="txt_hdn">Configuración</span></MenuItem>

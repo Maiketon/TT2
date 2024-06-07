@@ -4,15 +4,15 @@ import {Button, Card, Modal,Container, CardTitle, CardBody,Form,Pagination,Col }
 import perfil_generico from './Utils/perfil.png';
 import Swal from "sweetalert2";
 import axios from "axios";
+import {useCarga} from "../ContextoCarga";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import "./Css/DetallesEmparejamiento.css";
-import { Await } from "react-router";
 import Cookies from 'js-cookie';
 
 
 const DetalleEmparejamiento = () => {
-
+    const {setEstaCargando} = useCarga();
     const userPk = Cookies.get('userPk');
     //const userPk = sessionStorage.getItem("userPk");
     const pkemparejamiento = Cookies.get('pkEmparejamiento');
@@ -350,8 +350,11 @@ const DetalleEmparejamiento = () => {
 
     const obtenerToken = async(PK_EMPAREJAMIENTO)=>
         {
+
+            const userPk = Cookies.get('userPk');
             try {
-                const response = await axios.get(`https://201.124.154.2:3001/api/emparejamiento/obtenerTokenC?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                setEstaCargando(true);
+                const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerTokenC?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&userPk=${userPk}`);
                 const { token } = response.data;
 
                 // Mostrar Sweet Alert
@@ -360,13 +363,15 @@ const DetalleEmparejamiento = () => {
                     title: 'Token de videochat copiado',
                     text: 'Ve a tu módulo de Comunicación, coloca tu nombre y entra a la reunión.'
                 });
-
+                
                 // Concatenar el token al final del URL
-                const newUrl = `https://201.124.154.2:3001/VistasAlumno/PrincipalAlumno?roomID=${token}`;
+                const newUrl = `http://localhost:3000/VistasAlumno/PrincipalAlumno?roomID=${token}`;
+                setEstaCargando(false);
                 window.history.replaceState({}, '', newUrl);
                 // Recargar la pestaña actual
                 window.location.reload();
             } catch (error) {
+                
                 console.error('Error al obtener el token:', error);
                 await Swal.fire({
                     icon: 'error',
@@ -483,6 +488,15 @@ const DetalleEmparejamiento = () => {
                                 <h5 className="card-title">{aprendiz.nombreCompleto}</h5>
                                 
                             </div>
+                            <div className="card text-white bg-danger mb-3">
+                                                            <div className="card-header">Deficiencias del aprendiz</div>
+                                                            <div className="card-body">
+                                                            <p className="card-text">{aprendiz.materia1}</p>
+                                                            <p className="card-text">{aprendiz.materia2}</p>
+                                                            <p className="card-text">{aprendiz.materia3}</p>
+
+                                                            </div>
+                            </div>
                         </div>
                         <div className="col-md-3 text-center">
                             <button className="btn btn-danger btn-sm" onClick={() => handleRechazarEmparejamiento(aprendiz.PK_EMPAREJAMIENTO, aprendiz.rol)}>
@@ -491,7 +505,7 @@ const DetalleEmparejamiento = () => {
                         </div>
                     </div>
                     <div className="row no-gutters mt-2 text-center">
-                        <div className="col-md-12">
+                        <div className="col-md-11 center">
                             {aprendiz.estado == 1 ? (
                                 <div>
                                     <p>Pendiente</p>
@@ -522,7 +536,7 @@ const DetalleEmparejamiento = () => {
                     </div>
                     {aprendiz.estado == 3 && (
                         <div className="row no-gutters mt-2 text-center">
-                            <div className="col-md-12">
+                            <div className="col-md-11">
                                 <Container>
                                     <Button onClick={() => obtenerToken(aprendiz.PK_EMPAREJAMIENTO)}>Copiar Token</Button>
                                 </Container>
@@ -531,13 +545,13 @@ const DetalleEmparejamiento = () => {
                     )}
                     {banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
                         <div className="row no-gutters mt-2 text-center">
-                            <div className="col-md-12">
+                            <div className="col-md-11">
                                 <Button onClick={() => handleActivarEmparejamiento(aprendiz.PK_EMPAREJAMIENTO)}>Activar emparejamiento</Button>
                             </div>
                         </div>
                     ) : banderaValidacionAprendiz && banderaValidacionAprendiz.some(bandera => bandera.PK_EMPAREJAMIENTO == aprendiz.PK_EMPAREJAMIENTO && bandera.resultado == 5) ? (
                         <div className="row no-gutters mt-2 text-center">
-                            <div className="col-md-12">
+                            <div className="col-md-11">
                                 <Button onClick={() => abrirModalParaEvaluar(aprendiz.PK_EMPAREJAMIENTO, aprendiz.rol)}>Hacer evaluación</Button>
                             </div>
                         </div>
@@ -568,6 +582,16 @@ const DetalleEmparejamiento = () => {
                                 <h5 className="card-title">{mentor.nombreCompleto}</h5>
                                 
                             </div>
+
+                            <div className="card text-white bg-success mb-3">
+                                                            <div className="card-header">Enseñanzas de tu mentor</div>
+                                                            <div className="card-body">
+                                                               <p className="card-text">{mentor.materia1}</p>
+                                                                <p className="card-text">{mentor.materia2}</p>
+                                                                <p className="card-text">{mentor.materia3}</p>
+
+                                                            </div>
+                            </div>
                         </div>
                         <div className="col-md-3 text-center">
                             <button className="btn btn-danger btn-sm" onClick={() => handleRechazarEmparejamiento(mentor.PK_EMPAREJAMIENTO, mentor.rol)}>
@@ -576,7 +600,7 @@ const DetalleEmparejamiento = () => {
                         </div>
                     </div>
                     <div className="row no-gutters mt-2 text-center">
-                        <div className="col-md-12">
+                        <div className="col-md-11">
                             {mentor.estado == 1 ? (
                                 <div>
                                     <p>Pendiente</p>
@@ -607,7 +631,7 @@ const DetalleEmparejamiento = () => {
                     </div>
                     {mentor.estado == 3 && (
                         <div className="row no-gutters mt-2 text-center">
-                            <div className="col-md-12">
+                            <div className="col-md-11">
                                 <Container>
                                     <Button onClick={() => obtenerToken(mentor.PK_EMPAREJAMIENTO)}>Copiar Token</Button>
                                 </Container>
@@ -616,13 +640,13 @@ const DetalleEmparejamiento = () => {
                     )}
                     {banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 1) ? (
                         <div className="row no-gutters mt-2 text-center">
-                            <div className="col-md-12">
+                            <div className="col-md-11">
                                 <Button onClick={() => handleActivarEmparejamiento(mentor.PK_EMPAREJAMIENTO)}>Activar emparejamiento</Button>
                             </div>
                         </div>
                     ) : banderaValidacionMentor && banderaValidacionMentor.some(bandera => bandera.PK_EMPAREJAMIENTO == mentor.PK_EMPAREJAMIENTO && bandera.resultado == 5) ? (
                         <div className="row no-gutters mt-2 text-center">
-                            <div className="col-md-12">
+                            <div className="col-md-11">
                                 <Button onClick={() => abrirModalParaEvaluar(mentor.PK_EMPAREJAMIENTO, mentor.rol)}>Hacer evaluación</Button>
                             </div>
                         </div>

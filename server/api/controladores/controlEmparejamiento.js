@@ -1,6 +1,7 @@
 //IMPORTACIONES DEL MODELO//
 const e = require('express');
 const modeloEmparejamiento = require('../modelo/emparejamientoModelo');
+const transporter =require('../../configuracion/emailConfig');
 exports.obtenerNombresFortalezasDeficiencias = async (req,res) => {
     const { userPk } = req.query;
     try {
@@ -334,19 +335,49 @@ exports.hacertoken = async (req,res) =>
         }
 
     };
-
     exports.obtenerTokenC = async (req, res) => {
-        const { PK_EMPAREJAMIENTO } = req.query;
+        const { PK_EMPAREJAMIENTO, userPk } = req.query;
+        console.log("Valor del emparejamiento:", PK_EMPAREJAMIENTO);
+        console.log("Valor del userPk que envía el correo:", userPk);
+    
+        if (!PK_EMPAREJAMIENTO || !userPk) {
+            return res.status(400).json({ message: 'Faltan parámetros requeridos' });
+        }
+    
         try {
+            const correoOtroUser = await modeloEmparejamiento.obtenerCorreoOtroUsuario(userPk, PK_EMPAREJAMIENTO);
+            console.log("Datos del otro usuario:", correoOtroUser);
+    
+            const nombreUsuarioInvitaResult = await modeloEmparejamiento.obtenerNombreCompleto(userPk);
+            if (!nombreUsuarioInvitaResult || typeof nombreUsuarioInvitaResult.nombreCompleto !== 'string') {
+                throw new Error('No se pudo obtener la información del usuario que invita.');
+            }
+            const nombreUsuarioInvita = nombreUsuarioInvitaResult.nombreCompleto;
+            const emailUsuarioInvita = nombreUsuarioInvitaResult.correo;
+            console.log("Nombre del usuario que invita:", nombreUsuarioInvita);
+            console.log("Correo electronico que reicbe email: ",correoOtroUser.EMAIL);
+            const correoInvitacion =correoOtroUser[0].EMAIL;
+            console.log("Correo ya definido", correoInvitacion);
+            const nombreCompleto = `${correoOtroUser.NOMBRE || ''} ${correoOtroUser.APELLIDO_PATERNO || ''}`.trim();
+            const correoOpciones = {
+                from: "learnmatch2024029@hotmail.com",
+                to: correoInvitacion,
+                subject: 'Invitación Reunión Zego!!',
+                text: `Hola ${nombreCompleto}, al parecer ${nombreUsuarioInvita} te está invitando a una reunión ahora. Entra a LearnMatch y ponte en contacto con él, seguramente ya te espera en la sala de chat y video chat, ¡no olvides copiar tu token! 
+                Sino te proporcionamos su Email, para que comiencen a comunicarse : ${emailUsuarioInvita}`
+            };
+    
+            await transporter.sendMail(correoOpciones);
+            console.log('Correo enviado con éxito a:', correoOtroUser.EMAIL);
+    
             const token = await modeloEmparejamiento.obtenerTokenPorEmparejamiento(PK_EMPAREJAMIENTO);
             res.json({ token });
         } catch (error) {
-            console.error('Error al obtener el token:', error);
-            res.status(500).json({ message: 'Error al obtener el token' });
+            console.error('Error:', error);
+            res.status(500).json({ message: 'Error: ' + error.message });
         }
     };
-
-
+    
 
 function randomID(len) {
   let result = '';

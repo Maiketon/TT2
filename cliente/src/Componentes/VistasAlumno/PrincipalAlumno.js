@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Container, Row, Col ,Spinner} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Css/SidebarStyles.css';
 import Sidebar from './SidebarAlumno';
@@ -9,8 +10,25 @@ import MPreferenciasAcademicas from './PreferenciasAcademicas';
 import MEmparejamientosActivos from './DetalleEmparejamiento';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import {CargarProvider,useCarga} from "../ContextoCarga";
 
 const VistaPrincipal = () => {
+
+  const SpinnerGlobal = () => 
+    {
+      const {estaCargando} = useCarga();
+      if(!estaCargando) return null;
+      return (
+        <div className="spinner-container d-flex" >
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Cargando...</span> 
+          </Spinner>
+          <div>Cargando . . .</div>
+        </div>
+      );
+    }
+
+
   const [vista, setVista] = useState('inicio');
   const [Rol, setRol] = useState([]);
   console.log(Rol);
@@ -40,9 +58,12 @@ const VistaPrincipal = () => {
   }, [userPk]);
 
   return (
+    <>
+    <CargarProvider>
     <div className='divide_secciones'>
       <section className='columna_sidebar'>
         <Sidebar setVista={setVista} />
+        <SpinnerGlobal/>
       </section>
       <section className='margen_vistas'>
         {vista === 'inicio' && <MEmparejamiento />}
@@ -52,6 +73,9 @@ const VistaPrincipal = () => {
         {vista === 'empact' && <MEmparejamientosActivos />}
       </section>
     </div>
+    </CargarProvider>
+    </>
+    
   );
 };
 

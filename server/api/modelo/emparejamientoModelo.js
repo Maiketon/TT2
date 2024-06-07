@@ -134,34 +134,46 @@ console.log("Total emparejamientos: ", totalEmparejamientos);
     emp.FK_ESTADOEMPAREJAMIENTO AS estado,
     emp.PK_EMPAREJAMIENTO,
     emp.FK_USUARIO1 AS PK_USERPAIRED,
-    emp.ROL_USUARIO1 AS rol
+    emp.ROL_USUARIO1 AS rol,
+    mat1.NOMBRE_MATERIA AS materia1,
+    mat2.NOMBRE_MATERIA AS materia2,
+    mat3.NOMBRE_MATERIA AS materia3
 FROM
     emparejamiento emp
 INNER JOIN informacionusuario inf ON (emp.FK_USUARIO1 = inf.PK_USUARIO)
+LEFT JOIN materia mat1 ON (inf.FK_ENSEÑANZA1 = mat1.PK_MATERIA)
+LEFT JOIN materia mat2 ON (inf.FK_ENSEÑANZA2 = mat2.PK_MATERIA)
+LEFT JOIN materia mat3 ON (inf.FK_ENSEÑANZA3 = mat3.PK_MATERIA)
 WHERE
     emp.ROL_USUARIO1 = 1
     AND emp.ROL_USUARIO2 = 2
     AND emp.FK_USUARIO2 = ?
     AND emp.FK_ESTADOEMPAREJAMIENTO != 2
-        AND emp.FK_ESTADOEMPAREJAMIENTO != 4 -- Aquí se excluyen los registros con FK_ESTADOEMPAREJAMIENTO igual a 3
-        AND emp.FK_ESTADOEMPAREJAMIENTO != 6
+    AND emp.FK_ESTADOEMPAREJAMIENTO != 4
+    AND emp.FK_ESTADOEMPAREJAMIENTO != 6
 UNION
 SELECT
     CONCAT(inf.NOMBRE, " ", inf.APELLIDO_PATERNO, " ", inf.APELLIDO_MATERNO) AS nombreCompleto,
     emp.FK_ESTADOEMPAREJAMIENTO AS estado,
     emp.PK_EMPAREJAMIENTO,
     emp.FK_USUARIO2 AS PK_USERPAIRED,
-    emp.ROL_USUARIO2 AS rol
+    emp.ROL_USUARIO2 AS rol,
+    mat1.NOMBRE_MATERIA AS materia1,
+    mat2.NOMBRE_MATERIA AS materia2,
+    mat3.NOMBRE_MATERIA AS materia3
 FROM
     emparejamiento emp
 INNER JOIN informacionusuario inf ON (emp.FK_USUARIO2 = inf.PK_USUARIO)
+LEFT JOIN materia mat1 ON (inf.FK_ENSEÑANZA1 = mat1.PK_MATERIA)
+LEFT JOIN materia mat2 ON (inf.FK_ENSEÑANZA2 = mat2.PK_MATERIA)
+LEFT JOIN materia mat3 ON (inf.FK_ENSEÑANZA3 = mat3.PK_MATERIA)
 WHERE
     emp.ROL_USUARIO2 = 1
     AND emp.ROL_USUARIO1 = 2
     AND emp.FK_USUARIO1 = ?
     AND emp.FK_ESTADOEMPAREJAMIENTO != 2
-        AND emp.FK_ESTADOEMPAREJAMIENTO != 4
-        AND emp.FK_ESTADOEMPAREJAMIENTO != 6;
+    AND emp.FK_ESTADOEMPAREJAMIENTO != 4
+    AND emp.FK_ESTADOEMPAREJAMIENTO != 6;
         `;
 
         try {
@@ -180,10 +192,16 @@ WHERE
         emp.FK_ESTADOEMPAREJAMIENTO AS estado,
         emp.PK_EMPAREJAMIENTO,
         emp.FK_USUARIO2 AS PK_USERPAIRED,
-        emp.ROL_USUARIO2 AS rol
+        emp.ROL_USUARIO2 AS rol,
+        mat1.NOMBRE_MATERIA AS materia1,
+        mat2.NOMBRE_MATERIA AS materia2,
+        mat3.NOMBRE_MATERIA AS materia3
     FROM
         emparejamiento emp
     INNER JOIN informacionusuario inf ON (emp.FK_USUARIO2 = inf.PK_USUARIO)
+    LEFT JOIN materia mat1 ON (inf.FK_ENSEÑANZA1 = mat1.PK_MATERIA)
+    LEFT JOIN materia mat2 ON (inf.FK_ENSEÑANZA2 = mat2.PK_MATERIA)
+    LEFT JOIN materia mat3 ON (inf.FK_ENSEÑANZA3 = mat3.PK_MATERIA)
     WHERE
         emp.ROL_USUARIO1 = 1
         AND emp.FK_USUARIO1 = ?
@@ -196,10 +214,16 @@ WHERE
         emp.FK_ESTADOEMPAREJAMIENTO AS estado,
         emp.PK_EMPAREJAMIENTO,
         emp.FK_USUARIO1 AS PK_USERPAIRED,
-        emp.ROL_USUARIO1 AS rol
+        emp.ROL_USUARIO1 AS rol,
+        mat1.NOMBRE_MATERIA AS materia1,
+        mat2.NOMBRE_MATERIA AS materia2,
+        mat3.NOMBRE_MATERIA AS materia3
     FROM
         emparejamiento emp
     INNER JOIN informacionusuario inf ON (emp.FK_USUARIO1 = inf.PK_USUARIO)
+    LEFT JOIN materia mat1 ON (inf.FK_ENSEÑANZA1 = mat1.PK_MATERIA)
+    LEFT JOIN materia mat2 ON (inf.FK_ENSEÑANZA2 = mat2.PK_MATERIA)
+    LEFT JOIN materia mat3 ON (inf.FK_ENSEÑANZA3 = mat3.PK_MATERIA)
     WHERE
         emp.ROL_USUARIO2 = 1
         AND emp.FK_USUARIO2 = ?
@@ -487,7 +511,7 @@ WHERE
         console.log(`Ejecutando consulta: ${sqlSelect} con PK_EMPAREJAMIENTO: ${PK_EMPAREJAMIENTO}`);
         const [result] = await promesadb.query(sqlSelect, [PK_EMPAREJAMIENTO]);
 
-        console.log('Resultado de la consulta:', result);
+        //console.log('Resultado de la consulta:', result);
 
         if (!result || result.length === 0) {
             throw new Error('Token no encontrado');
@@ -500,6 +524,55 @@ WHERE
         throw error;
     }
     }
+
+    async obtenerCorreoOtroUsuario(userPk, PK_EMPAREJAMIENTO) {
+        
+        const sqlSelect = `
+            SELECT i.EMAIL, i.NOMBRE,i.APELLIDO_PATERNO
+            FROM emparejamiento e
+            JOIN informacionusuario i ON i.PK_USUARIO = 
+                CASE
+                    WHEN e.FK_USUARIO1 = ? THEN e.FK_USUARIO2
+                    ELSE e.FK_USUARIO1
+                END
+            WHERE e.PK_EMPAREJAMIENTO = ?
+                AND (e.FK_USUARIO1 = ? OR e.FK_USUARIO2 = ?);
+        `;
+    
+        try {
+            const promesadb = db.promise();
+            const [result] = await promesadb.query(sqlSelect, [userPk, PK_EMPAREJAMIENTO, userPk, userPk]);
+            if (result.length > 0) {
+                return result; 
+            } else {
+                throw new Error('No se encontró el email del otro usuario.');
+            }
+        } catch (error) {
+            console.error('Error al obtener el correo del otro usuario para generar token:', error);
+            throw error;
+        }
+    }
+
+    async obtenerNombreCompleto(userPk) {
+        const sql = `
+          SELECT
+            CONCAT(NOMBRE, " ", APELLIDO_PATERNO, " ", APELLIDO_MATERNO) AS nombreCompleto,
+            EMAIL AS correo
+          FROM
+            informacionusuario
+          WHERE
+            PK_USUARIO = ?
+        `;
+        try {
+            const promesadb = db.promise();
+            const [nombre] = await promesadb.query(sql, [userPk]);
+            return nombre[0];
+        } catch (error) {
+            throw error;
+        }
+      }
+    
+
 
     async actualizarCalfAlumnoGeneral(userPk){
         const sql = `
