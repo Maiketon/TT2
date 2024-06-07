@@ -36,7 +36,8 @@ const sancionar = async () => {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, sancionar!'
+        confirmButtonText: 'Sí, sancionar!',
+        cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
             axios.post('http://localhost:3001/api/administracion/sancionarUser', {
@@ -72,7 +73,8 @@ const vetarAlumno = async () => {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminar!'
+        confirmButtonText: 'Sí, eliminar!',
+        cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
             axios.post('http://localhost:3001/api/administracion/vetarAlumno', {

@@ -493,7 +493,7 @@ const FormLogin = ()=>
               <Form.Control type="password" placeholder="Ingresa tu contraseña" value={datosUsuario.password} onChange={inputChange} name='password' />
             </Form.Group>
           </Form>
-          <Container className="d-flex justify-content-center mt-1"> {/* Reducir espacio superior */}
+          <Container className=" justify-content-center mt-2"> {/* Reducir espacio superior */}
             <Button variant="outline-primary" type="submit" className="ms-2 btn-iniciar-sesion" onClick={enviarValores}>
               Iniciar Sesión
             </Button>
