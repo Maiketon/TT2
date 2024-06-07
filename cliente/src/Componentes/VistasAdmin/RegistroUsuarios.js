@@ -282,7 +282,7 @@ const options = useMemo(
                             <Form.Group controlId="medallas">
                                 <Form.Label style={formLabelStyle}>Medallas</Form.Label>
                                 <Form.Select name='medallas' value={medallaEs} onChange={e => setMedallaEs(e.target.value)} disabled={disabledStatuses.medallas}>
-                                    <option value={0}>SIN ESPCIFICAR</option>
+                                    <option value={0}>SIN ESPECIFICAR</option>
                                     {medallas.map((medallaItem) => (
                                         <option key={medallaItem.PK_MEDALLAS} value={medallaItem.PK_MEDALLAS}>
                                             {medallaItem.NOMBRE_MEDALLA}

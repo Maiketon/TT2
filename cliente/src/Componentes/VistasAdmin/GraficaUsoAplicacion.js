@@ -2,12 +2,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { jsPDF } from 'jspdf';
 import { useCarga } from "./ContextoCarga";
-import { Button, Container,Row } from 'react-bootstrap';
+import { Button, Container, Row } from 'react-bootstrap';
 import axios from 'axios';
 
 const BarChart = () => {
   const chartRef = useRef(null);
-  const {setEstaCargando} = useCarga();
+  const { setEstaCargando } = useCarga();
 
   const [chartData, setChartData] = useState({
     labels: ['Uso de la aplicacion'],
@@ -51,16 +51,19 @@ const BarChart = () => {
         setChartData(prevData => ({
           ...prevData,
           datasets: [
-            { ...prevData.datasets[0], data: [sumatiempozg] },
-            { ...prevData.datasets[1], data: [totalemparejamiento] },
-            { ...prevData.datasets[2], data: [totalusuariosAyS] },
-            { ...prevData.datasets[3], data: [totalusuarios6] }
+            { ...prevData.datasets[0], label: `Tiempo total de ZegoCloud (${sumatiempozg})`, data: [sumatiempozg] },
+            { ...prevData.datasets[1], label: `Emparejamientos Totales (${totalemparejamiento})`, data: [totalemparejamiento] },
+            { ...prevData.datasets[2], label: `Usuarios con acceso a emparejamiento (Aprobados y Sancionados) (${totalusuariosAyS})`, data: [totalusuariosAyS] },
+            { ...prevData.datasets[3], label: `Usuarios Vetados (${totalusuarios6})`, data: [totalusuarios6] }
           ]
         }));
         setEstaCargando(false);
       })
-      .catch(error => console.error('Error al obtener los datos del gráfico:', error));
-  }, []);
+      .catch(error => {
+        console.error('Error al obtener los datos del gráfico:', error);
+        setEstaCargando(false);
+      });
+  }, [setEstaCargando]);
 
   const options = {
     scales: {
@@ -79,7 +82,7 @@ const BarChart = () => {
       const pdf = new jsPDF({
         orientation: "landscape",
       });
-      const imgProps= pdf.getImageProperties(imgData);
+      const imgProps = pdf.getImageProperties(imgData);
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
@@ -88,12 +91,14 @@ const BarChart = () => {
   };
 
   return (
-    <>
     <Container>
-      <Row>  <Bar ref={chartRef} data={chartData} options={options} /></Row>
-      <Row><Button onClick={downloadPdf}>Descargar PDF</Button></Row>
+      <Row>
+        <Bar ref={chartRef} data={chartData} options={options} />
+      </Row>
+      <Row>
+        <Button onClick={downloadPdf}>Descargar PDF</Button>
+      </Row>
     </Container>
-    </>
   );
 };
 

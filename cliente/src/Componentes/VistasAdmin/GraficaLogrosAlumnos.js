@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import axios from 'axios';
 import { jsPDF } from 'jspdf'; // si también quieres incluir la funcionalidad de descarga PDF
-import { Button, Container,Row } from 'react-bootstrap'; // Asumiendo el uso de Bootstrap para los botones
+import { Button, Container, Row } from 'react-bootstrap'; // Asumiendo el uso de Bootstrap para los botones
 
 const DoughnutChart = () => {
     const chartRef = useRef(null);
@@ -33,13 +33,16 @@ const DoughnutChart = () => {
     useEffect(() => {
         axios.get('https://201.124.162.192:3001/api/administracion/datosGraficaLogros')
             .then(response => {
-                setChartData({
-                    labels: response.data.map(item => item.NOMBRE_MEDALLA),
+                const labels = response.data.map(item => `${item.NOMBRE_MEDALLA} (${item.Cantidad})`);
+                const data = response.data.map(item => item.Cantidad);
+                setChartData(prevData => ({
+                    ...prevData,
+                    labels: labels,
                     datasets: [{
-                        ...chartData.datasets[0],
-                        data: response.data.map(item => item.Cantidad)
+                        ...prevData.datasets[0],
+                        data: data
                     }]
-                });
+                }));
             })
             .catch(error => console.error('Error fetching data:', error));
     }, []);
@@ -50,9 +53,6 @@ const DoughnutChart = () => {
           <Row><Doughnut ref={chartRef} data={chartData} /></Row>
           <Row><Button onClick={() => downloadPDF(chartRef)}>Descargar como PDF</Button></Row>
         </Container>
-            
-            
-            
         </>
     );
 }
