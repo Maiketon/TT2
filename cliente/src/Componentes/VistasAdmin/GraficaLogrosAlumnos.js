@@ -31,7 +31,7 @@ const DoughnutChart = () => {
     });
 
     useEffect(() => {
-        axios.get('https://201.124.154.2:3001/api/administracion/datosGraficaLogros')
+        axios.get('https://201.124.162.192:3001/api/administracion/datosGraficaLogros')
             .then(response => {
                 setChartData({
                     labels: response.data.map(item => item.NOMBRE_MEDALLA),

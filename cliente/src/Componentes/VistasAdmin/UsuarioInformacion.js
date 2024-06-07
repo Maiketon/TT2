@@ -11,7 +11,7 @@ const UsuarioComponent = ({ usuarios }) => {
     useEffect(() => {
         const fetchMaterias = async () => {
             try {
-                const response = await axios.get('https://201.124.154.2:3001/api/administracion/materiasRegistroU');
+                const response = await axios.get('https://201.124.162.192:3001/api/administracion/materiasRegistroU');
                 console.log("Respuesta del API:", response.data);
                 setMaterias(response.data);
 

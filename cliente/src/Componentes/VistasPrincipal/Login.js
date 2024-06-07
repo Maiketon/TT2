@@ -113,7 +113,7 @@ const FormLogin = ()=>
     
     const enviarValores = () => {
       setEstaCargando(true);
-      axios.post('https://201.124.154.2:3001/api/login/login', datosUsuario)
+      axios.post('https://201.124.162.192:3001/api/login/login', datosUsuario)
         .then(async (response) => {
           const data = response.data;
           console.log(data);
@@ -198,7 +198,7 @@ const FormLogin = ()=>
 
     function actualizarEstatusUsuario(pkUsuario) {
       console.log("Entra en la funcion actualizarEstatusUsuario" + pkUsuario);
-      axios.post('https://201.124.154.2:3001/api/login/actualizarVerificacion', { pkUsuario })
+      axios.post('https://201.124.162.192:3001/api/login/actualizarVerificacion', { pkUsuario })
           .then(({ data }) => {
               if (data.error) {
                   alert(data.error);
@@ -225,7 +225,7 @@ const FormLogin = ()=>
   useEffect(() => {
     const fetchMaterias = async () => {
       try {
-        const response = await axios.get('https://201.124.154.2:3001/api/alumnos/materias');
+        const response = await axios.get('https://201.124.162.192:3001/api/alumnos/materias');
         setMaterias(response.data);      
         setSeleccionIzquierda(response.data.map(materia => ({ seleccionado: false, pk: materia.PK_MATERIA })));
         setSeleccionDerecha(response.data.map(materia => ({ seleccionado: false, pk: materia.PK_MATERIA })));
@@ -291,7 +291,7 @@ const FormLogin = ()=>
           seleccionesIzquierda: seleccionIzquierda.filter(seleccion => seleccion.seleccionado).map(seleccion => seleccion.pk),
           seleccionesDerecha: seleccionDerecha.filter(seleccion => seleccion.seleccionado).map(seleccion => seleccion.pk),
         };
-        const response = await axios.post('https://201.124.154.2:3001/api/alumnos/enviarPreferencias', cargaUtil);
+        const response = await axios.post('https://201.124.162.192:3001/api/alumnos/enviarPreferencias', cargaUtil);
         if(response.status===200)
         {
           
@@ -314,7 +314,7 @@ const FormLogin = ()=>
         e.preventDefault();
     console.log("Enviando correo a:", correo);  // Asegúrate de que correo está definido y es el correcto
 
-    const response = await fetch('https://201.124.154.2:3001/api/alumnos/recuperacion', {
+    const response = await fetch('https://201.124.162.192:3001/api/alumnos/recuperacion', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
