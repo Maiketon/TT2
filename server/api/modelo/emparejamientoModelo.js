@@ -556,7 +556,8 @@ WHERE
     async obtenerNombreCompleto(userPk) {
         const sql = `
           SELECT
-            CONCAT(NOMBRE, " ", APELLIDO_PATERNO, " ", APELLIDO_MATERNO) AS nombreCompleto
+            CONCAT(NOMBRE, " ", APELLIDO_PATERNO, " ", APELLIDO_MATERNO) AS nombreCompleto,
+            EMAIL AS correo
           FROM
             informacionusuario
           WHERE

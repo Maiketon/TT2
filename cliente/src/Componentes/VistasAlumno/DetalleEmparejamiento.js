@@ -4,15 +4,15 @@ import {Button, Card, Modal,Container, CardTitle, CardBody,Form,Pagination,Col }
 import perfil_generico from './Utils/perfil.png';
 import Swal from "sweetalert2";
 import axios from "axios";
+import {useCarga} from "../ContextoCarga";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import "./Css/DetallesEmparejamiento.css";
-import { Await } from "react-router";
 import Cookies from 'js-cookie';
 
 
 const DetalleEmparejamiento = () => {
-
+    const {setEstaCargando} = useCarga();
     const userPk = Cookies.get('userPk');
     //const userPk = sessionStorage.getItem("userPk");
     const pkemparejamiento = Cookies.get('pkEmparejamiento');
@@ -350,8 +350,10 @@ const DetalleEmparejamiento = () => {
 
     const obtenerToken = async(PK_EMPAREJAMIENTO)=>
         {
+
             const userPk = Cookies.get('userPk');
             try {
+                setEstaCargando(true);
                 const response = await axios.get(`http://localhost:3001/api/emparejamiento/obtenerTokenC?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&userPk=${userPk}`);
                 const { token } = response.data;
 
@@ -361,13 +363,15 @@ const DetalleEmparejamiento = () => {
                     title: 'Token de videochat copiado',
                     text: 'Ve a tu módulo de Comunicación, coloca tu nombre y entra a la reunión.'
                 });
-
+                
                 // Concatenar el token al final del URL
                 const newUrl = `http://localhost:3000/VistasAlumno/PrincipalAlumno?roomID=${token}`;
+                setEstaCargando(false);
                 window.history.replaceState({}, '', newUrl);
                 // Recargar la pestaña actual
                 window.location.reload();
             } catch (error) {
+                
                 console.error('Error al obtener el token:', error);
                 await Swal.fire({
                     icon: 'error',
