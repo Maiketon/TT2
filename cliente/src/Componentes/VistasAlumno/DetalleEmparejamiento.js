@@ -584,7 +584,7 @@ const DetalleEmparejamiento = () => {
                             </div>
 
                             <div className="card text-white bg-success mb-3">
-                                                            <div className="card-header">Enseñanzas de tu mentor</div>
+                                                            <div className="card-header">Fortalezas de tu mentor</div>
                                                             <div className="card-body">
                                                                <p className="card-text">{mentor.materia1}</p>
                                                                 <p className="card-text">{mentor.materia2}</p>

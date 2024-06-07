@@ -360,7 +360,7 @@ const FormLogin = ()=>
         </Col>
         <Col sm={5}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <strong>ENSEÑANZA</strong>
+            <strong>FORTALEZA</strong>
             <img
               src={EstadoFeliz}
               width={100}

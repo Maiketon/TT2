@@ -3,9 +3,11 @@ import { Container, Row, Col, Form, Button, Card, Modal } from 'react-bootstrap'
 import { useCarga } from "../ContextoCarga";
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const FormularioInscribirse = ({ setVista }) =>
 {
+  const navigate = useNavigate(); //HOOK DE NAVEGACION//
   //SPINNER/
   const {setEstaCargando} = useCarga();
   //Estructura que contendra los datos del form Inscribirse//
@@ -129,6 +131,7 @@ if (!validarComplejidadContraseña(usuario.password)) {
           'Por favor verifica tu correo electrónico para completar tu registro.',
           'success'
       );
+      setVista('login')
         }
         else if ( response.status==200)
           {
