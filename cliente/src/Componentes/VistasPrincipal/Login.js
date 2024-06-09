@@ -308,7 +308,7 @@ const FormLogin = ()=>
       {
         e.preventDefault();
     console.log("Enviando correo a:", correo);  // Asegúrate de que correo está definido y es el correcto
-
+        setEstaCargando(true);
     const response = await fetch('http://localhost:3001/api/alumnos/recuperacion', {
         method: 'POST',
         headers: {
@@ -319,12 +319,15 @@ const FormLogin = ()=>
 
     if (response.ok) {
         console.log('Solicitud enviada con éxito y respuesta recibida.');
+        setEstaCargando(false);
         setModalRecuperacion(false);
         setCorreo();
         setModalRC(true);
+
         
     } else {
         console.error('Error en la respuesta del servidor', response.status);
+        setEstaCargando(false);
     }
     
       };
