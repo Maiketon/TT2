@@ -122,7 +122,7 @@ if (!validarComplejidadContraseña(usuario.password)) {
           password: usuario.password
       };
 
-      const response = await axios.post('https://201.124.162.192:3001/api/alumnos/registro', datosUsuario);
+      const response = await axios.post('https://201.124.187.222:3001/api/alumnos/registro', datosUsuario);
       if (response.status ===201)
         {
           setUsuario(estadoInicial);

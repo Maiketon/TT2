@@ -44,7 +44,7 @@ const Configuracion = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 // Aquí puedes agregar la lógica para eliminar la cuenta
-                axios.post("https://201.124.162.192:3001/api/alumnos/borrarCuenta", {
+                axios.post("https://201.124.187.222:3001/api/alumnos/borrarCuenta", {
                     userPk: userPk
                 })
                 .then((response) => {
@@ -77,7 +77,7 @@ const Configuracion = () => {
             cancelButtonText: "Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.post("https://201.124.162.192:3001/api/alumnos/cambiarPswd", {
+                axios.post("https://201.124.187.222:3001/api/alumnos/cambiarPswd", {
                         userPk: userPk,
                         correo: correo,
                         pswdactual: pswdactual,

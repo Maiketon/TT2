@@ -39,7 +39,7 @@ const VistaPrincipal = () => {
     const obtenerRol = async () => {
       try {
         console.log(userPk);
-        const response = await axios.get(`https://201.124.162.192:3001/api/emparejamiento/obtenerRol?userPk=${userPk}`);
+        const response = await axios.get(`https://201.124.187.222:3001/api/emparejamiento/obtenerRol?userPk=${userPk}`);
         setRol(response.data);
         Cookies.set('bandera', JSON.stringify(response.data.bandera), { expires: 1 });
         Cookies.set('totalEmparejamientos',JSON.stringify(response.data.totalEmparejamientos), { expires: 1 });

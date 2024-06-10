@@ -16,7 +16,7 @@ const PreferenciasAcademicas = () => {
   useEffect(() => {
     const fetchMaterias = async () => {
       try {
-        const response = await axios.get('https://201.124.162.192:3001/api/alumnos/materias');
+        const response = await axios.get('https://201.124.187.222:3001/api/alumnos/materias');
         setMaterias(response.data);
         // Inicializar los estados basados en los datos recibidos
         setSeleccionIzquierda(response.data.map(materia => ({ seleccionado: false, pk: materia.PK_MATERIA })));
@@ -117,7 +117,7 @@ const PreferenciasAcademicas = () => {
           try {
             const userPk = Cookies.get('userPk');
             //const userPk = sessionStorage.getItem('userPk');
-            const resPreferencias = await axios.get(`https://201.124.162.192:3001/api/alumnos/obtenerPreferencias?pkUsuario=${userPk}`);
+            const resPreferencias = await axios.get(`https://201.124.187.222:3001/api/alumnos/obtenerPreferencias?pkUsuario=${userPk}`);
             console.log('Preferencias recibidas del backend:', resPreferencias.data);
 
             if (resPreferencias.data.success) {
@@ -148,7 +148,7 @@ const PreferenciasAcademicas = () => {
           seleccionesIzquierda: seleccionIzquierda.filter(seleccion => seleccion.seleccionado).map(seleccion => seleccion.pk),
           seleccionesDerecha: seleccionDerecha.filter(seleccion => seleccion.seleccionado).map(seleccion => seleccion.pk),
         };
-        const response = await axios.post('https://201.124.162.192:3001/api/alumnos/enviarPreferencias', cargaUtil);
+        const response = await axios.post('https://201.124.187.222:3001/api/alumnos/enviarPreferencias', cargaUtil);
         console.log('Respuesta del servidor:', response.data);
         if(response.status===200)
         {

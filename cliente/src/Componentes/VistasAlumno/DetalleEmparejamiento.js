@@ -94,7 +94,7 @@ const DetalleEmparejamiento = () => {
             console.log(pkemparejamiento);
             console.log(userPk);
             console.log(reportText);
-            const response = await axios.post('https://201.124.162.192:3001/api/emparejamiento/reportarUsuario', {
+            const response = await axios.post('https://201.124.187.222:3001/api/emparejamiento/reportarUsuario', {
                 pkEmparejamiento: pkemparejamiento,
                 pkUsuarioQueReporta: userPk,
                 mensaje: reportText,
@@ -166,9 +166,9 @@ const DetalleEmparejamiento = () => {
             console.log(promedio);
             console.log("aqui");
             console.log("Aqui empieza el insertar califiacion");
-            const response = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${pkemparejamiento}&userPk=${userPk}&promedio=${promedio}`);
+            const response = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${pkemparejamiento}&userPk=${userPk}&promedio=${promedio}`);
             console.log(response);
-            const response2 = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/comprobar2Calificaciones?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
+            const response2 = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/comprobar2Calificaciones?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
             // Verificar la respuesta para asegurarse de que la actualización fue exitosa
             if(response2.data == "Completo"){
                 await Swal.fire({
@@ -177,10 +177,10 @@ const DetalleEmparejamiento = () => {
                     text: 'Ya puedes hacer mas emparejamientos.',
                 });
 
-            const response3 = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/actualizarEstadoEmparejamiento?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
+            const response3 = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/actualizarEstadoEmparejamiento?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
             //consulta que me traiga el pk del emparejado
             console.log("Aqui empieza el insertar califiacion");
-            const emparejadosResponse= await axios.post(`https://201.124.162.192:3001/api/emparejamiento/obtenerEmparejados?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
+            const emparejadosResponse= await axios.post(`https://201.124.187.222:3001/api/emparejamiento/obtenerEmparejados?PK_EMPAREJAMIENTO=${pkemparejamiento}`);
 
 
          const emparejados = emparejadosResponse.data;
@@ -193,7 +193,7 @@ const DetalleEmparejamiento = () => {
 
             for (const userPk of userPks) {
                 console.log(`Actualizando calificaciones para el usuario con PK ${userPk}`);
-                const response4 = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/actualizarCalfAlumnoGeneral?userPk=${userPk}`);
+                const response4 = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/actualizarCalfAlumnoGeneral?userPk=${userPk}`);
                 console.log(response4.data);
 
                 const { promedio_rol_1, promedio_rol_2 } = response4.data;
@@ -209,7 +209,7 @@ const DetalleEmparejamiento = () => {
                         promedioGeneral = (promedio_rol_1 + promedio_rol_2) / 2;
                     }
 
-                    const response5 = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/updatearCalificacion`, {
+                    const response5 = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/updatearCalificacion`, {
                         userPk,
                         promedio_rol_1,
                         promedio_rol_2,
@@ -220,23 +220,23 @@ const DetalleEmparejamiento = () => {
 
                 //logica medallas
                 //medalla 1
-                const medalla1 = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/medalla1?userPk=${userPk}`);
+                const medalla1 = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/medalla1?userPk=${userPk}`);
                 console.log(medalla1);
 
                 //medalla 2
-                const medalla2 = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/medalla2?userPk=${userPk}`);
+                const medalla2 = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/medalla2?userPk=${userPk}`);
             
                 //medalla 3
-                const medalla3 = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/medalla3?userPk=${userPk}`);
+                const medalla3 = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/medalla3?userPk=${userPk}`);
 
                 //medalla 4
-                const medalla4 = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/medalla4?userPk=${userPk}`);
+                const medalla4 = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/medalla4?userPk=${userPk}`);
 
                 //medalla 5
-                const medalla5 = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/medalla5?userPk=${userPk}`);
+                const medalla5 = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/medalla5?userPk=${userPk}`);
 
                 //medalla 6
-                const medalla6 = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/medalla6?userPk=${userPk}`);
+                const medalla6 = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/medalla6?userPk=${userPk}`);
             
             }
 
@@ -267,7 +267,7 @@ const DetalleEmparejamiento = () => {
     useEffect(() => {
         const obtenerEmparejamientoMentor = async () => {
             try {
-                const response = await axios.get(`https://201.124.162.192:3001/api/emparejamiento/obtenerMentor?userPk=${userPk}`);
+                const response = await axios.get(`https://201.124.187.222:3001/api/emparejamiento/obtenerMentor?userPk=${userPk}`);
                 setMentor(response.data);
                 setPkaValidarMentor(response.data);
                 //setRol(response.data.rol);
@@ -281,7 +281,7 @@ const DetalleEmparejamiento = () => {
     useEffect(() => {
         const obtenerEmparejamientoAprendiz = async () => {
             try {
-                const response = await axios.get(`https://201.124.162.192:3001/api/emparejamiento/obtenerAprendiz?userPk=${userPk}`);
+                const response = await axios.get(`https://201.124.187.222:3001/api/emparejamiento/obtenerAprendiz?userPk=${userPk}`);
                 setAprendiz(response.data);
                 setPkaValidarAprendiz(response.data);
                 //setRol(response.data.rol);
@@ -298,7 +298,7 @@ const DetalleEmparejamiento = () => {
                 const nuevasBanderas = [];
                 for (const usuario of PKaValidarMentor) {
                     const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuario;
-                    const response = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                    const response = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                     nuevasBanderas.push(response.data);
                 }
                 setBanderaValidacionMentor(nuevasBanderas);
@@ -315,7 +315,7 @@ const DetalleEmparejamiento = () => {
                 const nuevasBanderas = [];
                 for (const usuario of PKaValidarAprendiz) {
                     const { PK_USERPAIRED, PK_EMPAREJAMIENTO } = usuario;
-                    const response = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                    const response = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/obtenerPkaValidar?PK_USERPAIRED=${PK_USERPAIRED}&PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                     nuevasBanderas.push(response.data);
                 }
                 setBanderaValidacionAprendiz(nuevasBanderas);
@@ -330,12 +330,12 @@ const DetalleEmparejamiento = () => {
         try {
 
                //Se inserta en la tabla en la tabla comunicacionzg un nuevo registro //
-               const generartoken = await axios.post('https://201.124.162.192:3001/api/emparejamiento/hacerTokenSala', {
+               const generartoken = await axios.post('https://201.124.187.222:3001/api/emparejamiento/hacerTokenSala', {
                 PK_EMPAREJAMIENTO: PK_EMPAREJAMIENTO
             });            
             console.log('Este es el token generado', generartoken);
             //Se cambia el estatus del emparejamiento//
-            const response = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/updateEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+            const response = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/updateEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
             console.log('Emparejamiento activado exitosamente:', response.data);
             await Swal.fire({
                 icon: 'success',
@@ -354,7 +354,7 @@ const DetalleEmparejamiento = () => {
             const userPk = Cookies.get('userPk');
             try {
                 setEstaCargando(true);
-                const response = await axios.get(`https://201.124.162.192:3001/api/emparejamiento/obtenerTokenC?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&userPk=${userPk}`);
+                const response = await axios.get(`https://201.124.187.222:3001/api/emparejamiento/obtenerTokenC?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&userPk=${userPk}`);
                 const { token } = response.data;
 
                 // Mostrar Sweet Alert
@@ -365,7 +365,7 @@ const DetalleEmparejamiento = () => {
                 });
                 
                 // Concatenar el token al final del URL
-                const newUrl = `https://201.124.162.192:3001/VistasAlumno/PrincipalAlumno?roomID=${token}`;
+                const newUrl = `https://201.124.187.222:3001/VistasAlumno/PrincipalAlumno?roomID=${token}`;
                 setEstaCargando(false);
                 window.history.replaceState({}, '', newUrl);
                 // Recargar la pestaña actual
@@ -384,7 +384,7 @@ const DetalleEmparejamiento = () => {
     const handleRechazarEmparejamiento = async (PK_EMPAREJAMIENTO,rol) => {
         try {           
             // Aqui primero se hacec una consulta para obtener el estado del emparejamiento, si esta pendiente o activo, dependiendo, se hace el rechazo o se finaliza el emparejamiento
-            const response = await axios.post(`https://201.124.162.192:3001/api/emparejamiento/saberEstado?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+            const response = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/saberEstado?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
            
             if(response.data == 5){
                 console.log("dio 5");
@@ -396,19 +396,19 @@ const DetalleEmparejamiento = () => {
             }else if (response.data == 3) {
                 console.log("dio 3");
                 console.log(rol);
-                await axios.post(`https://201.124.162.192:3001/api/emparejamiento/preFinalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                await axios.post(`https://201.124.187.222:3001/api/emparejamiento/preFinalizarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                 let promedio = abrirModal(PK_EMPAREJAMIENTO,rol); // Abre el modal y obtiene el promedio
                 console.log("La suma de respuestas es:", promedio);
 
                 console.log("Soy una consulta y recibo este parametro", promedio);
 
                 //axios hacer consulta del pk y promedio
-                //axios.post(`https://201.124.162.192:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&CALIFICACION=${promedio}`);
+                //axios.post(`https://201.124.187.222:3001/api/emparejamiento/actualizarCalificacion?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}&CALIFICACION=${promedio}`);
                 //update en la base con la calificacion where  // Espera hasta que se resuelva abrirModal
                // console.log(calif);
             }else if(response.data == 1){
                 console.log("dio 1");
-                await axios.post(`https://201.124.162.192:3001/api/emparejamiento/rechazarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
+                await axios.post(`https://201.124.187.222:3001/api/emparejamiento/rechazarEmparejamiento?PK_EMPAREJAMIENTO=${PK_EMPAREJAMIENTO}`);
                 //handleDeleteCard(index,dato);
                 await Swal.fire({
                     icon: 'success',

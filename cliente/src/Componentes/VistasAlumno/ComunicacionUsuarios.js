@@ -26,7 +26,7 @@ function randomID(len) {
 
 const ponerNombreUsuario = async () => {
   try {
-    const response = await axios.get(`https://201.124.162.192:3001/api/alumnos/obtenerNombreCompleto?userPk=${userPk}`);
+    const response = await axios.get(`https://201.124.187.222:3001/api/alumnos/obtenerNombreCompleto?userPk=${userPk}`);
     return response.data[0].nombreCompleto;
   } catch (error) {
       console.error('Error al obtener la cantidad de strikes:', error);
