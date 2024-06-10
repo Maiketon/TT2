@@ -62,6 +62,7 @@ const ComunicacionUsuarios = ({ setVista }) => {
         scenario: {
           mode: ZegoUIKitPrebuilt.VideoConference,
         },
+        
         preJoinViewConfig: {
           title: '¡¡Bienvenido a tu clase!!', // The title of the prejoin view. Uses "enter Room" by default.
         },
