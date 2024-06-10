@@ -46,16 +46,16 @@ const FormLogin = ()=>
     const GuardarDatosHook = (e) => {
       const { name, value } = e.target;
       switch (name) {
-          case 'email':
-              setCorreo(value.toLowerCase().slice(0, 55));
-              break;
-          case 'password':
-              setPassword(value.slice(0, 8));
-              break;
-          default:
-              console.log('Nombre de campo desconocido:', name);
+        case 'email':
+          setCorreo(value.toLowerCase().slice(0, 55));
+          break;
+        case 'password':
+          setPassword(value.slice(0, 8));
+          break;
+        default:
+          console.log('Nombre de campo desconocido:', name);
       }
-  };
+    };
 
     //Variables y funciones para manejar el estado de las vistas modales //
     const [modalIncorrecto, setModalIncorrecto] = useState(false);
@@ -304,33 +304,32 @@ const FormLogin = ()=>
 
       }
 ///////////////////////////////////////////////////////////////////////////      
-      const recuperarContra = async(e)=>
-      {
-        e.preventDefault();
-    console.log("Enviando correo a:", correo);  // Asegúrate de que correo está definido y es el correcto
-        setEstaCargando(true);
-    const response = await fetch('http://localhost:3001/api/alumnos/recuperacion', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ correo })  // Envía el correo como un objeto
-    });
+const recuperarContra = async (e) => {
+  e.preventDefault();
+  console.log("Enviando correo a:", correo);  // Asegúrate de que correo está definido y es el correcto
 
-    if (response.ok) {
-        console.log('Solicitud enviada con éxito y respuesta recibida.');
-        setEstaCargando(false);
-        setModalRecuperacion(false);
-        setCorreo();
-        setModalRC(true);
 
-        
+  try {
+    setEstaCargando(true);
+    const response = await axios.post('http://localhost:3001/api/alumnos/recuperacion', { correo });
+
+    if (response.status === 201) {
+      console.log('Solicitud enviada con éxito y respuesta recibida.');
+      setModalRecuperacion(false);
+      setCorreo('');
+      setModalRC(true);
+      setEstaCargando(false);
     } else {
-        console.error('Error en la respuesta del servidor', response.status);
-        setEstaCargando(false);
+      console.error('Error en la respuesta del servidor', response.status);
+      setEstaCargando(false);
     }
-    
-      };
+  } catch (error) {
+    console.error('Error en la petición', error);
+    setEstaCargando(false);
+  } finally {
+    setEstaCargando(false);
+  }
+};
    
     return (
         <>
@@ -434,27 +433,27 @@ const FormLogin = ()=>
   </Modal>
 
   <Modal className="modal-materias justify-content-md-center align-items-center" centered size="lg" show={modalRecuperar} onHide={() => setModalRecuperacion(false)}>
-    <Modal.Header className="modal-materias-header">
-      <Modal.Title className="modal-materias-titulo">¿Deseas recuperar tu contraseña?</Modal.Title>
-    </Modal.Header>
-    <Modal.Body className="modal-materias-body">
-      Si olvidaste tu contraseña, por favor ingresa tu correo electrónico con el que registraste tu cuenta y en breve te llegará un correo electrónico con una contraseña temporal.
-      <Form onSubmit={recuperarContra}>
-        <Form.Group as={Row} className="mb-3" controlId="email">
-          <Form.Label className="text-md-right text-start form-label-pe-none">Correo electrónico:</Form.Label>
-          <Form.Control name="email" type="email" placeholder="Ingresa tu correo electrónico" value={correo} onChange={GuardarDatosHook} />
-        </Form.Group>
-      </Form>
-    </Modal.Body>
-    <Modal.Footer className="modal-materias-footer">
-      <Button variant="primary" type="submit" className="btn-recuperar">
-        Aceptar
-      </Button>
-      <Button variant="secondary" onClick={() => setModalRecuperacion(false)}>
-        Cancelar
-      </Button>
-    </Modal.Footer>
-  </Modal>
+      <Modal.Header className="modal-materias-header">
+        <Modal.Title className="modal-materias-titulo">¿Deseas recuperar tu contraseña?</Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="modal-materias-body">
+        Si olvidaste tu contraseña, por favor ingresa tu correo electrónico con el que registraste tu cuenta y en breve te llegará un correo electrónico con una contraseña temporal.
+        <Form onSubmit={recuperarContra}>
+          <Form.Group as={Row} className="mb-3" controlId="email">
+            <Form.Label className="text-md-right text-start form-label-pe-none">Correo electrónico:</Form.Label>
+            <Form.Control name="email" type="email" placeholder="Ingresa tu correo electrónico" value={correo} onChange={GuardarDatosHook} />
+          </Form.Group>
+          <Modal.Footer className="modal-materias-footer">
+            <Button variant="primary" type="submit" className="btn-recuperar">
+              Aceptar
+            </Button>
+            <Button variant="secondary" onClick={() => setModalRecuperacion(false)}>
+              Cancelar
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal.Body>
+    </Modal>
 
   <Row className="justify-content-md-center m-0" style={{ minHeight: '79vh' }}>
     <Col>
