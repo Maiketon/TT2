@@ -49,8 +49,8 @@ const ComunicacionUsuarios = ({ setVista }) => {
     const initializeZegoUIKit = async () => {
       console.log("Component mounted, initializing ZegoUIKitPrebuilt...");
       const fullName = await ponerNombreUsuario();
-      const appID = 615825585;
-      const serverSecret = "cef6fb2904ea3a9cc07c9f60d5e91367";
+      const appID = 1818385120;
+      const serverSecret = "df01ee52e523622d5f5c892632173db6";
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID, randomID(5), fullName);
 
       // Create instance object from Kit Token.
