@@ -67,7 +67,6 @@ const Configuracion = () => {
     const alertaCambiarPassword = () => {
         Swal.fire({
             title: "¿Estás seguro de querer cambiar tu contraseña?",
-            text: "Se te mandará a tu correo electrónico una liga de confirmación.",
             showCancelButton: true,
             confirmButtonColor: "#d33",
             cancelButtonColor: "#3085d6",
