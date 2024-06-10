@@ -109,6 +109,7 @@ const DetalleEmparejamiento = () => {
                         timer: 1500
                       });
                     setShowModalReporte(false);
+                    window.location.reload();
                 }
             
         } catch (error) {
@@ -245,7 +246,7 @@ const DetalleEmparejamiento = () => {
          
 
         }    
-            //window.location.reload();
+            window.location.reload();
             //verificar si si se inserto calificacion
             //Falta hacer una funcion para comprobar si ya estan las 2 calificaciones
             //Falta hacer una actualizacion en la tabla de alumnos, para actualizar su calificacion
@@ -378,6 +379,7 @@ const DetalleEmparejamiento = () => {
                     title: 'Error',
                     text: 'No se pudo obtener el token. Inténtalo de nuevo más tarde.'
                 });
+                setEstaCargando(false);
             }
         }
 

@@ -100,9 +100,7 @@ exports.verificarAlumno = async (req, res) => {
 
 // LOGIN //
 //RECUPERAR CONTRASEÑA//
- exports.recuperarContra = async(req, res)=>
- {
-/////////////////////////////////////////////////
+exports.recuperarContra = async (req, res) => {
     function generarCadenaAleatoria(longitud) {
         const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         let resultado = '';
@@ -112,33 +110,37 @@ exports.verificarAlumno = async (req, res) => {
         }
         return resultado;
     }
-///////////////////////////////////////////
 
     const { correo } = req.body;  // Extracción del correo del cuerpo de la solicitud
     console.log(correo);  // Imprime el correo para verificar que se recibe correctamente
 
     try {
         // Asumiendo que la función espera un objeto con una clave 'correo'
-        const pkUsuario = await modeloAlumnos.verificarRegistroCorreo(correo); 
+        const pkUsuario = await modeloAlumnos.verificarRegistroCorreo(correo);
         console.log("Usuario existe:", pkUsuario.existe);
         console.log("PK del usuario:", pkUsuario.pk);
-        console.log("PK del usuario:", pkUsuario.nombres);
+        console.log("Nombre del usuario:", pkUsuario.nombres);
+
         if (pkUsuario.existe) {
             console.log("Procesando recuperación de contraseña para:", correo);
-            //Parametros para crear el correo//
+            // Genera una nueva contraseña
             const passNueva = generarCadenaAleatoria(8);
-            const resultado = await modeloAlumnos.escribirNuevaPass(passNueva,pkUsuario.pk);
-             if (resultado > 0) {
+            const resultado = await modeloAlumnos.escribirNuevaPass(passNueva, pkUsuario.pk);
+
+            if (resultado > 0) {
                 const correoOpciones = {
-                    from: "learnmatch2024029@hotmail.com", 
+                    from: "learnmatch2024029@hotmail.com",
                     to: correo,
                     subject: '¡¡Nueva contraseña de LearnMatch!!',
-                    text: `Hola ${pkUsuario.nombres}, por favor ingresa a nuestro sistema con esta nueva clave en el Inicio de sesión ${passNueva}`
+                    text: `Hola ${pkUsuario.nombres}, por favor ingresa a nuestro sistema con esta nueva clave en el Inicio de sesión: ${passNueva}`
                 };
-               let info = await transporter.sendMail(correoOpciones);
+
+                let info = await transporter.sendMail(correoOpciones);
                 console.log('Mensaje enviado: %s', info.messageId);
-                res.send(201, "Usuario reestablecido correctamente.");
-        }
+                res.status(201).send("Usuario reestablecido correctamente.");
+            } else {
+                res.status(500).send({ message: "Error al actualizar la contraseña del usuario." });
+            }
         } else {
             console.log("No existe un usuario con ese correo:", correo);
             res.status(404).send({ message: "No existe un usuario con ese correo en el sistema." });
@@ -147,7 +149,10 @@ exports.verificarAlumno = async (req, res) => {
         console.error("Error durante la verificación del correo:", error);
         res.status(500).send({ message: "Error interno del servidor." });
     }
- };
+};
+
+
+ 
  exports.guardarPreferenciasAcademicas = async(req, res)=>
  {
     const recuperarCargaUtil = {pkUsuario,seleccionesIzquierda,seleccionesDerecha} =req.body;
