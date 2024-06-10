@@ -5,7 +5,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import './Css/SobreNosotros.css';
 
 // Imagenes
-import FAHD from "./Utils/DesarrolladorFredy.jpg";
+import FAHD from "./Utils/DesarrolladorFredy.jpeg";
 import MAMB from './Utils/DesarrolladorMiguel.jpg';
 import UJMS from './Utils/DesarrolladorUlises.jpg';
 import CardConModal from './ModalPrincipal';
