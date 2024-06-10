@@ -47,7 +47,13 @@ const BarChart = () => {
     setEstaCargando(true);
     axios.get('http://localhost:3001/api/administracion/datosGraficaUsoBoton')
       .then(response => {
-        const { sumatiempozg, totalemparejamiento, totalusuariosAyS, totalusuarios6 } = response.data;
+        let { sumatiempozg, totalemparejamiento, totalusuariosAyS, totalusuarios6 } = response.data;
+
+        // Si sumatiempozg es null, establecerlo a 0
+        if (sumatiempozg === null) {
+          sumatiempozg = 0;
+        }
+
         setChartData(prevData => ({
           ...prevData,
           datasets: [
