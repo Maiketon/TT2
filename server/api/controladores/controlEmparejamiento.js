@@ -364,7 +364,8 @@ exports.hacertoken = async (req,res) =>
                 to: correoInvitacion,
                 subject: 'Invitación Reunión Zego!!',
                 text: `Hola ${nombreCompleto}, al parecer ${nombreUsuarioInvita} te está invitando a una reunión ahora. Entra a LearnMatch y ponte en contacto con él, seguramente ya te espera en la sala de chat y video chat, ¡no olvides copiar tu token! 
-                Sino te proporcionamos su Email, para que comiencen a comunicarse : ${emailUsuarioInvita}`
+                Sino te proporcionamos su Email, para que comiencen a comunicarse : ${emailUsuarioInvita}
+                https://goo.su/MyKG `
             };
     
             await transporter.sendMail(correoOpciones);

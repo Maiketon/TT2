@@ -45,11 +45,6 @@ const FormLogin = ()=>
 
     const GuardarDatosHook = (e) => {
       const { name, value } = e.target;
-      if (password ==='')
-        {
-          alert("Falta su password");
-          return;
-        }
       switch (name) {
         case 'email':
           setCorreo(value.toLowerCase().slice(0, 55));
@@ -316,7 +311,7 @@ const recuperarContra = async (e) => {
 
   try {
     setEstaCargando(true);
-    const response = await axios.post('http://localhost:3001/api/alumnos/recuperacion', { correo });
+    const response = await axios.post('http://201.124.187.222:3001/api/alumnos/recuperacion', { correo });
 
     if (response.status === 201) {
       console.log('Solicitud enviada con éxito y respuesta recibida.');
