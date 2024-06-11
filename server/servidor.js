@@ -21,9 +21,10 @@ app.use((req, res, next) => {
 
 // Configuración de CORS para permitir solicitudes desde Netlify
 const corsOptions = {
-  origin: ['https://learnmatch.netlify.app'],
+  origin: ['https://learnmatch.netlify.app', 'https://youtube.com', 'https://www.youtube.com', 'https://ytimg.com', 'https://googlevideo.com'],
   optionsSuccessStatus: 200
 };
+
 app.use(cors(corsOptions));
 
 // Middleware de bodyParser
