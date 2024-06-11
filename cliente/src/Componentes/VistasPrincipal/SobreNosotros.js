@@ -7,7 +7,7 @@ import './Css/SobreNosotros.css';
 // Imagenes
 import FAHD from "./Utils/DesarrolladorFredy.jpeg";
 import MAMB from './Utils/DesarrolladorMiguel.jpg';
-import UJMS from './Utils/DesarrolladorUlises.jpg';
+import UJMS from './Utils/DesarrolladorUlises.jpeg';
 import CardConModal from './ModalPrincipal';
 
 const SobreNosotros = () => {
