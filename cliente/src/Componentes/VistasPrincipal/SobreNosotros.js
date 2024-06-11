@@ -5,9 +5,9 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import './Css/SobreNosotros.css';
 
 // Imagenes
-import FAHD from "./Utils/DesarrolladorFredy.jpg";
+import FAHD from "./Utils/DesarrolladorFredy.jpeg";
 import MAMB from './Utils/DesarrolladorMiguel.jpg';
-import UJMS from './Utils/DesarrolladorUlises.jpg';
+import UJMS from './Utils/DesarrolladorUlises.jpeg';
 import CardConModal from './ModalPrincipal';
 
 const SobreNosotros = () => {
@@ -62,33 +62,51 @@ const SobreNosotros = () => {
               <Card style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={FAHD} />
                 <Card.Body>
-                  <Card.Title>Fredy Adair Hernandez Dominguez</Card.Title>
-                  <Card.Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut laoreet euismod orci, nec
-                  </Card.Text>
-                </Card.Body>
+      <Card.Title>Fredy</Card.Title>
+      <Card.Text>
+        Fredy es un estudiante de ESCOM (IPN) dedicado a la creación de soluciones tecnológicas innovadoras. Disfruta trabajar en equipo y siempre busca mejorar la experiencia del usuario.
+        <ul>
+          <li>Comunicación efectiva</li>
+          <li>Trabajo en equipo</li>
+          <li>Resolución de problemas</li>
+          <li>Adaptabilidad</li>
+        </ul>
+      </Card.Text>
+    </Card.Body>
               </Card>
             </Col>
             <Col xs={12} md={4} className="d-flex align-items-stretch justify-content-center mb-3">
               <Card style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={MAMB} />
                 <Card.Body>
-                  <Card.Title>Miguel Angel Montoya Bautista</Card.Title>
-                  <Card.Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut laoreet euismod orci, nec
-                  </Card.Text>
-                </Card.Body>
+      <Card.Title>Miguel</Card.Title>
+      <Card.Text>
+        Miguel es un ingeniero en formación en ESCOM (IPN) con un fuerte enfoque en la mejora continua y la innovación. Su capacidad para liderar proyectos y su dedicación al aprendizaje lo destacan en el equipo.
+        <ul>
+          <li>Liderazgo</li>
+          <li>Pensamiento crítico</li>
+          <li>Gestión del tiempo</li>
+          <li>Innovación</li>
+        </ul>
+      </Card.Text>
+    </Card.Body>
               </Card>
             </Col>
             <Col xs={12} md={4} className="d-flex align-items-stretch justify-content-center mb-3">
               <Card style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={UJMS} />
                 <Card.Body>
-                  <Card.Title>Ulises Jes&uacute;s Santos M&eacute;ndez</Card.Title>
-                  <Card.Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut laoreet euismod orci, nec
-                  </Card.Text>
-                </Card.Body>
+      <Card.Title>Ulises</Card.Title>
+      <Card.Text>
+        Ulises es un apasionado estudiante de ESCOM (IPN) con una gran atención al detalle y compromiso con la excelencia. Su capacidad para manejar el estrés y su proactividad lo hacen un miembro valioso del equipo.
+        <ul>
+          <li>Atención al detalle</li>
+          <li>Manejo del estrés</li>
+          <li>Proactividad</li>
+          <li>Empatía</li>
+        </ul>
+      </Card.Text>
+    </Card.Body>
               </Card>
             </Col>
           </Row>
