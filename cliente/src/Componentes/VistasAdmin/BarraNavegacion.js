@@ -35,6 +35,7 @@ const BarraNavegacion = ({ setVista }) => {
         </button>
         <button className="cerrar-sesion" onClick={handleLogout}>Cerrar Sesión</button>
         <h3 className="titulo">Administrador</h3>
+        <hr></hr>
         <div className="botones">
           <button className="elemento" onClick={() => setVista('registro')}>
             <i className="bi bi-people-fill"></i>
@@ -48,6 +49,7 @@ const BarraNavegacion = ({ setVista }) => {
           <i className="bi bi-person-bounding-box"></i>
             <span className='d_texto'>Reportes de cada usuario</span>
           </button>
+          <hr></hr>
         </div>
       </div>
     </div>

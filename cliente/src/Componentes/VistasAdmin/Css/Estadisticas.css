@@ -22,14 +22,14 @@
 
     
 .container-bg {
-    background-color: var(--ghots-white);
+    /*background-color: var(--ghots-white);*/
     min-height: 100vh; /* Asegura que cubra toda la pantalla */
     padding: 20px;
     color: white; /* Ajusta el color del texto */
 }
 
 .card-bg {
-    background-color: var(--guinda);
+    background-color: #729987;
     color: white; /* Ajusta el color del texto */
 }
 

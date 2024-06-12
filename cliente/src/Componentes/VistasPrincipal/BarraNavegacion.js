@@ -35,6 +35,7 @@ const BarraNavegacion = ({ setVista }) =>
         "UA Matem\u00E1ticas Discretas": {
             "Programa Sintético": "matematicasDiscretas_ISC2020.pdf",
             "Videos": "https://www.youtube.com/embed/nIYj4urE82g?si=X84sFhq-ttO6XnvQ",
+            "Videos": "https://www.youtube.com/embed/nIYj4urE82g?si=X84sFhq-ttO6XnvQ",
             "Presentaciones": "PRESENTACION PRUEBA.pdf"    
         },
         "UA Comunicaci\u00F3n Oral y Escrita": {
@@ -60,6 +61,7 @@ const BarraNavegacion = ({ setVista }) =>
         , "UA Mec\u00E1nica y Electromagnetismo": {
             "Programa Sintético": "mecanicaElectromagnetismo_ISC2020.pdf",
             "Videos": "https://www.youtube.com/embed/PHcdNqtvvWo?si=4I2veCNwrNdcvaav",
+            "Videos": "https://www.youtube.com/embed/PHcdNqtvvWo?si=4I2veCNwrNdcvaav",
             "Presentaciones": "PRESENTACION PRUEBA.pdf"    
         }
         , "UA Ingenier\u00EDa, \u00C9tica y Sociedad": {
@@ -69,6 +71,7 @@ const BarraNavegacion = ({ setVista }) =>
         }
         , "UA Fundamentos Econ\u00F3micos": {
             "Programa Sintético": "fundamentosEconomicos_ISC2020.pdf",
+            "Videos": "https://www.youtube.com/embed/UCj4hYBOVy0?si=F-K8OQLHFT_A5Pk2",
             "Videos": "https://www.youtube.com/embed/UCj4hYBOVy0?si=F-K8OQLHFT_A5Pk2",
             "Presentaciones": "PRESENTACION PRUEBA.pdf"    
         }
