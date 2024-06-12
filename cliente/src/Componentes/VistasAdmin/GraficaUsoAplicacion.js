@@ -45,7 +45,7 @@ const BarChart = () => {
 
   useEffect(() => {
     setEstaCargando(true);
-    axios.get('https://201.124.187.222:3001/api/administracion/datosGraficaUsoBoton')
+    axios.get('https://201.124.183.3:3001/api/administracion/datosGraficaUsoBoton')
       .then(response => {
         let { sumatiempozg, totalemparejamiento, totalusuariosAyS, totalusuarios6 } = response.data;
 

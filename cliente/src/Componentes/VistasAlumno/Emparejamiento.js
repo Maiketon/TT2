@@ -152,7 +152,7 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
         }
 
         else {
-            const response = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/insertarRegistros?usuarioPrincipalPK=${userPk}&tipoCoincidencia=${tipoCoincidencia}&usuarioCandidatoPK=${pkUsuarioCandidato}`);
+            const response = await axios.post(`https://201.124.183.3:3001/api/emparejamiento/insertarRegistros?usuarioPrincipalPK=${userPk}&tipoCoincidencia=${tipoCoincidencia}&usuarioCandidatoPK=${pkUsuarioCandidato}`);
             let totalEmparejamientosActualizados = totalEmparejamientos + 1;
             Cookies.set('totalEmparejamientos', totalEmparejamientosActualizados, { expires: 1 });
             //sessionStorage.setItem('totalEmparejamientos',totalEmparejamientosActualizados );
@@ -203,7 +203,7 @@ const insertarRegistro = async (pkUsuarioCandidato, tipoCoincidencia) => {
 const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
     try {let banderaColisiones = 0;
             console.log("entre en verificarColision");
-            const response = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/verificarColision?pkUsuarioCandidato=${pkUsuarioCandidato}&tipoCoincidencia=${tipoCoincidencia}`);
+            const response = await axios.post(`https://201.124.183.3:3001/api/emparejamiento/verificarColision?pkUsuarioCandidato=${pkUsuarioCandidato}&tipoCoincidencia=${tipoCoincidencia}`);
             
             console.log("Esta es la respuesta de la colision");
             console.log(response.data);
@@ -220,7 +220,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
 
     const obtenerStrikes = async () => {
         try {
-            const response = await axios.get(`https://201.124.187.222:3001/api/emparejamiento/obtenerStrikes?userPk=${userPk}`);
+            const response = await axios.get(`https://201.124.183.3:3001/api/emparejamiento/obtenerStrikes?userPk=${userPk}`);
             const strikes = response.data[0].REPORTADO;
             return strikes;
         } catch (error) {
@@ -244,7 +244,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
 
     const Rechazos = async () => {
         try {
-            const response = await axios.get(`https://201.124.187.222:3001/api/emparejamiento/obtenerRechazos?userPk=${userPk}`);
+            const response = await axios.get(`https://201.124.183.3:3001/api/emparejamiento/obtenerRechazos?userPk=${userPk}`);
             const rechazos = response.data[0].RECHAZOS;
             Cookies.set('numRechazos', JSON.stringify(rechazos), { expires: 1 });
             
@@ -289,7 +289,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
                     confirmButtonText: 'Aceptar'
                 });
             } else {
-                const response = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/actualizarRechazos?numrechazos=${numRechazos}&userPk=${userPk}`);
+                const response = await axios.post(`https://201.124.183.3:3001/api/emparejamiento/actualizarRechazos?numrechazos=${numRechazos}&userPk=${userPk}`);
                 const rechazosDisponibles = response.data.rechazosdisponibles;
     
                 // Actualizar el valor de rechazos disponibles en numRechazos
@@ -303,7 +303,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
 
     const obtenerAlumnosEmparejamiento = async () => {
         try{
-            const response = await axios.post(`https://201.124.187.222:3001/api/algoritmo/obtenerUsuarioPrincipal?pkUsuarioPrincipal=${userPk}&banderaRol=${bandera}`);
+            const response = await axios.post(`https://201.124.183.3:3001/api/algoritmo/obtenerUsuarioPrincipal?pkUsuarioPrincipal=${userPk}&banderaRol=${bandera}`);
             setDatosAlumno(response.data);
         }catch(error){
             console.error('Error al obtener los datos de los alumnos emparejados', error);
@@ -313,7 +313,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
 
     const actualizarEmparejamientosDisponibles = async () => {
         try{
-            const response = await axios.post(`https://201.124.187.222:3001/api/emparejamiento/actualizarEmparejamientosDisponibles?userPk=${userPk}`);
+            const response = await axios.post(`https://201.124.183.3:3001/api/emparejamiento/actualizarEmparejamientosDisponibles?userPk=${userPk}`);
             const emparejamientos_disponibles=response.data.emparejamientosdisponibles;
         }catch(error){
             console.error('Error al actualizar los emparejamientos disponibles', error);

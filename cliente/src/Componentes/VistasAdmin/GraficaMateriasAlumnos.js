@@ -55,7 +55,7 @@ const RadarChart = () => {
     const fetchData = async () => {
       try {
         setEstaCargando(true);
-        const response = await axios.get('https://201.124.187.222:3001/api/administracion/datosGraficaMaterias');
+        const response = await axios.get('https://201.124.183.3:3001/api/administracion/datosGraficaMaterias');
 
         const labels = response.data.map(item => {
           const deficiencias = item.Deficiencias ?? 0;
