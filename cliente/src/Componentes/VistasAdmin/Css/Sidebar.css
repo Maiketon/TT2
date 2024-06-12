@@ -17,13 +17,14 @@
     --light-color: #f8f9fa;
     --grey-color: #a9acb0;
     --dark-color: #343a40;
+    --verde: #4a7050;
     }
 
 /* Estilos CSS para el barra lateral */
 .sidebar {
     width: 300px; /* Ancho fijo */
     min-height: 95vh; /* Altura mínima igual al 100% del viewport */
-    background-color: var(--guinda);
+    background-color: var(--verde);
     border: 2px solid #000; /* Borde sólido */
     box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
     overflow-y: auto; /* Agrega desplazamiento vertical si el contenido es más largo que el sidebar */
@@ -81,7 +82,7 @@
     
     display: flex;
     flex-direction: column;
-    background-color: var(--guinda);
+    background-color: var(--verde);
 }
 
 .elemento {
@@ -90,7 +91,7 @@
     margin-bottom: 10px; /* Ajusta el margen inferior entre botones */
     text-align: left; /* Alinea el texto a la izquierda */
     transition: background-color 0.3s ease; /* Transición suave del color de fondo */
-    background-color: var(--guinda-tenue);
+    background-color: var(--verde);
 }
 
 .elemento:hover {

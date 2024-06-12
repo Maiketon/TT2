@@ -1,5 +1,5 @@
 import React, { useState, useEffect,useMemo } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Css/Dropdown.css';
 import './Css/PrincipalAdm.css';
@@ -113,7 +113,7 @@ const tituloStyle = {
 };
 
 const formLabelStyle = {
-    color: 'black' // Ajusta el color de las etiquetas de los formularios
+    color: 'white' // Ajusta el color de las etiquetas de los formularios
 };
 
 useEffect(() => {
@@ -138,7 +138,7 @@ const options = useMemo(
   () => ({
     background: {
       color: {
-        value: "#0d47a1",
+        value: "#cccccc",
       },
     },
     fpsLimit: 120,
@@ -220,6 +220,7 @@ const options = useMemo(
             <Container className="mt-4">
                 <h2 style={tituloStyle}>Filtrar Usuarios</h2>
                 <Form>
+                <div class="p-3 card-bg card">
                     <Row>
                         <Col>
                             <Form.Group controlId="estatusAlumno">
@@ -303,7 +304,7 @@ const options = useMemo(
                             </Col>
                         </Row>
                     </Container>
-
+                </div>
                     <Container>
                         <UsuarioComponent className='' usuarios={usuarios} />
                     </Container>
