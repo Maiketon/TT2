@@ -25,12 +25,12 @@ const BarraNavegacion = ({ setVista }) =>
         "UA C\u00E1lculo": {
             "Programa Sintético": "calculo_ISC2020.pdf",
             "Videos": "https://www.youtube.com/embed/pXTbMcBI4aQ?si=A8LPNquU8bUF9cEP",
-            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+            "Presentaciones": "Apuntes_Calculo.pdf"    
         },
         "UA An\u00E1lisis Vectorial": {
             "Programa Sintético": "analisisVectorial_ISC2020.pdf",
             "Videos": "https://www.youtube.com/embed/FZgu4It4ELM?si=gUZSIiZ__8CeTeNo",
-            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+            "Presentaciones": "Analisis Vectorial.pdf"    
         },
         "UA Matem\u00E1ticas Discretas": {
             "Programa Sintético": "matematicasDiscretas_ISC2020.pdf",
@@ -40,22 +40,22 @@ const BarraNavegacion = ({ setVista }) =>
         "UA Comunicaci\u00F3n Oral y Escrita": {
             "Programa Sintético": "comunicacionOralEscrita_ISC2020.pdf",
             "Videos": "https://www.youtube.com/embed/e34lx-uXXuI?si=6Xf4pKDTrvLJMx43",
-            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+            "Presentaciones": "Diapositivas_COE.pdf"    
         },
         "UA Fundamentos de Programaci\u00F3n": {
             "Programa Sintético": "fundamentosProgramacion_ISC2020.pdf",
             "Videos": "https://www.youtube.com/embed/oR_0QuYo6hU?si=p98vLB4CPjD6YxlP",
-            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+            "Presentaciones": "algoritmos.pdf"    
         }
         , "UA \u00C1lgebra Lineal": {
             "Programa Sintético": "algebraLineal_ISC2020.pdf",
             "Videos": "https://www.youtube.com/embed/6hNWBE1YQL0?si=iU4uLc45tyoFBFZ2",
-            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+            "Presentaciones": "Apuntes_AlgLineal.pdf"    
         }
         , "UA C\u00E1lculo Aplicado": {
             "Programa Sintético": "calculoAplicado_ISC2020.pdf",
             "Videos": "https://www.youtube.com/embed/w-1fh2H-yf0?si=noJ62X2TmiHLc1PF",
-            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+            "Presentaciones": "Apuntes_CalAplicado.pdf"    
         }
         , "UA Mec\u00E1nica y Electromagnetismo": {
             "Programa Sintético": "mecanicaElectromagnetismo_ISC2020.pdf",
@@ -65,7 +65,7 @@ const BarraNavegacion = ({ setVista }) =>
         , "UA Ingenier\u00EDa, \u00C9tica y Sociedad": {
             "Programa Sintético": "ingenieriaEticaSociedad_ISC2020.pdf",
             "Videos": "https://www.youtube.com/embed/8wMrJ5StrhE?si=4CUXm7QADczcWajJ",
-            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+            "Presentaciones": "ETICA.pdf"    
         }
         , "UA Fundamentos Econ\u00F3micos": {
             "Programa Sintético": "fundamentosEconomicos_ISC2020.pdf",
@@ -75,7 +75,7 @@ const BarraNavegacion = ({ setVista }) =>
         , "UA Algoritmos y Estructura de Datos": {
             "Programa Sintético": "algoritmosEstructurasDatos_ISC2020.pdf",
             "Videos": "https://www.youtube.com/embed/ss-iNeOItW4?si=tngi9_TREMV5CSC2",
-            "Presentaciones": "PRESENTACION PRUEBA.pdf"    
+            "Presentaciones": "Apuntes_EstructuraDatos.pdf"    
         }
         // Continúa hasta UA 11
     };
