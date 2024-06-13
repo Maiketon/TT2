@@ -13,7 +13,7 @@ const BarChart = () => {
     labels: ['Uso de la aplicacion'],
     datasets: [
       {
-        label: 'Tiempo total de ZegoCloud',
+        label: 'Tokens totales de ZegoCloud',
         data: [],
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         borderColor: 'rgba(255, 99, 132, 1)',
@@ -57,7 +57,7 @@ const BarChart = () => {
         setChartData(prevData => ({
           ...prevData,
           datasets: [
-            { ...prevData.datasets[0], label: `Tiempo total de ZegoCloud (${sumatiempozg})`, data: [sumatiempozg] },
+            { ...prevData.datasets[0], label: `Tokens totales de ZegoCloud (${sumatiempozg})`, data: [sumatiempozg] },
             { ...prevData.datasets[1], label: `Emparejamientos Totales (${totalemparejamiento})`, data: [totalemparejamiento] },
             { ...prevData.datasets[2], label: `Usuarios con acceso a emparejamiento (Aprobados y Sancionados) (${totalusuariosAyS})`, data: [totalusuariosAyS] },
             { ...prevData.datasets[3], label: `Usuarios Vetados (${totalusuarios6})`, data: [totalusuarios6] }

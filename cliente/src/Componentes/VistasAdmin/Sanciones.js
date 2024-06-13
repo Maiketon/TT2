@@ -124,7 +124,7 @@ const Sanciones = () => {
                     options={options}
                 />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <Container style={{ width: '50%', maxWidth: '800px', border: '1px solid #ccc', borderRadius: '5px' }}>
                     {usuariosReportados.map(usuario => (
                         <Sancion key={usuario.PK_USUARIO} usuario={usuario} onRemoveUser={removeUserFromList} />
