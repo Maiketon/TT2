@@ -242,10 +242,7 @@ const DetalleEmparejamiento = () => {
             }
 
         }
-
-         
-
-        }    
+    }    
             window.location.reload();
             //verificar si si se inserto calificacion
             //Falta hacer una funcion para comprobar si ya estan las 2 calificaciones
