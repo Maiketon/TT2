@@ -76,7 +76,18 @@
 }
 
 
+.color-fuente{
+  color: #F4F4F4;
+}
 
+.color-fondo{
+  background-color: #D86700;
+}
+
+.card-candidatos{
+  background: darkturquoise;
+  margin-bottom: 20px;
+}
 
 
 

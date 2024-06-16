@@ -469,7 +469,7 @@ const DetalleEmparejamiento = () => {
             </Modal>
             <Card className="custom-card">
         <div className="custom-card-header-mentorias">
-            <Card.Title className="custom-card-title">Emparejamientos donde eres Mentor</Card.Title>
+            <Card.Title className="custom-card-title color-fuente">Emparejamientos donde eres mentor</Card.Title>
         </div>
         <Card.Body>
             {Aprendiz.map((aprendiz, index) => (
@@ -487,12 +487,12 @@ const DetalleEmparejamiento = () => {
                                 <h5 className="card-title">{aprendiz.nombreCompleto}</h5>
                                 
                             </div>
-                            <div className="card text-white bg-danger mb-3">
+                            <div className="card text-white fondo-naranja mb-3">
                                                             <div className="card-header">Deficiencias del aprendiz</div>
                                                             <div className="card-body">
-                                                            <p className="card-text">{aprendiz.materia1}</p>
-                                                            <p className="card-text">{aprendiz.materia2}</p>
-                                                            <p className="card-text">{aprendiz.materia3}</p>
+                                                            <p className="card-text color-fuente">{aprendiz.materia1}</p>
+                                                            <p className="card-text color-fuente">{aprendiz.materia2}</p>
+                                                            <p className="card-text color-fuente">{aprendiz.materia3}</p>
 
                                                             </div>
                             </div>
@@ -563,7 +563,7 @@ const DetalleEmparejamiento = () => {
            
             <Card className="custom-card">
         <div className="custom-card-header-oportunidad">
-            <Card.Title className="custom-card-title">Emparejamientos donde eres Aprendiz</Card.Title>
+            <Card.Title className="custom-card-title color-fuente">Emparejamientos donde eres aprendiz</Card.Title>
         </div>
         <Card.Body>
             {Mentor.map((mentor, index) => (
@@ -585,9 +585,9 @@ const DetalleEmparejamiento = () => {
                             <div className="card text-white bg-success mb-3">
                                                             <div className="card-header">Fortalezas de tu mentor</div>
                                                             <div className="card-body">
-                                                               <p className="card-text">{mentor.materia1}</p>
-                                                                <p className="card-text">{mentor.materia2}</p>
-                                                                <p className="card-text">{mentor.materia3}</p>
+                                                               <p className="card-text color-fuente">{mentor.materia1}</p>
+                                                                <p className="card-text color-fuente">{mentor.materia2}</p>
+                                                                <p className="card-text color-fuente">{mentor.materia3}</p>
 
                                                             </div>
                             </div>
