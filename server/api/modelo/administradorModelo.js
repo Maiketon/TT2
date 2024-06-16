@@ -50,7 +50,7 @@ class  modeloAdmin
         try {
             const promesadb = db.promise();
             const [sumatiempozg] = await promesadb.query(
-                'SELECT SUM(TIEMPO_TOTAL_CHAT) AS sumatiempozg FROM comunicacionzg;'
+                'SELECT COUNT(*) AS sumatiempozg FROM comunicacionzg;'
             );
             const [totalemparejamiento] = await promesadb.query(
                 'SELECT COUNT(*) AS totalemparejamiento FROM emparejamiento;'
