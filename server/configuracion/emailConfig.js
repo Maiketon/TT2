@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
     secure: false, // True para 465, false para otros puertos
     auth: {
         user: 'learnmatch2024029@hotmail.com', // CORREO ELECTRONICO DEL SISTEMA
-        pass: 'Esmegma123' // CONTRASEÑA DEL SISTEMA
+        pass: 'Learnmatch123' // CONTRASEÑA DEL SISTEMA
     },
     tls: {
         ciphers:'SSLv3' // Asegura compatibilidad si hay problemas de TLS
