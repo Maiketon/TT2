@@ -349,7 +349,7 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
                         <div class="col">Emparejamientos activos/pendientes/prefinalizados que tienes:  { Cookies.get('totalEmparejamientos') /*sessionStorage.getItem('totalEmparejamientos')*/}</div>
                         </div>
                         {datosAlumno.map((alumno, index) => (
-                            <Card key={index} className={index === deletedCardIndex ? 'fadeOutAnimation' : ''}>
+                            <Card key={index} className={index === deletedCardIndex ? 'fadeOutAnimation' : ''} className="card-candidatos">
                                 <Card.Body>
                                     <Card.Title>{alumno.candidato.nombreCompleto}</Card.Title>
                                     <Card.Text>{"Tu seras " + alumno.tipoCoincidencia}</Card.Text>
@@ -359,12 +359,12 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
                                             <div className="conocimientos_deficiencias">
                                                 <section className="columna">
                                                     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                                                        <div className="card text-white bg-danger mb-3">
+                                                        <div className="card text-white color-fondo mb-3">
                                                             <div className="card-header">Deficiencias</div>
                                                             <div className="card-body">
-                                                                {alumno.candidato.NOMBRE_DEFICIENCIA1 && <p>{alumno.candidato.NOMBRE_DEFICIENCIA1}</p>}
-                                                                {alumno.candidato.NOMBRE_DEFICIENCIA2 && <p>{alumno.candidato.NOMBRE_DEFICIENCIA2}</p>}
-                                                                {alumno.candidato.NOMBRE_DEFICIENCIA3 && <p>{alumno.candidato.NOMBRE_DEFICIENCIA3}</p>}
+                                                                {alumno.candidato.NOMBRE_DEFICIENCIA1 && <p className="color-fuente">{alumno.candidato.NOMBRE_DEFICIENCIA1}</p>}
+                                                                {alumno.candidato.NOMBRE_DEFICIENCIA2 && <p className="color-fuente">{alumno.candidato.NOMBRE_DEFICIENCIA2}</p>}
+                                                                {alumno.candidato.NOMBRE_DEFICIENCIA3 && <p className="color-fuente">{alumno.candidato.NOMBRE_DEFICIENCIA3}</p>}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -373,10 +373,10 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
                                                     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                                                         <div className="card text-white bg-success mb-3">
                                                             <div className="card-header">Fortalezas</div>
-                                                            <div className="card-body">
-                                                                {alumno.candidato.NOMBRE_ENSEÑANZA1 && <p>{alumno.candidato.NOMBRE_ENSEÑANZA1}</p>}
-                                                                {alumno.candidato.NOMBRE_ENSEÑANZA2 && <p>{alumno.candidato.NOMBRE_ENSEÑANZA2}</p>}
-                                                                {alumno.candidato.NOMBRE_ENSEÑANZA3 && <p>{alumno.candidato.NOMBRE_ENSEÑANZA3}</p>}
+                                                            <div className="card-body color-fuente">
+                                                                {alumno.candidato.NOMBRE_ENSEÑANZA1 && <p className="color-fuente">{alumno.candidato.NOMBRE_ENSEÑANZA1}</p>}
+                                                                {alumno.candidato.NOMBRE_ENSEÑANZA2 && <p className="color-fuente">{alumno.candidato.NOMBRE_ENSEÑANZA2}</p>}
+                                                                {alumno.candidato.NOMBRE_ENSEÑANZA3 && <p className="color-fuente">{alumno.candidato.NOMBRE_ENSEÑANZA3}</p>}
                                                             </div>
                                                         </div>
                                                     </div>
