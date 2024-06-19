@@ -29,7 +29,7 @@
 }
 
 .custom-card-header-mentorias {
-    background-color: var(--strong-green); 
+    background-color: var(--azul-armonia); 
     padding: 20px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -37,7 +37,7 @@
 }
 
 .custom-card-header-oportunidad {
-    background-color: var(--Soft-Violet); /* Soft Violet */
+    background-color: var(--azul-armonia); /* Soft Violet */
     padding: 20px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -77,9 +77,14 @@
 }
 
 .fondo-naranja{
-    background-color: #D86700;
+    background-color: darkslategrey;
 }
 
 .color-fuente{
     color: #F4F4F4;
 }
+
+.ocultar-footer {
+    display: none;
+}
+

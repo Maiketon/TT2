@@ -49,6 +49,7 @@
 
 .fondo_def_conoc{
   background-image: url('../Utils/materiales.jpg');
+  filter: hue-rotate();
 }
 
 
@@ -81,14 +82,13 @@
 }
 
 .color-fondo{
-  background-color: #D86700;
+  background-color: darkslategrey;
 }
 
 .card-candidatos{
-  background: darkturquoise;
+  background: #3c6dae;
   margin-bottom: 20px;
 }
-
 
 
 

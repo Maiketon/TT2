@@ -331,13 +331,13 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
                 {/* Modal */}
                 <Modal show={showModal} onHide={handleCloseModal} centered closeButton={false}>
                     <Modal.Header closeButton={false}>
-                        <Modal.Title>Proceso de emparejamiento</Modal.Title>
+                        <Modal.Title>Proceso de búsqueda de candidatos</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div className="progress">
                             <div className="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style={{ width: '100%', backgroundColor: '#483A63' }}></div>
                         </div>
-                        <div style={{ marginTop: '10px' }}>Se está realizando tu emparejamiento</div>
+                        <div style={{ marginTop: '10px' }}>Se están buscando candidatos</div>
                     </Modal.Body>
                 </Modal>
                 {/* Muestra "Hola cards" después de que se complete la carga */}
@@ -351,8 +351,8 @@ const verificarColision = async (pkUsuarioCandidato, tipoCoincidencia) => {
                         {datosAlumno.map((alumno, index) => (
                             <Card key={index} className={index === deletedCardIndex ? 'fadeOutAnimation' : ''} className="card-candidatos">
                                 <Card.Body>
-                                    <Card.Title>{alumno.candidato.nombreCompleto}</Card.Title>
-                                    <Card.Text>{"Tu seras " + alumno.tipoCoincidencia}</Card.Text>
+                                    <Card.Title className="color-fuente">{alumno.candidato.nombreCompleto}</Card.Title>
+                                    <Card.Text className="color-fuente">{"Tu seras " + alumno.tipoCoincidencia}</Card.Text>
                                     <div className="card">
                                         <div className="fondo_def_conoc">
                                             <h5 className="card-title">Deficiencias/Conocimientos</h5>
