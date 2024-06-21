@@ -2,7 +2,7 @@ const mysql = require ("mysql2");
 //Creamos la conexion a la base de datos//
 const db = mysql.createConnection(
     {
-        host: "201.124.183.3", //DIRECCION IP QUE CAMBIA
+        host: "201.124.152.8", //DIRECCION IP QUE CAMBIA
         user: "maik", //SUS NOMBRES DE USUARIO QUE LES ASIGNE
         password: "maik", //SU PASSWORD
         user: "ulises", //SUS NOMBRES DE USUARIO QUE LES ASIGNE

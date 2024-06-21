@@ -9,7 +9,7 @@ import './Css/SancionesC.css';
 const Sancion = ({ usuario, onRemoveUser }) => {
    const omitirReporte = async () => {
     try {
-        const response = await axios.post('https://201.124.183.3:3001/api/administracion/omitirReportAlumno', {
+        const response = await axios.post('https://201.124.152.8:3001/api/administracion/omitirReportAlumno', {
             pkReporte: usuario.PK_REPORTE
         });
         if (response.status === 201) {
@@ -40,7 +40,7 @@ const sancionar = async () => {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            axios.post('https://201.124.183.3:3001/api/administracion/sancionarUser', {
+            axios.post('https://201.124.152.8:3001/api/administracion/sancionarUser', {
                 pkReporte: usuario.PK_REPORTE,
                 pkusuario: usuario.PK_USUARIO
             })
@@ -77,7 +77,7 @@ const vetarAlumno = async () => {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            axios.post('https://201.124.183.3:3001/api/administracion/vetarAlumno', {
+            axios.post('https://201.124.152.8:3001/api/administracion/vetarAlumno', {
                 pkReporte: usuario.PK_REPORTE,
                 pkusuario: usuario.PK_USUARIO
             })

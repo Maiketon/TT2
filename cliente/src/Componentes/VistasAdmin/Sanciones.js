@@ -98,7 +98,7 @@ const Sanciones = () => {
         const cargarUsuariosReportados = async () => {
             try {
                 setEstaCargando(true);
-                const response = await axios.get('https://201.124.183.3:3001/api/administracion/reportesAlum');
+                const response = await axios.get('https://201.124.152.8:3001/api/administracion/reportesAlum');
                 setUsuariosReportados(response.data);
                 console.log('Usuarios cargados:', response.data);  // Verificar el contenido del array
                 setEstaCargando(false);
